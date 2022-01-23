@@ -56,8 +56,6 @@
     </build>
 
     <dependencies>
-        <!--ROOT-->
-
         <!-- Log -->
 
         <dependency>
@@ -71,7 +69,7 @@
             <version>1.7.31</version>
         </dependency>
 
-        <!-- Log -->
+        <!-- Fx -->
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
