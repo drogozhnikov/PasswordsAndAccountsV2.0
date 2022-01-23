@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%d{dd.MM.yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{20} - %msg%n</pattern>
+            <!--
+            %d{dd.MM.yyyy HH:mm:ss.SSS} - date format
+            [%thread] - thread name
+            %-5level - 5 symbols of logging level
+            %logger{20} - logger name (20 symbols)
+            %msg - message
+            %n - next line
+            -->
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/PandA.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>logs/PandA.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- Храним файлы логов 10 дней -->
+            <maxHistory>10</maxHistory>
+
+            <!-- Максимальный размер файлов лога 1 гигабайт -->
+            <totalSizeCap>1MB</totalSizeCap>
+
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{dd.MM.yyyy HH:mm:ss.SSS} %-5level  %logger{20} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!--
+        <appender name="SIFTER" class="ch.qos.logback.classic.sift.SiftingAppender">
+            <discriminator>
+                <key>testName</key>
+                <defaultValue>ALL</defaultValue>
+            </discriminator>
+            <sift>
+                <appender name="FILE-${testName}" class="ch.qos.logback.core.FileAppender">
+                    <file>target/logs/Log_Test_${testName}.log</file>
+
+                    <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+                        </pattern>
+                    </encoder>
+                </appender>
+            </sift>
+        </appender>
+    -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>
