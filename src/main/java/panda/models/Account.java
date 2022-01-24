@@ -6,12 +6,13 @@
 //
 
 
-package panda.models.account;
+package panda.models;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.GregorianCalendar;
 import java.util.Objects;
 
 
@@ -51,8 +52,8 @@ import java.util.Objects;
     "mail",
     "account",
     "password",
-    "description",
-    "priority"
+    "info",
+    "date"
 })
 public class Account implements Comparable<Account> {
 
@@ -71,11 +72,11 @@ public class Account implements Comparable<Account> {
     @XmlElement(name = "Password")
     protected String password;
     @XmlElement(name = "Description")
-    protected String description  = "Description";
+    protected String info  = "Description";
     @XmlElement(name = "Priority")
-    protected Integer priority = 10;
+    protected GregorianCalendar date;
 
-    public Account(int id, String name, String owner, String link, String mail, String account, String password, String description, int priority) {
+    public Account(int id, String name, String owner, String link, String mail, String account, String password, String info, GregorianCalendar date) {
         this.id = id;
         this.name = name;
         this.owner = owner;
@@ -83,8 +84,8 @@ public class Account implements Comparable<Account> {
         this.mail = mail;
         this.account = account;
         this.password = password;
-        this.description = description;
-        this.priority = priority;
+        this.info = info;
+        this.date = date;
     }
 
     public Account() {
@@ -259,27 +260,27 @@ public class Account implements Comparable<Account> {
     }
 
     /**
-     * Gets the value of the description property.
+     * Gets the value of the info property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getDescription() {
-        return description;
+    public String getInfo() {
+        return info;
     }
 
     /**
-     * Sets the value of the description property.
+     * Sets the value of the info property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setDescription(String value) {
-        this.description = value;
+    public void setInfo(String value) {
+        this.info = value;
     }
 
     /**
@@ -290,8 +291,8 @@ public class Account implements Comparable<Account> {
      *     {@link Integer }
      *     
      */
-    public Integer getPriority() {
-        return priority;
+    public GregorianCalendar getDate() {
+        return date;
     }
 
     /**
@@ -302,8 +303,8 @@ public class Account implements Comparable<Account> {
      *     {@link Integer }
      *     
      */
-    public void setPriority(Integer value) {
-        this.priority = value;
+    public void setDate(GregorianCalendar value) {
+        this.date = value;
     }
 
     @Override

@@ -6,7 +6,9 @@
 //
 
 
-package panda.models.account;
+package panda.models.xml;
+
+import panda.models.Account;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;

@@ -1,27 +1,26 @@
 package panda.controllers.views;
 
-import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
-import panda.views.elements.OptionsView;
 
-public class OptionsService {
+public class InfoService {
 
     private DataManager dataManager;
     private ViewServicesManager viewServicesManager;
 
-    private OptionsView optionsView;
+    private Text infoView;
 
-    public OptionsService(ViewServicesManager viewServicesManager, DataManager dataManager){
+    public InfoService(ViewServicesManager viewServicesManager, DataManager dataManager){
         this.viewServicesManager = viewServicesManager;
         this.dataManager = dataManager;
     }
 
     public void init(){
-        optionsView = new OptionsView(this);
+        infoView = new Text("info");
     }
 
-    public BorderPane getOptionsView(){
-        return optionsView;
+    public Text getInfoView(){
+        return infoView;
     }
 }

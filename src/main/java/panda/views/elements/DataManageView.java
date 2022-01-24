@@ -7,7 +7,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import panda.models.account.Account;
+import panda.controllers.views.DataManageService;
+import panda.models.Account;
 
 public class DataManageView extends BorderPane {
 
@@ -37,7 +38,7 @@ public class DataManageView extends BorderPane {
 
     private Button generatePasswordButton = new Button("New");
 
-    private OwnersListView ownerList; //TODO owners list
+    private OwnersListView ownersListView; //TODO owners list
 
     private CheckBox stayOnManage = new CheckBox("Stay On Manage");
     private CheckBox clearWhenAction = new CheckBox("Clear When Action");
@@ -53,8 +54,10 @@ public class DataManageView extends BorderPane {
     private int spacing = 1;
     private int fieldSize = 300;
 
-    public DataManageView() {
+    private DataManageService dataManageService;
 
+    public DataManageView(DataManageService dataManageService) {
+        this.dataManageService = dataManageService;
     }
 
     public void init(){
@@ -70,7 +73,7 @@ public class DataManageView extends BorderPane {
 
     private void initPositions() {
         HBox name = new HBox(spacing, nameLabel, inputName);
-        HBox owner = new HBox(spacing, ownerLabel, inputOwner, ownerList);
+        HBox owner = new HBox(spacing, ownerLabel, inputOwner, ownersListView);
         HBox link = new HBox(spacing, linkLabel, inputLink);
         HBox mail = new HBox(spacing, mailLabel, inputMail);
         HBox acc = new HBox(spacing, accountLabel, inputAccount);
@@ -125,10 +128,10 @@ public class DataManageView extends BorderPane {
         HBox.setHgrow(inputPassword, Priority.ALWAYS);
 
         generatePasswordButton.setPrefWidth(labelsSize);
-        ownerList.setPrefWidth(labelsSize);
+        ownersListView.setPrefWidth(labelsSize);
 
         HBox.setHgrow(generatePasswordButton, Priority.ALWAYS);
-        HBox.setHgrow(ownerList, Priority.ALWAYS);
+        HBox.setHgrow(ownersListView, Priority.ALWAYS);
 
         actionButton.setMaxWidth(Double.MAX_VALUE);
         cancelButton.setMaxWidth(Double.MAX_VALUE);

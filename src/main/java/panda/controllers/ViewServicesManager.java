@@ -2,7 +2,6 @@ package panda.controllers;
 
 import panda.controllers.views.*;
 import panda.views.PandaRootView;
-import panda.views.elements.DataManageView;
 
 public class ViewServicesManager {
 
@@ -15,19 +14,33 @@ public class ViewServicesManager {
     private OptionsService optionsService;
     private OwnersService ownersService;
     private TableService tableService;
+    private InfoService infoService;
 
-    public ViewServicesManager(){
+    private DataManager dataManager;
 
+    public ViewServicesManager(DataManager dataManager) {
+        this.dataManager = dataManager;
     }
 
-    public void init(){
-        contextMenuService = new ContextMenuService();
-        controlMenuService = new ControlMenuService();
-        dataManageService = new DataManageService();
-        menuService = new MenuService();
-        optionsService = new OptionsService();
-        ownersService = new OwnersService();
-        tableService = new TableService();
-
+    public void initServices() {
+        contextMenuService = new ContextMenuService(this, dataManager);
+        controlMenuService = new ControlMenuService(this, dataManager);
+        dataManageService = new DataManageService(this, dataManager);
+        menuService = new MenuService(this, dataManager);
+        optionsService = new OptionsService(this, dataManager);
+        ownersService = new OwnersService(this, dataManager);
+        tableService = new TableService(this, dataManager);
+        infoService = new InfoService(this, dataManager);
     }
+
+    public void initPane() {
+        pandaRootView = new PandaRootView();
+        pandaRootView.setMenuPane(menuService.getMenuView());
+        pandaRootView.setRootCenter(tableService.getTableView());
+        pandaRootView.setRootTop(controlMenuService.getControlMenuView());
+        pandaRootView.setBottom(infoService.getInfoView());
+
+        tableService.initContext(contextMenuService.getContextMenuView());
+    }
+
 }

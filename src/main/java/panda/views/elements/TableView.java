@@ -5,40 +5,51 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.cell.PropertyValueFactory;
-import panda.models.account.Account;
+import panda.controllers.views.TableService;
+import panda.models.PandaAccount;
 
-public class TableView extends javafx.scene.control.TableView<Account> {
+import java.util.GregorianCalendar;
 
-    public TableView() {
+public class TableView extends javafx.scene.control.TableView<PandaAccount> {
+
+    private TableService tableService;
+
+    public TableView(TableService tableService) {
+        this.tableService = tableService;
+
         super.setColumnResizePolicy(javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY);
         super.getSelectionModel().setCellSelectionEnabled(true);
         super.getSelectionModel().getSelectedCells().addListener(this::selectCells);
         super.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        TableColumn<Account, String> name = new TableColumn<>("Name");
+        TableColumn<PandaAccount, String> name = new TableColumn<>("Name");
         name.setStyle("-fx-alignment: CENTER;");
 
-        TableColumn<Account, String> mail = new TableColumn<>("Mail");
+        TableColumn<PandaAccount, String> mail = new TableColumn<>("Mail");
         mail.setStyle("-fx-alignment: CENTER;");
 
-        TableColumn<Account, String> account = new TableColumn<>("Account");
+        TableColumn<PandaAccount, String> account = new TableColumn<>("Account");
         account.setStyle("-fx-alignment: CENTER;");
 
-        TableColumn<Account, String> password = new TableColumn<>("Password");
+        TableColumn<PandaAccount, String> password = new TableColumn<>("Password");
         password.setStyle("-fx-alignment: CENTER;");
 
-        super.getColumns().addAll(name, mail, account, password);
+        TableColumn<PandaAccount, GregorianCalendar> updated = new TableColumn<>("Updated");
+        password.setStyle("-fx-alignment: CENTER;");
+
+        super.getColumns().addAll(name, mail, account, password, updated);
 
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         mail.setCellValueFactory(new PropertyValueFactory<>("mail"));
         account.setCellValueFactory(new PropertyValueFactory<>("account"));
         password.setCellValueFactory(new PropertyValueFactory<>("password"));
-
+        updated.setCellValueFactory(new PropertyValueFactory<>("date"));
     }
 
     private void selectCells(ListChangeListener.Change<? extends TablePosition> c) {
         c.getList().forEach(tablePosition -> {
-            //TODO encryption & copy to buffer
+            tableService.selectCells();
         });
     }
+
 }

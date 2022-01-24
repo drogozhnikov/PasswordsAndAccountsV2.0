@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import panda.controllers.views.ControlMenuService;
 
 public class ControlMenuView extends HBox {
 
@@ -11,8 +12,10 @@ public class ControlMenuView extends HBox {
     private TextField searchField = new TextField();
     private OwnersListView ownersListView;
 
-    public ControlMenuView(){
+    private ControlMenuService controlMenuService;
 
+    public ControlMenuView(ControlMenuService controlMenuService){
+        this.controlMenuService = controlMenuService;
     }
 
     public void init(){
@@ -41,6 +44,5 @@ public class ControlMenuView extends HBox {
             //TODO viewController.searchAction(event.getCode(), searchField.getText())
         });
     }
-
 
 }

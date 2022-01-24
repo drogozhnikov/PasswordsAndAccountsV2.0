@@ -2,6 +2,7 @@ package panda.views.elements;
 
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import panda.controllers.views.ContextMenuService;
 
 public class ContextMenuView extends ContextMenu {
 
@@ -11,8 +12,10 @@ public class ContextMenuView extends ContextMenu {
     private MenuItem startLinkMenuItem = new MenuItem(" StartLink ");
     private MenuItem descriptionMenuItem = new MenuItem(" ShowDescription ");
 
-    public ContextMenuView() {
+    private ContextMenuService contextMenuService;
 
+    public ContextMenuView(ContextMenuService contextMenuService) {
+        this.contextMenuService = contextMenuService;
     }
 
     private void initContext() {

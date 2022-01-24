@@ -1,8 +1,8 @@
 package panda.utils.io;
 
 
-import panda.models.account.Account;
-import panda.models.account.Panda;
+import panda.models.Account;
+import panda.models.xml.Panda;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
