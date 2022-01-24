@@ -1,7 +1,10 @@
 package panda.controllers;
 
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import panda.controllers.views.*;
 import panda.views.PandaRootView;
+import panda.views.elements.MenuView;
 
 public class ViewServicesManager {
 
@@ -33,14 +36,30 @@ public class ViewServicesManager {
         infoService = new InfoService(this, dataManager);
     }
 
-    public void initPane() {
+    public void initPanes() {
+        contextMenuService.init();
+        contextMenuService.init();
+        dataManageService.init();
+        menuService.init();
+        optionsService.init();
+        ownersService.init();
+        tableService.init();
+        tableService.init();
+        infoService.init();
+    }
+
+    public void initRoot(){
         pandaRootView = new PandaRootView();
         pandaRootView.setMenuPane(menuService.getMenuView());
         pandaRootView.setRootCenter(tableService.getTableView());
         pandaRootView.setRootTop(controlMenuService.getControlMenuView());
         pandaRootView.setBottom(infoService.getInfoView());
 
-        tableService.initContext(contextMenuService.getContextMenuView());
+//        tableService.initContext(contextMenuService.getContextMenuView());
+    }
+
+    public PandaRootView getRoot(){
+        return pandaRootView;
     }
 
 }

@@ -19,6 +19,7 @@ public class MenuService {
 
     public void init() {
         menuView = new MenuView(this);
+        menuView.init();
     }
 
     public MenuBar getMenuView() {

@@ -19,6 +19,7 @@ public class ControlMenuService {
 
     public void init(){
         controlMenuView = new ControlMenuView(this);
+        controlMenuView.init();
     }
 
     public HBox getControlMenuView(){

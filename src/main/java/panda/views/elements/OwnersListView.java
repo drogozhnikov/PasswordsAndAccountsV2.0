@@ -12,6 +12,11 @@ public class OwnersListView extends ChoiceBox<String> {
         this.ownersService = ownersService;
     }
 
+    public void init(){
+        initSize();
+        super.getItems().add("all");
+    }
+
     private void initSize(){
         super.setMaxWidth(ownerListSize);
     }

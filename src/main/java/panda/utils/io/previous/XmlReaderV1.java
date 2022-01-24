@@ -75,16 +75,7 @@ public class XmlReaderV1 {
                 } catch (NullPointerException e) {
 //                    System.out.println("id5");
                 }
-                try {
-                    output.setDescription(getTagValue("description", element));
-                } catch (NullPointerException e) {
-//                    System.out.println("id5");
-                }
-                try {
-                    output.setPriority(Integer.valueOf(getTagValue("priority", element)));
-                } catch (NullPointerException e) {
-//                    System.out.println("id5");
-                }
+                //TODO discription - > info analogy
 
             }
             return output;
