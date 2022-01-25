@@ -12,16 +12,16 @@ public class OptionsService {
 
     private OptionsView optionsView;
 
-    public OptionsService(ViewServicesManager viewServicesManager, DataManager dataManager){
+    public OptionsService(ViewServicesManager viewServicesManager, DataManager dataManager) {
         this.viewServicesManager = viewServicesManager;
         this.dataManager = dataManager;
     }
 
-    public void init(){
+    public void init() {
         optionsView = new OptionsView(this);
     }
 
-    public BorderPane getOptionsView(){
+    public BorderPane getOptionsView() {
         return optionsView;
     }
 }

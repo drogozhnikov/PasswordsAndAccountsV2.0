@@ -27,9 +27,7 @@ public class MenuView extends MenuBar {
 
     public MenuView(MenuService menuService) {
         this.menuService = menuService;
-    }
 
-    public void init() {
         initSaveMenuItem();
         initLoadMenuItem();
         initOptionsMenuItem();

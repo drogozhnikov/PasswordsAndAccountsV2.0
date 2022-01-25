@@ -24,7 +24,7 @@ public class PandaRoot extends Application {
             ViewServicesManager viewServicesManager = new ViewServicesManager(dataManager);
             viewServicesManager.initServices();
             viewServicesManager.initPanes();
-            viewServicesManager.initRoot();
+            viewServicesManager.initRootPositions();
                 Scene panda = new Scene(viewServicesManager.getRoot(), 900, 700);
                 primaryStage.setScene(panda);
             primaryStage.show();

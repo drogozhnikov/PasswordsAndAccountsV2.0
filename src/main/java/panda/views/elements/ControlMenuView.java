@@ -14,20 +14,19 @@ public class ControlMenuView extends HBox {
 
     private ControlMenuService controlMenuService;
 
-    public ControlMenuView(ControlMenuService controlMenuService){
+    public ControlMenuView(ControlMenuService controlMenuService, OwnersListView ownersListView){
         this.controlMenuService = controlMenuService;
-    }
-
-    public void init(){
+        this.ownersListView = ownersListView;
         initSizes();
         initAddButton();
         initSearchField();
-        super.getChildren().addAll(addButton,ownersListView,searchField);
+        super.getChildren().addAll(addButton,this.ownersListView,searchField);
     }
 
     private void initSizes(){
-        addButton.setMaxWidth(Double.MAX_VALUE);
-        searchField.setMaxWidth(Double.MAX_VALUE);
+//        addButton.setMaxWidth(Double.MAX_VALUE);
+//        searchField.setMaxWidth(Double.MAX_VALUE);
+//        ownersListView.setMaxWidth(Double.MAX_VALUE);
         super.setHgrow(addButton, Priority.ALWAYS);
         super.setHgrow(ownersListView, Priority.ALWAYS);
         super.setHgrow(searchField, Priority.ALWAYS);

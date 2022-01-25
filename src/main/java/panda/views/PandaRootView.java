@@ -9,7 +9,7 @@ public class PandaRootView extends BorderPane {
     private BorderPane rootView = new BorderPane();
 
     public PandaRootView() {
-
+        super.setCenter(rootView);
     }
 
     public void setMenuPane(MenuBar menuView) {

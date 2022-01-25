@@ -56,11 +56,10 @@ public class DataManageView extends BorderPane {
 
     private DataManageService dataManageService;
 
-    public DataManageView(DataManageService dataManageService) {
+    public DataManageView(DataManageService dataManageService,OwnersListView ownersListView) {
         this.dataManageService = dataManageService;
-    }
+        this.ownersListView = ownersListView;
 
-    public void init(){
         initActionButton();
         initCancelButton();
         initGenerateButton();

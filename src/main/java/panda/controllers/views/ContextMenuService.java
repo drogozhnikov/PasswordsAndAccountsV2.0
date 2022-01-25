@@ -12,16 +12,16 @@ public class ContextMenuService {
 
     private ContextMenuView contextMenuView;
 
-    public ContextMenuService(ViewServicesManager viewServicesManager, DataManager dataManager){
+    public ContextMenuService(ViewServicesManager viewServicesManager, DataManager dataManager) {
         this.viewServicesManager = viewServicesManager;
         this.dataManager = dataManager;
     }
 
-    public void init(){
+    public void init() {
         contextMenuView = new ContextMenuView(this);
     }
 
-    public ContextMenu getContextMenuView(){
+    public ContextMenu getContextMenuView() {
         return contextMenuView;
     }
 }

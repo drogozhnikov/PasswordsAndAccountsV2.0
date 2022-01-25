@@ -16,9 +16,7 @@ public class TableView extends javafx.scene.control.TableView<PandaAccount> {
 
     public TableView(TableService tableService) {
         this.tableService = tableService;
-    }
 
-    public void init(){
         super.setColumnResizePolicy(javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY);
         super.getSelectionModel().setCellSelectionEnabled(true);
         super.getSelectionModel().getSelectedCells().addListener(this::selectCells);
@@ -46,6 +44,10 @@ public class TableView extends javafx.scene.control.TableView<PandaAccount> {
         account.setCellValueFactory(new PropertyValueFactory<>("account"));
         password.setCellValueFactory(new PropertyValueFactory<>("password"));
         updated.setCellValueFactory(new PropertyValueFactory<>("date"));
+    }
+
+    public void init(){
+
     }
 
     private void selectCells(ListChangeListener.Change<? extends TablePosition> c) {

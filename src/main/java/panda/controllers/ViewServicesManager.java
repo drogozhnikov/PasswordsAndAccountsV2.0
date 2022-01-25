@@ -5,6 +5,7 @@ import javafx.scene.layout.BorderPane;
 import panda.controllers.views.*;
 import panda.views.PandaRootView;
 import panda.views.elements.MenuView;
+import panda.views.elements.TableView;
 
 public class ViewServicesManager {
 
@@ -37,25 +38,27 @@ public class ViewServicesManager {
     }
 
     public void initPanes() {
+        pandaRootView = new PandaRootView();
+        ownersService.init();
         contextMenuService.init();
-        contextMenuService.init();
-        dataManageService.init();
         menuService.init();
         optionsService.init();
-        ownersService.init();
-        tableService.init();
         tableService.init();
         infoService.init();
+        controlMenuService.init(ownersService.getOwnersListView());
+        dataManageService.init(ownersService.getOwnersListView());
     }
 
-    public void initRoot(){
-        pandaRootView = new PandaRootView();
+    public void initRootPositions(){
+
         pandaRootView.setMenuPane(menuService.getMenuView());
-        pandaRootView.setRootCenter(tableService.getTableView());
+
         pandaRootView.setRootTop(controlMenuService.getControlMenuView());
+        pandaRootView.setRootCenter(tableService.getTableView());
+
         pandaRootView.setBottom(infoService.getInfoView());
 
-//        tableService.initContext(contextMenuService.getContextMenuView());
+        tableService.initContext(contextMenuService.getContextMenuView());
     }
 
     public PandaRootView getRoot(){

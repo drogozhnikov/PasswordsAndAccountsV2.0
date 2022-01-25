@@ -16,6 +16,7 @@ public class ContextMenuView extends ContextMenu {
 
     public ContextMenuView(ContextMenuService contextMenuService) {
         this.contextMenuService = contextMenuService;
+        initContext();
     }
 
     private void initContext() {

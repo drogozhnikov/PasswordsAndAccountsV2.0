@@ -4,6 +4,7 @@ import javafx.scene.layout.HBox;
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
 import panda.views.elements.ControlMenuView;
+import panda.views.elements.OwnersListView;
 
 public class ControlMenuService {
 
@@ -12,17 +13,16 @@ public class ControlMenuService {
 
     private ControlMenuView controlMenuView;
 
-    public ControlMenuService(ViewServicesManager viewServicesManager, DataManager dataManager){
+    public ControlMenuService(ViewServicesManager viewServicesManager, DataManager dataManager) {
         this.viewServicesManager = viewServicesManager;
         this.dataManager = dataManager;
     }
 
-    public void init(){
-        controlMenuView = new ControlMenuView(this);
-        controlMenuView.init();
+    public void init(OwnersListView ownersListView) {
+        controlMenuView = new ControlMenuView(this, ownersListView);
     }
 
-    public HBox getControlMenuView(){
+    public HBox getControlMenuView() {
         return controlMenuView;
     }
 }

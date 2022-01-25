@@ -11,16 +11,16 @@ public class InfoService {
 
     private Text infoView;
 
-    public InfoService(ViewServicesManager viewServicesManager, DataManager dataManager){
+    public InfoService(ViewServicesManager viewServicesManager, DataManager dataManager) {
         this.viewServicesManager = viewServicesManager;
         this.dataManager = dataManager;
     }
 
-    public void init(){
+    public void init() {
         infoView = new Text("info");
     }
 
-    public Text getInfoView(){
+    public Text getInfoView() {
         return infoView;
     }
 }
