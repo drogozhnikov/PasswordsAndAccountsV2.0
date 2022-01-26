@@ -7,7 +7,7 @@ public class OptionsView extends BorderPane {
 
     private OptionsService optionsService;
 
-    public OptionsView(OptionsService optionsService){
+    public OptionsView(OptionsService optionsService) {
         this.optionsService = optionsService;
     }
 

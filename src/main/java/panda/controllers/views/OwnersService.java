@@ -9,7 +9,7 @@ public class OwnersService {
     private DataManager dataManager;
     private ViewServicesManager viewServicesManager;
 
-    private OwnersListView ownersListView;
+    private OwnersListView ownersListViewControl;
 
     public OwnersService(ViewServicesManager viewServicesManager, DataManager dataManager) {
         this.viewServicesManager = viewServicesManager;
@@ -17,10 +17,10 @@ public class OwnersService {
     }
 
     public void init() {
-        ownersListView = new OwnersListView(this);
+        ownersListViewControl = new OwnersListView(this);
     }
 
-    public OwnersListView getOwnersListView() {
-        return ownersListView;
+    public OwnersListView getOwnerListView() {
+        return ownersListViewControl;
     }
 }

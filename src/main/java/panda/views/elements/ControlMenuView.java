@@ -1,10 +1,14 @@
 package panda.views.elements;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import panda.controllers.DataManager;
+import panda.controllers.ViewServicesManager;
 import panda.controllers.views.ControlMenuService;
+import panda.controllers.views.OwnersService;
 
 public class ControlMenuView extends HBox {
 
@@ -20,13 +24,13 @@ public class ControlMenuView extends HBox {
         initSizes();
         initAddButton();
         initSearchField();
-        super.getChildren().addAll(addButton,this.ownersListView,searchField);
+        super.getChildren().addAll(addButton,searchField,this.ownersListView);
     }
 
     private void initSizes(){
-//        addButton.setMaxWidth(Double.MAX_VALUE);
-//        searchField.setMaxWidth(Double.MAX_VALUE);
-//        ownersListView.setMaxWidth(Double.MAX_VALUE);
+        addButton.setMaxWidth(Double.MAX_VALUE);
+        searchField.setMaxWidth(Double.MAX_VALUE);
+        ownersListView.setMaxWidth(Double.MAX_VALUE);
         super.setHgrow(addButton, Priority.ALWAYS);
         super.setHgrow(ownersListView, Priority.ALWAYS);
         super.setHgrow(searchField, Priority.ALWAYS);
@@ -34,7 +38,7 @@ public class ControlMenuView extends HBox {
 
     private void initAddButton() {
         addButton.setOnAction(event -> {
-            //TODO addButton - > showDataManage
+            controlMenuService.actionAdd();//TODO addButton - > showDataManage
         });
     }
 

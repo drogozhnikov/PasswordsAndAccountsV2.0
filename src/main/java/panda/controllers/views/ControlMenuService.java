@@ -25,4 +25,8 @@ public class ControlMenuService {
     public HBox getControlMenuView() {
         return controlMenuView;
     }
+
+    public void actionAdd() {
+        viewServicesManager.showDataManage();
+    }
 }

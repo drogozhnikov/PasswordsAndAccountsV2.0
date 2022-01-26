@@ -10,7 +10,7 @@ public class OwnersListView extends ComboBox<String> {
 
     public OwnersListView(OwnersService ownersService) {
         this.ownersService = ownersService;
-        super.getItems().add("All");
+//        super.getItems().add("All");
     }
 
     //TODO SplitMenuButton

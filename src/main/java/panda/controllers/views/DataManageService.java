@@ -25,4 +25,16 @@ public class DataManageService {
     public BorderPane getDataManageView() {
         return dataManageView;
     }
+
+    public void addAction(){
+        viewServicesManager.showControlPanel();
+    }
+
+    public void updateAction(){
+        viewServicesManager.showControlPanel();
+    }
+
+    public void cancelAction(){
+        viewServicesManager.showControlPanel();
+    }
 }

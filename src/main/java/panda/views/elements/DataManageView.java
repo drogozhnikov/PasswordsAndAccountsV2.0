@@ -150,20 +150,20 @@ public class DataManageView extends BorderPane {
     private void initActionButton() {
         actionButton.setText("Add");
         actionButton.setOnAction(event -> {
-            // TODO init action: add button
+            dataManageService.addAction();
         });
     }
 
     private void initActionButton(Account account) {
         actionButton.setText("Save");
         actionButton.setOnAction(event -> {
-            // TODO init action: update button
+            dataManageService.updateAction();
         });
     }
 
     private void initCancelButton() {
         cancelButton.setOnAction(event -> {
-            //TODO show root menu
+            dataManageService.cancelAction();
             clear();
         });
     }

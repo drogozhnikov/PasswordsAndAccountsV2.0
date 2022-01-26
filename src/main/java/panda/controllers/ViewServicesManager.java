@@ -1,11 +1,7 @@
 package panda.controllers;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import panda.controllers.views.*;
 import panda.views.PandaRootView;
-import panda.views.elements.MenuView;
-import panda.views.elements.TableView;
 
 public class ViewServicesManager {
 
@@ -37,23 +33,19 @@ public class ViewServicesManager {
         infoService = new InfoService(this, dataManager);
     }
 
-    public void initPanes() {
-        pandaRootView = new PandaRootView();
+    public void initViews() {
         ownersService.init();
         contextMenuService.init();
         menuService.init();
         optionsService.init();
         tableService.init();
         infoService.init();
-        controlMenuService.init(ownersService.getOwnersListView());
-        dataManageService.init(ownersService.getOwnersListView());
     }
 
     public void initRootPositions(){
-
+        pandaRootView = new PandaRootView();
         pandaRootView.setMenuPane(menuService.getMenuView());
-
-        pandaRootView.setRootTop(controlMenuService.getControlMenuView());
+        showControlPanel();
         pandaRootView.setRootCenter(tableService.getTableView());
 
         pandaRootView.setBottom(infoService.getInfoView());
@@ -63,6 +55,15 @@ public class ViewServicesManager {
 
     public PandaRootView getRoot(){
         return pandaRootView;
+    }
+
+    public void showDataManage(){
+        dataManageService.init(ownersService.getOwnerListView());
+        pandaRootView.setRootTop(dataManageService.getDataManageView());
+    }
+    public void showControlPanel(){
+        controlMenuService.init(ownersService.getOwnerListView());
+        pandaRootView.setRootTop(controlMenuService.getControlMenuView());
     }
 
 }
