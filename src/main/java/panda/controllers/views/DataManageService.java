@@ -8,8 +8,8 @@ import panda.views.elements.OwnersListView;
 
 public class DataManageService {
 
-    private DataManager dataManager;
-    private ViewServicesManager viewServicesManager;
+    private final DataManager dataManager;
+    private final ViewServicesManager viewServicesManager;
 
     private DataManageView dataManageView;
 
@@ -26,15 +26,15 @@ public class DataManageService {
         return dataManageView;
     }
 
-    public void addAction(){
+    public void addAction() {
         viewServicesManager.showControlPanel();
     }
 
-    public void updateAction(){
+    public void updateAction() {
         viewServicesManager.showControlPanel();
     }
 
-    public void cancelAction(){
+    public void cancelAction() {
         viewServicesManager.showControlPanel();
     }
 }

@@ -34,7 +34,7 @@ public class MenuService {
     }
 
     public void optionAction() {
-        //TODO optionAction
+        viewServicesManager.showOptionslPanel();//TODO optionAction
     }
 
     public void exitAction() {

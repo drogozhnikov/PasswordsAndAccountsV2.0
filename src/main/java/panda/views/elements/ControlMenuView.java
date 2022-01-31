@@ -1,14 +1,10 @@
 package panda.views.elements;
 
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import panda.controllers.DataManager;
-import panda.controllers.ViewServicesManager;
 import panda.controllers.views.ControlMenuService;
-import panda.controllers.views.OwnersService;
 
 public class ControlMenuView extends HBox {
 
@@ -18,16 +14,16 @@ public class ControlMenuView extends HBox {
 
     private ControlMenuService controlMenuService;
 
-    public ControlMenuView(ControlMenuService controlMenuService, OwnersListView ownersListView){
+    public ControlMenuView(ControlMenuService controlMenuService, OwnersListView ownersListView) {
         this.controlMenuService = controlMenuService;
         this.ownersListView = ownersListView;
         initSizes();
         initAddButton();
         initSearchField();
-        super.getChildren().addAll(addButton,searchField,this.ownersListView);
+        super.getChildren().addAll(addButton, searchField, this.ownersListView);
     }
 
-    private void initSizes(){
+    private void initSizes() {
         addButton.setMaxWidth(Double.MAX_VALUE);
         searchField.setMaxWidth(Double.MAX_VALUE);
         ownersListView.setMaxWidth(Double.MAX_VALUE);

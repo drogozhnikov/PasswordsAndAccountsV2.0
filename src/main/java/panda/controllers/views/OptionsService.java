@@ -24,4 +24,12 @@ public class OptionsService {
     public BorderPane getOptionsView() {
         return optionsView;
     }
+
+    public void saveButton() {
+        viewServicesManager.showControlPanel();
+    }
+
+    public void cancelButton() {
+        viewServicesManager.showControlPanel();
+    }
 }

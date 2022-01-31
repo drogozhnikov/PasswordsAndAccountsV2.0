@@ -41,6 +41,6 @@ public class ContextMenuView extends ContextMenu {
         });
 
         super.getItems().addAll(contextMenuItemUpdate, contextMenuitemSave, startLinkMenuItem, descriptionMenuItem, contextMenuItemDelete);
-         //TODO TableView.setOnContextMenuRequested(event -> contextMenuView.show(pandaTableView, event.getScreenX(), event.getScreenY()));
+        //TODO TableView.setOnContextMenuRequested(event -> contextMenuView.show(pandaTableView, event.getScreenX(), event.getScreenY()));
     }
 }

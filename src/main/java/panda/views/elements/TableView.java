@@ -46,7 +46,7 @@ public class TableView extends javafx.scene.control.TableView<PandaAccount> {
         updated.setCellValueFactory(new PropertyValueFactory<>("date"));
     }
 
-    public void init(){
+    public void init() {
 
     }
 

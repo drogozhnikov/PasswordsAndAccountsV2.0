@@ -24,13 +24,21 @@ public class PandaRoot extends Application {
             viewServicesManager.initServices();
             viewServicesManager.initViews();
             viewServicesManager.initRootPositions();
-                Scene panda = new Scene(viewServicesManager.getRoot(), 900, 700);
-                primaryStage.setScene(panda);
+            Scene panda = new Scene(viewServicesManager.getRoot(), 900, 700);
+            setCSS(panda);
+            primaryStage.setScene(panda);
             primaryStage.show();
             primaryStage.setOnCloseRequest(event -> logger.info("Panda closed"));
         } catch (Exception e) {
             logger.info("Panda Error", e);
             primaryStage.close();
         }
+    }
+
+    private void setCSS(Scene scene) {
+        String cssPath = "file:///" + "D:\\mProjects\\PasswordsAndAccountsV2.0\\src\\main\\resources\\styles\\style.css";
+        cssPath = cssPath.replace("\\", "/");
+        scene.getStylesheets().add(cssPath);
+        // create menu. add controlsButtons. undecorate stage
     }
 }
