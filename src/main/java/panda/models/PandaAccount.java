@@ -9,7 +9,7 @@ public class PandaAccount {
     private String tableFieldMail;              //Column # 1
     private String tableFieldAccount;           //Column # 2
     private String tableFieldPassword;          //Column # 3
-    private GregorianCalendar tableFieldDate;   //Column # 4
+    private String tableFieldDate;   //Column # 4
 
     private int selectedColumn = 0;
 
@@ -17,7 +17,7 @@ public class PandaAccount {
 
     }
 
-    public PandaAccount(int accountId, String tableFieldName, String tableFieldMail, String tableFieldAccount, String tableFieldPassword, GregorianCalendar tableFieldDate) {
+    public PandaAccount(int accountId, String tableFieldName, String tableFieldMail, String tableFieldAccount, String tableFieldPassword, String tableFieldDate) {
         this.accountId = accountId;
         this.tableFieldName = tableFieldName;
         this.tableFieldMail = tableFieldMail;
@@ -46,7 +46,7 @@ public class PandaAccount {
         return tableFieldPassword;
     }
 
-    public GregorianCalendar getTableFieldDate() {
+    public String getTableFieldDate() {
         return tableFieldDate;
     }
 
@@ -72,7 +72,20 @@ public class PandaAccount {
         this.tableFieldPassword = tableFieldPassword;
     }
 
-    public void setTableFieldDate(GregorianCalendar tableFieldDate) {
+    public void setTableFieldDate(String tableFieldDate) {
         this.tableFieldDate = tableFieldDate;
+    }
+
+    @Override
+    public String toString() {
+        return "PandaAccount{" +
+                "accountId=" + accountId +
+                ", tableFieldName='" + tableFieldName + '\'' +
+                ", tableFieldMail='" + tableFieldMail + '\'' +
+                ", tableFieldAccount='" + tableFieldAccount + '\'' +
+                ", tableFieldPassword='" + tableFieldPassword + '\'' +
+                ", tableFieldDate='" + tableFieldDate + '\'' +
+                ", selectedColumn=" + selectedColumn +
+                '}';
     }
 }

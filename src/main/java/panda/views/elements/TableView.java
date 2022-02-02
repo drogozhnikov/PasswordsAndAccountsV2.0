@@ -34,7 +34,7 @@ public class TableView extends javafx.scene.control.TableView<PandaAccount> {
         TableColumn<PandaAccount, String> password = new TableColumn<>("Password");
         password.setStyle("-fx-alignment: CENTER;");
 
-        TableColumn<PandaAccount, GregorianCalendar> updated = new TableColumn<>("Updated");
+        TableColumn<PandaAccount, String> updated = new TableColumn<>("Updated");
         password.setStyle("-fx-alignment: CENTER;");
 
         super.getColumns().addAll(name, mail, account, password, updated);
