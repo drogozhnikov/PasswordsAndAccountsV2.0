@@ -22,7 +22,14 @@ public class ViewServicesManager {
         this.dataManager = dataManager;
     }
 
-    public void initServices() {
+    public PandaRootView init(){
+        initServices();
+        initViews();
+        initRootPositions();
+        return pandaRootView;
+    }
+
+    private void initServices() {
         contextMenuService = new ContextMenuService(this, dataManager);
         controlMenuService = new ControlMenuService(this, dataManager);
         dataManageService = new DataManageService(this, dataManager);
@@ -33,7 +40,7 @@ public class ViewServicesManager {
         infoService = new InfoService(this, dataManager);
     }
 
-    public void initViews() {
+    private void initViews() {
         ownersService.init();
         contextMenuService.init();
         menuService.init();
@@ -42,7 +49,7 @@ public class ViewServicesManager {
         infoService.init();
     }
 
-    public void initRootPositions(){
+    private void initRootPositions(){
         pandaRootView = new PandaRootView();
         pandaRootView.setMenuPane(menuService.getMenuView());
         showControlPanel();
@@ -52,9 +59,9 @@ public class ViewServicesManager {
         tableService.initContext(contextMenuService.getContextMenuView());
     }
 
-    public PandaRootView getRoot(){
-        return pandaRootView;
-    }
+//    public PandaRootView getRoot(){
+//        return pandaRootView;
+//    }
 
     public void showDataManage(){
         dataManageService.init(ownersService.getOwnerListView());
