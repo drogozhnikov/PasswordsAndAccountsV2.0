@@ -23,7 +23,7 @@ public class StageManager {
 
     public void init(){
         logger.info("Initialization started");
-            dm = new DataManager();
+            dm = new DataManager("src");
             vm = new ViewServicesManager(dm);
 
             PandaRootView pandaRootView = vm.init();

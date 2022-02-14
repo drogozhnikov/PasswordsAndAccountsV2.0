@@ -24,6 +24,7 @@ public class TableService {
 
     public void init() {
         tableView = new TableView(this);
+//        refresh();
     }
 
     public void refresh(ArrayList<PandaAccount> inputList) {

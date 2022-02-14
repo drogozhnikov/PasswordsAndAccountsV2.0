@@ -2,7 +2,7 @@ package panda.utils.cryption;
 
 import javax.crypto.SecretKey;
 
-public interface PandaСipher {
+public interface Сipher {
 
     String encrypt(String input);
     String decrypt(String input);

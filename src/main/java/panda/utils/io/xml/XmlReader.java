@@ -1,4 +1,4 @@
-package panda.utils.io;
+package panda.utils.io.xml;
 
 
 import panda.models.Account;

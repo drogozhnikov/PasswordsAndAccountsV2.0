@@ -21,25 +21,25 @@ public class PandaRoot extends Application {
     }
 
     public void start(Stage primaryStage) {
-//        try {
-//            StageManager stageManager = new StageManager(primaryStage);
-//            stageManager.init();
-//            logger.info("Panda start");
-//        } catch (Exception e) {
-//            logger.info("Panda Error", e);
-//            primaryStage.close();
-//        }
+        try {
+            StageManager stageManager = new StageManager(primaryStage);
+            stageManager.init();
+            logger.info("Panda start");
+        } catch (Exception e) {
+            logger.info("Panda Error", e);
+            primaryStage.close();
+        }
 
-        test();
+//        test();
     }
 
     private static void test(){
         try {
-            DatabaseController databaseController = new DatabaseController("D:\\mProjects\\PasswordsAndAccountsV2.0\\src\\main\\resources\\panda.db");
+            DatabaseController databaseController = new DatabaseController("E:\\IdeaProjects\\PasswordsAndAccountsV2.0\\src\\main\\resources\\panda.db");
 //            databaseController.selectPandas("ALL");
 //            databaseController.isPasswordExist("JOJOPASS2");
-            System.out.println(databaseController.getOnwerIndex("test2"));
-            databaseController.search("fi", "all");
+//            System.out.println(databaseController.getOnwerIndex("test2"));
+//            databaseController.search("fi", "all");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

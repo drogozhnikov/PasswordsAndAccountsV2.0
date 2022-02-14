@@ -71,9 +71,9 @@ public class Account implements Comparable<Account> {
     protected String account;
     @XmlElement(name = "Password")
     protected String password;
-    @XmlElement(name = "Description")
-    protected String info  = "Description";
-    @XmlElement(name = "Priority")
+    @XmlElement(name = "Info")
+    protected String info  = "Default Info";
+    @XmlElement(name = "Date")
     protected GregorianCalendar date;
 
     public Account(int id, String name, String owner, String link, String mail, String account, String password, String info, GregorianCalendar date) {

@@ -9,7 +9,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-public class AesCrypt implements PandaСipher {
+public class AesCrypt implements Сipher {
 
     private static final Logger logger = LoggerFactory.getLogger(AesCrypt.class);
 
