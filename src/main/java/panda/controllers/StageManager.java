@@ -36,6 +36,8 @@ public class StageManager {
         initHelloScene(500, 100);
         initPandaScene(900, 700);
 
+//        setCSS(rootPandaScene);
+
         showHelloScene();
         rootStage.setOnCloseRequest(event -> logger.info("Panda closed"));
         logger.info("initialization completed successfully");
@@ -80,5 +82,12 @@ public class StageManager {
         rootStage.initStyle(StageStyle.UNDECORATED);
         rootStage.setScene(rootHelloScene);
         rootStage.show();
+    }
+
+    private void setCSS(Scene scene) {
+        String cssPath = "file:///" + "D:\\mProjects\\PasswordsAndAccountsV2.0\\src\\main\\resources\\styles\\style.css";
+        cssPath = cssPath.replace("\\", "/");
+        scene.getStylesheets().add(cssPath);
+        // create menu. add controlsButtons. undecorate stage
     }
 }

@@ -8,6 +8,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import panda.controllers.views.TableService;
 import panda.models.PandaAccount;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.GregorianCalendar;
 
 public class TableView extends javafx.scene.control.TableView<PandaAccount> {
@@ -44,6 +46,15 @@ public class TableView extends javafx.scene.control.TableView<PandaAccount> {
         account.setCellValueFactory(new PropertyValueFactory<>("account"));
         password.setCellValueFactory(new PropertyValueFactory<>("password"));
         updated.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        File file = new File("D:\\mProjects\\PasswordsAndAccountsV2.0\\src\\main\\resources\\panda-clipart.png");
+        String localUrl = null;
+        try {
+            localUrl = file.toURI().toURL().toString();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        super.setStyle("-fx-background-image: url("+localUrl+");\n -fx-background-size: stretch;");
     }
 
     public void init() {
