@@ -1,47 +1,84 @@
 package panda.controllers;
 
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import panda.PandaRoot;
 import panda.views.PandaRootView;
+import panda.views.elements.HelloPandaView;
 
 public class StageManager {
 
     private static final Logger logger = LoggerFactory.getLogger(StageManager.class);
 
     private Stage rootStage;
-    private Scene rootScene;
+    private Scene rootHelloScene;
+    private Scene rootPandaScene;
 
     private DataManager dm;
     private ViewServicesManager vm;
 
-    public StageManager(Stage stage){
+    private double xOffset;
+    private double yOffset;
+
+    public StageManager(Stage stage) {
         this.rootStage = stage;
     }
 
-    public void init(){
+    public void init() {
         logger.info("Initialization started");
-            dm = new DataManager("src");
-            vm = new ViewServicesManager(dm);
+        dm = new DataManager("//src");
+        vm = new ViewServicesManager(this, dm);
 
-            PandaRootView pandaRootView = vm.init();
-            rootScene = new Scene(pandaRootView, 900, 700);
+        initHelloScene(500, 100);
+        initPandaScene(900, 700);
 
-            rootStage.setScene(rootScene);
-            rootStage.show();
-            rootStage.setOnCloseRequest(event -> logger.info("Panda closed"));
+        showHelloScene();
+        rootStage.setOnCloseRequest(event -> logger.info("Panda closed"));
         logger.info("initialization completed successfully");
     }
 
-    public void setTheme(String inputCssPath){
-        String cssPath = "file:///" + "D:\\mProjects\\PasswordsAndAccountsV2.0\\src\\main\\resources\\styles\\style.css";
-        cssPath = cssPath.replace("\\", "/");
-        rootScene.getStylesheets().add(cssPath);
-        // create menu. add controlsButtons. undecorate stage
+    private void initHelloScene(int width, int height) {
+        HelloPandaView helloPandaView = vm.getHelloPandaView();
+        rootHelloScene = new Scene(helloPandaView, width, height);
+
+        rootHelloScene.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = rootStage.getX() - event.getScreenX();
+                yOffset = rootStage.getY() - event.getScreenY();
+            }
+        });
+        rootHelloScene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                rootStage.setX(event.getScreenX() + xOffset);
+                rootStage.setY(event.getScreenY() + yOffset);
+            }
+        });
     }
 
+    public void initPandaScene(int width, int height) {
+        PandaRootView pandaRootView = vm.init();
+        rootPandaScene = new Scene(pandaRootView, width, height);
+    }
 
+    public void showPandaScene(){
+        rootStage.close();
+        rootStage = new Stage();
+        rootStage.initStyle(StageStyle.DECORATED);
+        rootStage.setScene(rootPandaScene);
+        rootStage.show();
+    }
 
+    public void showHelloScene(){
+        rootStage.close();
+        rootStage = new Stage();
+        rootStage.initStyle(StageStyle.UNDECORATED);
+        rootStage.setScene(rootHelloScene);
+        rootStage.show();
+    }
 }

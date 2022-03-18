@@ -38,5 +38,9 @@ public class DataManager {
         }
     }
 
+    public String findPath(String fileName){
+        return pathFinder.findPath(fileName);
+    }
+
 
 }

@@ -14,7 +14,7 @@ public class PathFinder {
         this.moduleResourcesPath = moduleResourcesPath;
     }
 
-    public String findPath(String fileName) throws Exception  {
+    public String findPath(String fileName){
         String resourcePath = System.getProperty("user.dir") + moduleResourcesPath;
         File root = new File(resourcePath);
         String result = "";

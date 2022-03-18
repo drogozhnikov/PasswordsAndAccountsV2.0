@@ -28,6 +28,6 @@ public class ControlMenuService {
 
     public void actionAdd() {
         viewServicesManager.showDataManage();
-        dataManager.test();
+//        dataManager.test();
     }
 }

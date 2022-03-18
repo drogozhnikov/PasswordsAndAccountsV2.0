@@ -34,15 +34,7 @@ public class PandaRoot extends Application {
     }
 
     private static void test(){
-        try {
-            DatabaseController databaseController = new DatabaseController("E:\\IdeaProjects\\PasswordsAndAccountsV2.0\\src\\main\\resources\\panda.db");
-//            databaseController.selectPandas("ALL");
-//            databaseController.isPasswordExist("JOJOPASS2");
-//            System.out.println(databaseController.getOnwerIndex("test2"));
-//            databaseController.search("fi", "all");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+
     }
 
 
