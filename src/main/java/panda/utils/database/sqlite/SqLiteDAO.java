@@ -235,6 +235,22 @@ public class SqLiteDAO implements Database {
 
     }
 
+    @Override
+    public int checkAccessPass(String input) throws SQLException {
+        try (Statement statement = this.connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("select count(*) from appdata");
+            if (resultSet.getInt("count(*)") != 0) {
+                ResultSet resultCount = statement.executeQuery("select count(*) from appdata where cipher_word = " + input + "");
+                if(resultCount.getInt("count(*)") != 0){
+                    return 1;
+                }
+                return 0;
+            }
+            return -1;
+        }
+    }
+
+
     private GregorianCalendar translateDate(String input) throws ParseException {
         GregorianCalendar output = new GregorianCalendar();
         output.setTimeZone(TimeZone.getTimeZone("GMT+02:00"));

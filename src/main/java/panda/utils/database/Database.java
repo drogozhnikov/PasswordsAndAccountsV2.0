@@ -29,6 +29,8 @@ public interface Database {
     AppData selectAppData() throws SQLException;
     void updateAppData() throws SQLException;
 
+    int checkAccessPass(String input) throws SQLException;
+
 
 
 }

@@ -29,7 +29,7 @@ public class DataManager {
             databaseController = new DatabaseController(pathFinder.findPath("panda.db"));
             propertiesController = new PropertiesController(pathFinder.findPath("Properties.properties"));
             backupController = new BackupController("backups", new XMLio());
-//            cryptionController = new CryptionController(new AesCrypt());
+            cryptionController = new CryptionController(new AesCrypt());
 
         } catch (SQLException e) {
            logger.error("DataBase init exception", e);
@@ -40,6 +40,10 @@ public class DataManager {
 
     public String findPath(String fileName){
         return pathFinder.findPath(fileName);
+    }
+
+    protected boolean checkAccess(String input){
+        return false;
     }
 
 

@@ -46,15 +46,6 @@ public class TableView extends javafx.scene.control.TableView<PandaAccount> {
         account.setCellValueFactory(new PropertyValueFactory<>("account"));
         password.setCellValueFactory(new PropertyValueFactory<>("password"));
         updated.setCellValueFactory(new PropertyValueFactory<>("date"));
-
-        File file = new File("D:\\mProjects\\PasswordsAndAccountsV2.0\\src\\main\\resources\\panda-clipart.png");
-        String localUrl = null;
-        try {
-            localUrl = file.toURI().toURL().toString();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        super.setStyle("-fx-background-image: url("+localUrl+");\n -fx-background-size: stretch;");
     }
 
     public void init() {
@@ -65,6 +56,17 @@ public class TableView extends javafx.scene.control.TableView<PandaAccount> {
         c.getList().forEach(tablePosition -> {
             tableService.selectCells();
         });
+    }
+
+    private void setBackgroundImage(String imagePath){
+        File file = new File(imagePath);
+        String localUrl = null;
+        try {
+            localUrl = file.toURI().toURL().toString();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        super.setStyle("-fx-background-image: url("+localUrl+");\n -fx-background-size: stretch;");
     }
 
 }

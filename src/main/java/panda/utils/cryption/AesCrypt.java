@@ -17,7 +17,9 @@ public class AesCrypt implements Сipher {
     private Cipher cipher;
     private Cipher decrypter;
 
-    public AesCrypt(String checkWord){
+    public AesCrypt(){}
+
+    public void init(String checkWord){
         key = getSpicificKey(checkWord);
         try {
             cipher = Cipher.getInstance("AES");
@@ -31,7 +33,6 @@ public class AesCrypt implements Сipher {
         } catch (InvalidKeyException e) {
             logger.error("AesCrypt: InvalidKeyException");
         }
-
     }
 
     private SecretKey getRandomKey() throws NoSuchAlgorithmException {

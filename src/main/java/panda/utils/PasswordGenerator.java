@@ -1,67 +1,50 @@
-//package panda.utils;
-//
-//import panda.model.Options;
-//
-//import java.util.List;
-//import java.util.Random;
-//
-//public class PasswordGenerator {
-//
-//    private final Options options = Options.getInstance();
-//    private static PasswordGenerator instance;
-//
-//    public static synchronized PasswordGenerator getInstance() {
-//        return instance;
-//    }
-//
-//    public String generatePassword(List<String> existPasswordList) {
-//        int length = options.getPgLength();
-//        String lowCase = options.getPgLowCase();
-//        String upCase = options.getPgUpperCase();
-//        String nums = options.getPgNums();
-//
-//        String newPassword;
-//
-//        if (existPasswordList.size() > 0) {
-//            do {
-//                newPassword = createPassword(length, lowCase, upCase, nums);
-//            } while (passwordValidation(newPassword, existPasswordList));
-//        } else {
-//            newPassword = createPassword(length, lowCase, upCase, nums);
-//        }
-//        return newPassword;
-//    }
-//
-//    private String createPassword(int length, String lowCase, String upCase, String nums) {
-//        char[] pass = new char[length];
-//        StringBuilder password = new StringBuilder();
-//        pass[0] = rand(upCase);
-//        for (int i = 1; i < 10; i++) {
-//            pass[i] = rand(lowCase);
-//        }
-//        for (int i = 10; i < 15; i++) {
-//            pass[i] = rand(nums);
-//        }
-//        for (int i = 0; i < 15; i++) {
-//            password.append(pass[i]);
-//        }
-//        return password.toString();
-//    }
-//
-//    private char rand(String s) {
-//        Random random = new Random();
-//        char[] str = s.toCharArray();
-//        int rand = random.nextInt(str.length);
-//        return str[rand];
-//    }
-//
-//    public boolean passwordValidation(String newPassword, List<String> existPasswordList) {
-//        for (String existPassword : existPasswordList) {
-//            if (existPassword.equals(newPassword)) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//
-//}
+package panda.utils;
+
+import java.util.Random;
+import java.util.regex.Pattern;
+
+public class PasswordGenerator {
+
+    private String lowCase = "qwertyuiopasdfghjklzxcvbnm";
+    private String numses = "0123456789";
+    private final String defaultTemplate = "Rezcjlwige27690";
+
+    private int minimumSize = 3;
+    private int maximumSize = 49;
+
+    private Pattern upperCasePattern = Pattern.compile(".*[A-Z].*");
+    private Pattern lowerCasePattern = Pattern.compile(".*[a-z].*");
+    private Pattern numberPattern = Pattern.compile("\\d");
+
+    private final Random random = new Random();
+
+    public PasswordGenerator() {}
+
+    public String generatePassword(String inputExample){
+        char[] templateArray = defaultTemplate.toCharArray();
+        if (inputExample != null && inputExample.length() > minimumSize && inputExample.length() < maximumSize) {
+            templateArray = inputExample.toCharArray();
+        }
+        StringBuffer resultPass = new StringBuffer();
+        for (int i = 0; i < templateArray.length; i++) {
+            String letter = Character.toString(templateArray[i]);
+            if (upperCasePattern.matcher(letter).matches()) {
+                resultPass.append(getRandomChar(lowCase.toUpperCase()));
+            } else if (lowerCasePattern.matcher(letter).matches()) {
+                resultPass.append(getRandomChar(lowCase));
+            } else if (numberPattern.matcher(letter).matches()) {
+                resultPass.append(getRandomChar(numses));
+            } else {
+                resultPass.append(letter);
+            }
+        }
+        return resultPass.toString();
+    }
+
+    private char getRandomChar(String inputLine) {
+        char[] str = inputLine.toCharArray();
+        int rand = random.nextInt(str.length);
+        return str[rand];
+    }
+
+}

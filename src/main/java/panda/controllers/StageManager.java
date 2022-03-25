@@ -29,10 +29,10 @@ public class StageManager {
     }
 
     public void init() {
-        logger.info("Initialization started");
         dm = new DataManager("//src");
         vm = new ViewServicesManager(this, dm);
 
+        //TODO create function to calculate or save widths and heights
         initHelloScene(500, 100);
         initPandaScene(900, 700);
 
@@ -46,7 +46,6 @@ public class StageManager {
     private void initHelloScene(int width, int height) {
         HelloPandaView helloPandaView = vm.getHelloPandaView();
         rootHelloScene = new Scene(helloPandaView, width, height);
-
         rootHelloScene.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

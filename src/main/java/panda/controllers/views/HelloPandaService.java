@@ -17,13 +17,19 @@ public class HelloPandaService {
         this.viewServicesManager = viewServicesManager;
         this.dataManager = dataManager;
         helloPandaView = new HelloPandaView(this, Utils.getImage(
-                dataManager.findPath("panda-clipart.png"))
+                dataManager.findPath("panda-clipart.png"), 300, 100)
         );
     }
 
     public void confirm(String input){
-        viewServicesManager.showPandaScene();
+        boolean getAccess = false;
+        if(input.equals("admin")){
+            getAccess = true;
+        }
         //TODO cryptionControl
+        if(getAccess){
+            viewServicesManager.showPandaScene();
+        }
     }
 
     public void cancel(){

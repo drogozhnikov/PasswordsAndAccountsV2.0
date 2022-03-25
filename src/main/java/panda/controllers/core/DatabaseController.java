@@ -21,7 +21,7 @@ public class DatabaseController {
 
     public DatabaseController(String fileBasePath) throws SQLException {
         database = new SqLiteDAO(fileBasePath);
-        logger.info("DataBase init successfull");
+        logger.info("initialization completed successfully");
     }
 
     public ArrayList<Account> selectAll() throws SQLException, ParseException {
