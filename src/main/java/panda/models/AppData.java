@@ -3,11 +3,15 @@ package panda.models;
 public class AppData {
 
     //all properties are selected and saved in base
-    private String passGenPattern;
-    private String theme;
-    private int owner;
-    private int screenWidth;
-    private int screenHeight;
+    private String passGenPattern = "Aaaaaaaaaa11111";
+    private String theme = "style1.css";
+    private int owner = 1;
+    private int screenWidth = 900;
+    private int screenHeight = 700;
+
+    //specials
+    private int helloScreenWidth = 500;
+    private int helloScreenHeight = 100;
 
     public AppData(String passGenPattern, String theme, int owner, int screenWidth, int screenHeight) {
         this.passGenPattern = passGenPattern;
@@ -16,6 +20,8 @@ public class AppData {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
     }
+
+    public AppData(){}
 
     public String getPassGenPattern() {
         return passGenPattern;
@@ -35,6 +41,14 @@ public class AppData {
 
     public int getScreenHeight() {
         return screenHeight;
+    }
+
+    public int getHelloScreenWidth() {
+        return helloScreenWidth;
+    }
+
+    public int getHelloScreenHeight() {
+        return helloScreenHeight;
     }
 
 
@@ -57,4 +71,6 @@ public class AppData {
     public void setScreenHeight(int screenHeight) {
         this.screenHeight = screenHeight;
     }
+
+
 }

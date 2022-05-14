@@ -32,9 +32,8 @@ public class StageManager {
         dm = new DataManager("//src");
         vm = new ViewServicesManager(this, dm);
 
-        //TODO create function to calculate or save widths and heights
-        initHelloScene(500, 100);
-        initPandaScene(900, 700);
+        initHelloScene(dm.getAppData().getHelloScreenWidth(), dm.getAppData().getHelloScreenHeight());
+        initPandaScene(dm.getAppData().getScreenWidth(), dm.getAppData().getScreenHeight());
 
 //        setCSS(rootPandaScene);
 
@@ -84,7 +83,7 @@ public class StageManager {
     }
 
     private void setCSS(Scene scene) {
-        String cssPath = "file:///" + "D:\\mProjects\\PasswordsAndAccountsV2.0\\src\\main\\resources\\styles\\style.css";
+        String cssPath = "file:///" + "D:\\mProjects\\PasswordsAndAccountsV2.0\\src\\main\\resources\\styles\\style1.css";
         cssPath = cssPath.replace("\\", "/");
         scene.getStylesheets().add(cssPath);
         // create menu. add controlsButtons. undecorate stage
