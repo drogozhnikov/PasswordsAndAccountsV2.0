@@ -227,26 +227,82 @@ public class SqLiteDAO implements Database {
 
     @Override
     public AppData selectAppData() throws SQLException {
-        return null;
+        try (Statement statement = this.connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("select * from appdata");
+            AppData output = null;
+            while (resultSet.next()) {
+                output = new AppData(
+                        resultSet.getString("pass_gen_pattern"),
+                        resultSet.getString("selected_theme"),
+                        resultSet.getInt("selected_owner"),
+                        resultSet.getInt("screen_width"),
+                        resultSet.getInt("screen_height")
+                       );
+            }
+           return output;
+        }
     }
 
     @Override
-    public void updateAppData() throws SQLException {
-
+    public void updateAppData(AppData input) throws SQLException {
+        try (PreparedStatement statement = this.connection.prepareStatement(
+                "UPDATE appdata SET " +
+                        "pass_gen_pattern = ?, " +
+                        "selected_theme = ? ," +
+                        "selected_owner = ? ," +
+                        "screen_width = ? ," +
+                        "screen_height = ? ,"
+                        )) {
+            statement.setObject(1, input.getPassGenPattern());
+            statement.setObject(2, input.getTheme());
+            statement.setObject(3, input.getOwner());
+            statement.setObject(4, input.getScreenWidth());
+            statement.setObject(5, input.getScreenHeight());
+            statement.executeUpdate();
+        }
     }
 
+    // 1-pass updated, 0 pass inserted, -1 - wrong old pass
+    @Override
+    public int updateExistedAppPass(String oldPass, String newPass) throws SQLException{
+        final int passUpdated = 1;
+        final int passInsrted = 0;
+        final int passMissmatch = -1;
+
+        int oldPassStatus = checkAccessPass(oldPass);
+        if(oldPassStatus == 1 || oldPassStatus==0){
+            try (PreparedStatement statement = this.connection.prepareStatement(
+                    "UPDATE appdata SET cipher_Word = ?"
+            )) {
+                statement.setObject(1, newPass);
+            }
+
+            if(oldPassStatus == 1){
+                return passUpdated;
+            }else{
+                return passInsrted;
+            }
+
+        }else {
+            return passMissmatch;
+        }
+    }
+
+    //-1 pass not exist. 0 if not matches. 1 if exist
     @Override
     public int checkAccessPass(String input) throws SQLException {
         try (Statement statement = this.connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("select count(*) from appdata");
-            if (resultSet.getInt("count(*)") != 0) {
-                ResultSet resultCount = statement.executeQuery("select count(*) from appdata where cipher_word = " + input + "");
+            if (resultSet.getInt("count(*)") != 0 && input!="") {
+                String query = "select count(*) from appdata where cipher_word = \'" + input + "\'";
+                ResultSet resultCount = statement.executeQuery(query);
                 if(resultCount.getInt("count(*)") != 0){
                     return 1;
                 }
+                return -1;
+            }else{
                 return 0;
             }
-            return -1;
         }
     }
 

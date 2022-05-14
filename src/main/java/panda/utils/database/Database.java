@@ -27,7 +27,9 @@ public interface Database {
     int getOnwerIndex(String ownerName) throws SQLException;
 
     AppData selectAppData() throws SQLException;
-    void updateAppData() throws SQLException;
+    void updateAppData(AppData input) throws SQLException;
+
+    int updateExistedAppPass(String oldPass, String newPass)throws SQLException;
 
     int checkAccessPass(String input) throws SQLException;
 

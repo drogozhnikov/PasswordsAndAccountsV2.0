@@ -5,11 +5,14 @@ import org.slf4j.LoggerFactory;
 
 import panda.utils.cryption.Сipher;
 
+import javax.crypto.Cipher;
+
 public class CryptionController {
 
     private static final Logger logger = LoggerFactory.getLogger(CryptionController.class);
 
     private final Сipher cipher;
+    private final String cryptPassPhrase = "HelloWorldMotherFucker";
 
     public CryptionController(Сipher cipher){
         this.cipher = cipher;
@@ -24,11 +27,10 @@ public class CryptionController {
         return cipher.decrypt(input);
     }
 
-    public boolean checkIt(String inputWord, String cipherWord){
-        if(inputWord.length()<cipherWord.length()){
-            inputWord = cryptIt(inputWord);
-        }
-        return inputWord.equals(cipherWord);
+    //return special phrase encrypted by inputWord.
+    public String getSpecialCheckWord(Сipher cipher, String input){
+        cipher.init(input);
+        return cipher.encrypt(cryptPassPhrase);
     }
 
 

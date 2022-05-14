@@ -29,21 +29,31 @@ public class DataManager {
             databaseController = new DatabaseController(pathFinder.findPath("panda.db"));
             propertiesController = new PropertiesController(pathFinder.findPath("Properties.properties"));
             backupController = new BackupController("backups", new XMLio());
+
+
             cryptionController = new CryptionController(new AesCrypt());
 
         } catch (SQLException e) {
-           logger.error("DataBase init exception", e);
-        } catch (Exception e){
+            logger.error("DataBase init exception", e);
+        } catch (Exception e) {
             logger.error("File not found exception", e);
         }
     }
 
-    public String findPath(String fileName){
+    public String findPath(String fileName) {
         return pathFinder.findPath(fileName);
     }
 
-    protected boolean checkAccess(String input){
-        return false;
+    public int checkAccess(String input) {
+        String specialCheckWord = cryptionController.getSpecialCheckWord(new AesCrypt(), input);
+            logger.info(specialCheckWord);
+        int value = -1;
+        try {
+            value = databaseController.checkPass(specialCheckWord);
+        } catch (SQLException pass) {
+            logger.error("DataBase check pass exception", pass);
+        }
+        return value;
     }
 
 

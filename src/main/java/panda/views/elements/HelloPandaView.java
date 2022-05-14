@@ -3,9 +3,11 @@ package panda.views.elements;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -18,7 +20,7 @@ public class HelloPandaView extends BorderPane {
     private ImageView imageViewLeft;
     private ImageView imageViewRight;
 
-    private TextField inputPassword = new TextField();
+    private PasswordField inputPassword = new PasswordField();
     private Label helloLabel = new Label("     Welcome to Panda! \nPlease enter your secret word:");
 
     private Button confirmButton = new Button("Confirm");
@@ -40,6 +42,8 @@ public class HelloPandaView extends BorderPane {
         initCancelButton();
         initSizes();
         initPositions();
+        setStyleInputPassword();
+        setStylePandaImage();
     }
 
     private void initPositions(){
@@ -67,6 +71,25 @@ public class HelloPandaView extends BorderPane {
     private void initCancelButton(){
         cancelButton.setOnAction(event -> {
             helloPandaService.cancel();
+        });
+    }
+    private void setStyleInputPassword(){
+        inputPassword.setAlignment(Pos.CENTER);
+            inputPassword.setOnKeyReleased(event -> {
+                if(event.getCode().equals(KeyCode.ENTER)){
+                    helloPandaService.confirm(inputPassword.getText());
+                }
+            });
+    }
+    private void setStylePandaImage(){
+        imageViewLeft.setOnMouseClicked(event -> {
+            System.out.println(inputPassword.getText());
+            // TODO found how show pass
+
+        });
+        imageViewRight.setOnMouseClicked(event -> {
+            System.out.println(inputPassword.getText());
+            // TODO found how show pass
         });
     }
 

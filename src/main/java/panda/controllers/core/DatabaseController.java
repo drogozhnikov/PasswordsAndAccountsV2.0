@@ -30,56 +30,65 @@ public class DatabaseController {
         return accounts;
     }
 
-    ArrayList<PandaAccount> selectPandas(String ownerName) throws SQLException {
+    public ArrayList<PandaAccount> selectPandas(String ownerName) throws SQLException {
         ArrayList<PandaAccount> pandas = database.selectPandas(ownerName);
         Collections.reverse(pandas);
         return pandas;
     }
 
-    ArrayList<PandaAccount> search(String searchValue, String ownerValue) throws SQLException {
+    public ArrayList<PandaAccount> search(String searchValue, String ownerValue) throws SQLException {
         ArrayList<PandaAccount> founded = database.search(searchValue, ownerValue);
         Collections.reverse(founded);
         return founded;
     }
 
-    ArrayList<String> selectOwnerList() throws SQLException {
+    public ArrayList<String> selectOwnerList() throws SQLException {
         ArrayList<String> owners = database.selectOwnerList();
         Collections.sort(owners);
         return owners;
     }
 
-    Account selectAccountById(int id) throws SQLException, ParseException {
+    public Account selectAccountById(int id) throws SQLException, ParseException {
         Account account = database.selectAccountById(id);
         return account;
     }
 
-    PandaAccount selectPandaById(int id) throws SQLException {
+    public PandaAccount selectPandaById(int id) throws SQLException {
         PandaAccount pandaAccount = database.selectPandaById(id);
         return pandaAccount;
     }
 
-    void insertAccount(Account account) throws SQLException {
-        if(!database.isPasswordExist(account.getPassword())){
+    public void insertAccount(Account account) throws SQLException {
+        if (!database.isPasswordExist(account.getPassword())) {
             database.insertAccount(account);
-        }else{
+        } else {
             //TODO Action when password Exist in DB
         }
     }
 
-    void updateFullAccount(Account account) throws SQLException {
+    public void updateFullAccount(Account account) throws SQLException {
         database.updateFullAccount(account);
     }
 
-    void deleteAccount(int id) throws SQLException {
+    public void deleteAccount(int id) throws SQLException {
         database.deleteAccount(id);
     }
 
-//    AppData selectAppData(){
-//
-//    }
+    //AppData
+    public AppData selectAppData() throws SQLException {
+        return database.selectAppData();
+    }
 
-    void updateAppData(){
+    public void updateAppData(AppData input) throws SQLException {
+        database.updateAppData(input);
+    }
 
+    public int checkPass(String input) throws SQLException {
+        return database.checkAccessPass(input);
+    }
+
+    public int updatePass(String oldPass, String newPass) throws SQLException {
+        return database.updateExistedAppPass(oldPass, newPass);
     }
 
 

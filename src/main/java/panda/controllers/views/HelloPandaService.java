@@ -1,6 +1,8 @@
 package panda.controllers.views;
 
 import javafx.application.Platform;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
 import panda.utils.Utils;
@@ -10,6 +12,8 @@ public class HelloPandaService {
 
     private final DataManager dataManager;
     private final ViewServicesManager viewServicesManager;
+
+    private final Logger logger = LoggerFactory.getLogger(HelloPandaService.class);
 
     private HelloPandaView helloPandaView;
 
@@ -22,13 +26,22 @@ public class HelloPandaService {
     }
 
     public void confirm(String input){
-        boolean getAccess = false;
-        if(input.equals("admin")){
-            getAccess = true;
-        }
-        //TODO cryptionControl
-        if(getAccess){
-            viewServicesManager.showPandaScene();
+        int result = dataManager.checkAccess(input);
+
+        final int accessConfirmed = 1;
+        final int accessDenied = -1;
+        final int passNotFount = 0;
+
+        switch (result){
+            case accessConfirmed: {
+                viewServicesManager.showPandaScene();
+            }
+            case accessDenied:{
+                logger.warn("Access Denied");
+            }
+            case passNotFount:{
+                logger.warn("Password not exist");
+            }
         }
     }
 
