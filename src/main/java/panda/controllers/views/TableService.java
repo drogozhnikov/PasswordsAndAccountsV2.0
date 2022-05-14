@@ -3,6 +3,8 @@ package panda.controllers.views;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ContextMenu;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
 import panda.models.PandaAccount;
@@ -11,6 +13,8 @@ import panda.views.elements.TableView;
 import java.util.ArrayList;
 
 public class TableService {
+
+    private final Logger logger = LoggerFactory.getLogger(TableService.class);
 
     private DataManager dataManager;
     private ViewServicesManager viewServicesManager;
@@ -24,13 +28,16 @@ public class TableService {
 
     public void init() {
         tableView = new TableView(this);
-//        refresh();
     }
 
-    public void refresh(ArrayList<PandaAccount> inputList) {
-        ObservableList<PandaAccount> list = FXCollections.observableArrayList(inputList);
-        tableView.setItems(list);
-        tableView.refresh();
+    public void refresh() {
+        ArrayList<PandaAccount> pandaList = dataManager.selectPandaAccounts();
+        if(pandaList != null && pandaList.size()>0){
+            ObservableList<PandaAccount> list = FXCollections.observableArrayList(pandaList);
+            tableView.refresh(list);
+        }else{
+            logger.error("Selected pandas list is empty");
+        }
     }
 
     public void selectCells() {

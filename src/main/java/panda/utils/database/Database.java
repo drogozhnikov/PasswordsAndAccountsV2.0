@@ -24,7 +24,9 @@ public interface Database {
     void updateFullAccount(Account account) throws SQLException;
     void deleteAccount(int id) throws SQLException;
     boolean isPasswordExist(String inputPassword) throws SQLException;
+
     int getOnwerIndex(String ownerName) throws SQLException;
+    String getOwnerName(int id) throws SQLException;
 
     AppData selectAppData() throws SQLException;
     void updateAppData(AppData input) throws SQLException;

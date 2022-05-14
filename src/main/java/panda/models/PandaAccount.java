@@ -9,7 +9,6 @@ public class PandaAccount {
     private String tableFieldMail;              //Column # 1
     private String tableFieldAccount;           //Column # 2
     private String tableFieldPassword;          //Column # 3
-    private String tableFieldDate;   //Column # 4
 
     private int selectedColumn = 0;
 
@@ -23,7 +22,6 @@ public class PandaAccount {
         this.tableFieldMail = tableFieldMail;
         this.tableFieldAccount = tableFieldAccount;
         this.tableFieldPassword = tableFieldPassword;
-        this.tableFieldDate = tableFieldDate;
     }
 
     public int getAccountId() {
@@ -44,10 +42,6 @@ public class PandaAccount {
 
     public String getTableFieldPassword() {
         return tableFieldPassword;
-    }
-
-    public String getTableFieldDate() {
-        return tableFieldDate;
     }
 
 
@@ -72,9 +66,6 @@ public class PandaAccount {
         this.tableFieldPassword = tableFieldPassword;
     }
 
-    public void setTableFieldDate(String tableFieldDate) {
-        this.tableFieldDate = tableFieldDate;
-    }
 
     @Override
     public String toString() {
@@ -84,7 +75,6 @@ public class PandaAccount {
                 ", tableFieldMail='" + tableFieldMail + '\'' +
                 ", tableFieldAccount='" + tableFieldAccount + '\'' +
                 ", tableFieldPassword='" + tableFieldPassword + '\'' +
-                ", tableFieldDate='" + tableFieldDate + '\'' +
                 ", selectedColumn=" + selectedColumn +
                 '}';
     }

@@ -68,6 +68,27 @@ public class SqLiteDAO implements Database {
             return output;
         }
     }
+    @Override
+    public String getOwnerName(int ownerId) throws SQLException{
+        String outputName = "all";
+        try (Statement statement = this.connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("select name from owners where id = " + ownerId);
+            while (resultSet.next()) {
+                outputName = resultSet.getString("name");
+            }
+        }
+        return outputName;
+    }
+    public String getOwnerId(String ownerName) throws SQLException{
+        String outputName = "all";
+        try (Statement statement = this.connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("select id from owners where name = \'" + ownerName +"\'");
+            while (resultSet.next()) {
+                outputName = resultSet.getString("name");
+            }
+        }
+        return outputName;
+    }
 
     @Override
     public ArrayList<PandaAccount> search(String searchValue, String ownerValue) throws SQLException {

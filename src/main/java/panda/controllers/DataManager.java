@@ -4,11 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import panda.controllers.core.*;
 import panda.models.AppData;
+import panda.models.PandaAccount;
 import panda.utils.PathFinder;
 import panda.utils.cryption.AesCrypt;
 import panda.utils.io.xml.XMLio;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class DataManager {
 
@@ -49,6 +51,16 @@ public class DataManager {
 
     public AppData getAppData(){
         return appDataController.getAppData();
+    }
+
+    public ArrayList<PandaAccount> selectPandaAccounts(){
+        ArrayList<PandaAccount> output = null;
+        try{
+            output = databaseController.selectPandas(databaseController.getOwnerName(appDataController.getAppData().getOwner()));
+        }catch (SQLException selectAll){
+            logger.error("Select All Error");
+        }
+        return output;
     }
 
 

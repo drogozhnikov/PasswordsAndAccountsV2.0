@@ -30,6 +30,7 @@ public class ViewServicesManager {
     public PandaRootView init(){
         initViews();
         initRootPositions();
+        refresh();
         return pandaRootView;
     }
 
@@ -53,6 +54,10 @@ public class ViewServicesManager {
         optionsService.init();
         tableService.init();
         infoService.init();
+    }
+
+    private void refresh(){
+        tableService.refresh();
     }
 
     private void initRootPositions(){

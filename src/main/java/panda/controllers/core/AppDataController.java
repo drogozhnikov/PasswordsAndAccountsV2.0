@@ -19,7 +19,6 @@ public class AppDataController {
     }
 
     public int checkAccess(String specialCheckWord) {
-        logger.info(specialCheckWord);
         int value = -1;
         try {
             value = databaseController.checkPass(specialCheckWord);

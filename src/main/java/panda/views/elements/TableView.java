@@ -1,6 +1,7 @@
 package panda.views.elements;
 
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
@@ -36,26 +37,27 @@ public class TableView extends javafx.scene.control.TableView<PandaAccount> {
         TableColumn<PandaAccount, String> password = new TableColumn<>("Password");
         password.setStyle("-fx-alignment: CENTER;");
 
-        TableColumn<PandaAccount, String> updated = new TableColumn<>("Updated");
-        password.setStyle("-fx-alignment: CENTER;");
+        super.getColumns().addAll(name, mail, account, password);
 
-        super.getColumns().addAll(name, mail, account, password, updated);
-
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        mail.setCellValueFactory(new PropertyValueFactory<>("mail"));
-        account.setCellValueFactory(new PropertyValueFactory<>("account"));
-        password.setCellValueFactory(new PropertyValueFactory<>("password"));
-        updated.setCellValueFactory(new PropertyValueFactory<>("date"));
+        name.setCellValueFactory(new PropertyValueFactory<>("tableFieldName"));
+        mail.setCellValueFactory(new PropertyValueFactory<>("tableFieldMail"));
+        account.setCellValueFactory(new PropertyValueFactory<>("tableFieldAccount"));
+        password.setCellValueFactory(new PropertyValueFactory<>("tableFieldPassword"));
     }
 
     public void init() {
-
+        tableService.refresh();
     }
 
     private void selectCells(ListChangeListener.Change<? extends TablePosition> c) {
         c.getList().forEach(tablePosition -> {
             tableService.selectCells();
         });
+    }
+
+    public void refresh(ObservableList<PandaAccount> inputList){
+        super.setItems(inputList);
+        super.refresh();
     }
 
     private void setBackgroundImage(String imagePath){

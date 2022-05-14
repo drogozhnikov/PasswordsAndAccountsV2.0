@@ -91,5 +91,13 @@ public class DatabaseController {
         return database.updateExistedAppPass(oldPass, newPass);
     }
 
+    public String getOwnerName(int id)throws SQLException{
+        return database.getOwnerName(id);
+    }
+
+    public int getOwnerId(String name)throws SQLException{
+        return database.getOnwerIndex(name);
+    }
+
 
 }
