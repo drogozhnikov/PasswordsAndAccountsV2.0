@@ -3,6 +3,7 @@ package panda.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import panda.controllers.core.*;
+import panda.models.Account;
 import panda.models.AppData;
 import panda.models.PandaAccount;
 import panda.utils.PathFinder;
@@ -21,6 +22,7 @@ public class DataManager {
     private CryptionController cryptionController;
     private DatabaseController databaseController;
     private PropertiesController propertiesController;
+    private FieldsValidationController fieldsValidationController;
 
     private PathFinder pathFinder;
 
@@ -32,11 +34,26 @@ public class DataManager {
             backupController = new BackupController("backups", new XMLio());
             cryptionController = new CryptionController(new AesCrypt());
             appDataController = new AppDataController(databaseController);
-
+            fieldsValidationController = new FieldsValidationController();
         } catch (SQLException e) {
             logger.error("DataBase init exception", e);
         } catch (Exception e) {
             logger.error("File not found exception", e);
+        }
+    }
+
+    public void addAccount(Account account){
+        try{
+            databaseController.insertAccount(account);
+        }catch (SQLException inserting){
+            logger.error("Error while inserting new account");
+        }
+    }
+    public void updateAccount(Account account){
+        try{
+            databaseController.updateFullAccount(account);
+        }catch (SQLException inserting){
+            logger.error("Error while updating account");
         }
     }
 
@@ -61,6 +78,10 @@ public class DataManager {
             logger.error("Select All Error");
         }
         return output;
+    }
+
+    public String validateAccount(Account input){
+        return fieldsValidationController.validate(input);
     }
 
 

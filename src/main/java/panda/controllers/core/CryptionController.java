@@ -30,6 +30,7 @@ public class CryptionController {
     //return special phrase encrypted by inputWord.
     public String getSpecialCheckWord(Сipher cipher, String input){
         cipher.init(input);
+        System.out.println(cipher.encrypt(cryptPassPhrase) + " " + cipher.encrypt(cryptPassPhrase).length());
         return cipher.encrypt(cryptPassPhrase);
     }
 

@@ -1,8 +1,12 @@
 package panda.controllers;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import panda.controllers.views.*;
 import panda.views.PandaRootView;
 import panda.views.elements.HelloPandaView;
+
+import java.util.Optional;
 
 public class ViewServicesManager {
 
@@ -56,7 +60,7 @@ public class ViewServicesManager {
         infoService.init();
     }
 
-    private void refresh(){
+    public void refresh(){
         tableService.refresh();
     }
 
@@ -93,6 +97,17 @@ public class ViewServicesManager {
 
     public void showPandaScene(){
         stageManager.showPandaScene();
+    }
+
+    public Optional<ButtonType> alert(String title, String headerText, String contextText){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contextText);
+
+        Optional<ButtonType> option = alert.showAndWait();
+
+        return option;
     }
 
 }

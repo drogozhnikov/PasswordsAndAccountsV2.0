@@ -10,6 +10,9 @@ import javafx.scene.layout.VBox;
 import panda.controllers.views.DataManageService;
 import panda.models.Account;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 public class DataManageView extends BorderPane {
 
     private int labelsSize = 80;
@@ -67,7 +70,6 @@ public class DataManageView extends BorderPane {
         initPositions();
         initCancelButton();
         initClearButoon();
-        //TODO fields validations
     }
 
     private void initPositions() {
@@ -150,14 +152,15 @@ public class DataManageView extends BorderPane {
     private void initActionButton() {
         actionButton.setText("Add");
         actionButton.setOnAction(event -> {
-            dataManageService.addAction();
+            dataManageService.addAction(collectFieldsData());
         });
     }
 
     private void initActionButton(Account account) {
         actionButton.setText("Save");
+            fillFields(account);
         actionButton.setOnAction(event -> {
-            dataManageService.updateAction();
+            dataManageService.updateAction(collectFieldsData());
         });
     }
 
@@ -197,6 +200,27 @@ public class DataManageView extends BorderPane {
     public void show(Account account) {
         //TODO Refresh owners and selectedAccount = account
         initActionButton(account);
+    }
+
+    private Account collectFieldsData(){
+        Account account = new Account();
+            account.setName(inputName.getText());
+            account.setOwner(inputOwner.getText());
+            account.setLink(inputLink.getText());
+            account.setMail(inputMail.getText());
+            account.setAccount(inputAccount.getText());
+            account.setPassword(inputPassword.getText());
+            account.setInfo(inputDescription.getText());
+        return account;
+    }
+    private void fillFields(Account input){
+        inputName.setText(input.getName());
+        inputOwner.setText(input.getOwner());
+        inputLink.setText(input.getLink());
+        inputMail.setText(input.getMail());
+        inputAccount.setText(input.getAccount());
+        inputPassword.setText(input.getPassword());
+        inputDescription.setText(input.getInfo());
     }
 
 }
