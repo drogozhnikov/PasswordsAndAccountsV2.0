@@ -25,32 +25,35 @@ public class HelloPandaService {
         );
     }
 
-    public void confirm(String input){
+    public void confirm(String input) {
         int result = dataManager.checkAccess(input);
 
         final int accessConfirmed = 1;
         final int accessDenied = -1;
         final int passNotFount = 0;
 
-        switch (result){
+        switch (result) {
             case accessConfirmed: {
                 viewServicesManager.showPandaScene();
+                break;
             }
-            case accessDenied:{
+            case accessDenied: {
                 logger.warn("Access Denied");
+                break;
             }
-            case passNotFount:{
+            case passNotFount: {
                 logger.warn("Password not exist");
+                break;
             }
         }
     }
 
-    public void cancel(){
+    public void cancel() {
         Platform.exit();
         System.exit(0);
     }
 
-    public HelloPandaView getHelloPandaView(){
+    public HelloPandaView getHelloPandaView() {
         return helloPandaView;
     }
 }
