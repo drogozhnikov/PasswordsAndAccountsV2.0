@@ -10,9 +10,6 @@ import javafx.scene.layout.VBox;
 import panda.controllers.views.DataManageService;
 import panda.models.Account;
 
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 public class DataManageView extends BorderPane {
 
     private int labelsSize = 80;
@@ -43,7 +40,7 @@ public class DataManageView extends BorderPane {
 
     private OwnersListView ownersListView; //TODO owners list
 
-    private CheckBox stayOnManage = new CheckBox("Stay On Manage");
+    private CheckBox stayOnAction = new CheckBox("Stay On Action");
     private CheckBox clearWhenAction = new CheckBox("Clear When Action");
 
     private int nameSize = 90;
@@ -80,7 +77,7 @@ public class DataManageView extends BorderPane {
         HBox acc = new HBox(spacing, accountLabel, inputAccount);
         HBox pass = new HBox(spacing, passwordLabel, inputPassword, generatePasswordButton);
 
-        VBox left = new VBox(spacing, name, acc, stayOnManage);
+        VBox left = new VBox(spacing, name, acc, stayOnAction);
         VBox center = new VBox(spacing, mail, link, clearWhenAction);
         VBox right = new VBox(spacing, pass, owner);
         HBox top = new HBox(spacing, actionButton, clearButton, cancelButton);
@@ -140,7 +137,7 @@ public class DataManageView extends BorderPane {
         HBox.setHgrow(actionButton, Priority.ALWAYS);
         HBox.setHgrow(cancelButton, Priority.ALWAYS);
 
-        stayOnManage.setMaxWidth(Double.MAX_VALUE);
+        stayOnAction.setMaxWidth(Double.MAX_VALUE);
 
         inputDescription.setPrefHeight(descriptionFieldSize);
     }
@@ -153,6 +150,7 @@ public class DataManageView extends BorderPane {
         actionButton.setText("Add");
         actionButton.setOnAction(event -> {
             dataManageService.addAction(collectFieldsData());
+            endAction();
         });
     }
 
@@ -161,6 +159,7 @@ public class DataManageView extends BorderPane {
             fillFields(account);
         actionButton.setOnAction(event -> {
             dataManageService.updateAction(collectFieldsData());
+            endAction();
         });
     }
 
@@ -187,7 +186,7 @@ public class DataManageView extends BorderPane {
     }
 
     public void hide() {
-        if (!stayOnManage.isSelected()) {
+        if (!stayOnAction.isSelected()) {
             //TODO show root menu
         }
     }
@@ -221,6 +220,16 @@ public class DataManageView extends BorderPane {
         inputAccount.setText(input.getAccount());
         inputPassword.setText(input.getPassword());
         inputDescription.setText(input.getInfo());
+    }
+
+    private void endAction(){
+        if(clearWhenAction.isSelected()){
+            clear();
+        }
+        if(!stayOnAction.isSelected()){
+            dataManageService.hideDataManage();
+        }
+        dataManageService.refresh();
     }
 
 }

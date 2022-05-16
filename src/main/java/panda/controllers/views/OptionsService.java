@@ -26,10 +26,10 @@ public class OptionsService {
     }
 
     public void saveButton() {
-        viewServicesManager.showControlPanel();
+        viewServicesManager.hideDataManage();
     }
 
     public void cancelButton() {
-        viewServicesManager.showControlPanel();
+        viewServicesManager.hideDataManage();
     }
 }

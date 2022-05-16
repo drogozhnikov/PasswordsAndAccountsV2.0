@@ -79,6 +79,9 @@ public class HelloPandaView extends BorderPane {
                 if(event.getCode().equals(KeyCode.ENTER)){
                     helloPandaService.confirm(inputPassword.getText());
                 }
+                if(event.getCode().equals(KeyCode.ESCAPE)){
+                    helloPandaService.cancel();
+                }
             });
     }
     private void setStylePandaImage(){

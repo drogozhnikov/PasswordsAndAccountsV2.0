@@ -175,13 +175,14 @@ public class SqLiteDAO implements Database {
         int ownerIndex = getOnwerIndex(account.getOwner());
         try (PreparedStatement statement = this.connection.prepareStatement(
                 "INSERT INTO accounts('name','owner','link','mail','account','password','info')" +
-                        "VALUES(?,?,?,?,?,?,?,?)")) {
+                        "VALUES(?,?,?,?,?,?,?)")) {
             statement.setObject(1, account.getName());
             statement.setObject(2, ownerIndex);
             statement.setObject(3, account.getLink());
             statement.setObject(4, account.getMail());
             statement.setObject(5, account.getAccount());
             statement.setObject(6, account.getPassword());
+            statement.setObject(7, account.getInfo());
             statement.execute();
         }
     }
@@ -197,6 +198,7 @@ public class SqLiteDAO implements Database {
                         "mail = ? ," +
                         "account = ? ," +
                         "password = ? ," +
+                        "info = ? ," +
                         " WHERE id = ?")) {
             statement.setObject(1, account.getName());
             statement.setObject(2, ownerIndex);
@@ -204,7 +206,7 @@ public class SqLiteDAO implements Database {
             statement.setObject(4, account.getMail());
             statement.setObject(5, account.getAccount());
             statement.setObject(6, account.getPassword());
-            statement.setObject(9, account.getId());
+            statement.setObject(7, account.getInfo());
             statement.executeUpdate();
         }
     }

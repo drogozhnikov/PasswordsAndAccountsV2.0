@@ -45,8 +45,10 @@ public class DataManager {
     public void addAccount(Account account){
         try{
             databaseController.insertAccount(account);
+
         }catch (SQLException inserting){
             logger.error("Error while inserting new account");
+            inserting.printStackTrace();
         }
     }
     public void updateAccount(Account account){

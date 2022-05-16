@@ -13,23 +13,24 @@ public class FieldsValidationController {
     private final int descriptionSize = 500;
 
     public String validate(Account account){
-        StringBuilder resultMessage = new StringBuilder();
-
-            String emptyMessage = validateEmptyOrNull(account);
-                if(emptyMessage.length()>0){
-                    resultMessage.append("Found filling problems with: ");
-                    resultMessage.append(emptyMessage);
-                }
-            String overSizedMessage = validateLength(account);
-                if(overSizedMessage.length()>0){
-                    resultMessage.append("Found length problems with: ");
-                    resultMessage.append(overSizedMessage);
-                }
-        if(resultMessage.toString().length()>0){
-            return resultMessage.toString();
-        }else {
-            return "";
-        }
+//        StringBuilder resultMessage = new StringBuilder();
+//
+//            String emptyMessage = validateEmptyOrNull(account);
+//                if(emptyMessage.length()>0){
+//                    resultMessage.append("Found filling problems with: ");
+//                    resultMessage.append(emptyMessage);
+//                }
+//            String overSizedMessage = validateLength(account);
+//                if(overSizedMessage.length()>0){
+//                    resultMessage.append("Found length problems with: ");
+//                    resultMessage.append(overSizedMessage);
+//                }
+//        if(resultMessage.toString().length()>0){
+//            return resultMessage.toString();
+//        }else {
+//            return "";
+//        }
+        return ""; // REMOVE!!!!
     }
 
     public String validateLength(Account account){

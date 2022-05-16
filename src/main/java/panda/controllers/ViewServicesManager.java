@@ -67,7 +67,7 @@ public class ViewServicesManager {
     private void initRootPositions(){
         pandaRootView = new PandaRootView();
         pandaRootView.setMenuPane(menuService.getMenuView());
-        showControlPanel();
+        hideDataManage();
 
         pandaRootView.setRootCenter(tableService.getTableView());
         pandaRootView.setBottom(infoService.getInfoView());
@@ -82,7 +82,7 @@ public class ViewServicesManager {
         dataManageService.init(ownersService.getOwnerListView());
         pandaRootView.setRootTop(dataManageService.getDataManageView());
     }
-    public void showControlPanel(){
+    public void hideDataManage(){
         controlMenuService.init(ownersService.getOwnerListView());
         pandaRootView.setRootTop(controlMenuService.getControlMenuView());
     }

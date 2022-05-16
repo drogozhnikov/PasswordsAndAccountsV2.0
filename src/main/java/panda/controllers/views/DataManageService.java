@@ -40,8 +40,8 @@ public class DataManageService {
                 alertAction(option, account);
             } else {
                 dataManager.addAccount(account);
+
             }
-        viewServicesManager.showControlPanel();
     }
 
     public void updateAction(Account account) {
@@ -55,11 +55,10 @@ public class DataManageService {
             } else {
                 dataManager.addAccount(account);
             }
-        viewServicesManager.showControlPanel();
     }
 
     public void cancelAction() {
-        viewServicesManager.showControlPanel();
+        viewServicesManager.hideDataManage();
     }
 
     private void alertAction(Optional<ButtonType> option, Account account){
@@ -71,5 +70,14 @@ public class DataManageService {
         } else {
 
         }
+    }
+
+    public void hideDataManage(){
+        refresh();
+        viewServicesManager.hideDataManage();
+    }
+
+    public void refresh(){
+        viewServicesManager.refresh();
     }
 }
