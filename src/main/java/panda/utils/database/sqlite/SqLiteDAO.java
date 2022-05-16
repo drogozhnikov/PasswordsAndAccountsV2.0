@@ -125,7 +125,7 @@ public class SqLiteDAO implements Database {
             ArrayList<String> dataList = new ArrayList<>();
             ResultSet resultSet = statement.executeQuery("select name from owners");
             while (resultSet.next()) {
-                dataList.add(resultSet.getString("owner_name"));
+                dataList.add(resultSet.getString("name"));
             }
             return dataList;
         }

@@ -6,12 +6,9 @@ import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
 import panda.models.Account;
 import panda.views.elements.DataManageView;
-import panda.views.elements.OwnersListView;
+import panda.views.elements.components.OwnersListView;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class DataManageService {
 
@@ -35,10 +32,12 @@ public class DataManageService {
 
     public void addAction(Account account) {
         dataManager.addAccount(account);
+        viewServicesManager.refresh();
     }
 
     public void updateAction(Account account) {
         dataManager.updateAccount(account);
+        viewServicesManager.refresh();
     }
 
     public void cancelAction() {
@@ -79,6 +78,10 @@ public class DataManageService {
 
     public void refresh() {
         viewServicesManager.refresh();
+    }
+
+    public ArrayList<String> getOwnersList(){
+        return dataManager.getOwnerList();
     }
 
     //Are you sure you want to update account with a data that already exists or have some problems&

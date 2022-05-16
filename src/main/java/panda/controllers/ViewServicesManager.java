@@ -5,6 +5,7 @@ import javafx.scene.control.ButtonType;
 import panda.controllers.views.*;
 import panda.views.PandaRootView;
 import panda.views.elements.HelloPandaView;
+import panda.views.elements.components.OwnersListView;
 
 import java.util.Optional;
 
@@ -18,12 +19,13 @@ public class ViewServicesManager {
     private DataManageService dataManageService;
     private MenuService menuService;
     private OptionsService optionsService;
-    private OwnersService ownersService;
     private TableService tableService;
     private InfoService infoService;
 
     private DataManager dataManager;
     private StageManager stageManager;
+
+    private OwnersListView ownersListView = new OwnersListView();
 
     public ViewServicesManager(StageManager stageManager, DataManager dataManager) {
         this.dataManager = dataManager;
@@ -45,14 +47,11 @@ public class ViewServicesManager {
         helloPandaService = new HelloPandaService(this, dataManager);
         menuService = new MenuService(this, dataManager);
         optionsService = new OptionsService(this, dataManager);
-        ownersService = new OwnersService(this, dataManager);
         tableService = new TableService(this, dataManager);
         infoService = new InfoService(this, dataManager);
-
     }
 
     private void initViews() {
-        ownersService.init();
         contextMenuService.init();
         menuService.init();
         optionsService.init();
@@ -62,6 +61,7 @@ public class ViewServicesManager {
 
     public void refresh(){
         tableService.refresh();
+        ownersListView.refresh(dataManager.getOwnerList());
     }
 
     private void initRootPositions(){
@@ -79,11 +79,11 @@ public class ViewServicesManager {
 //    }
 
     public void showDataManage(){
-        dataManageService.init(ownersService.getOwnerListView());
+        dataManageService.init(ownersListView);
         pandaRootView.setRootTop(dataManageService.getDataManageView());
     }
     public void hideDataManage(){
-        controlMenuService.init(ownersService.getOwnerListView());
+        controlMenuService.init(ownersListView);
         pandaRootView.setRootTop(controlMenuService.getControlMenuView());
     }
     public void showOptionslPanel(){
@@ -109,5 +109,6 @@ public class ViewServicesManager {
 
         return option;
     }
+
 
 }

@@ -5,6 +5,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import panda.controllers.views.ControlMenuService;
+import panda.views.elements.components.OwnersListView;
 
 public class ControlMenuView extends HBox {
 

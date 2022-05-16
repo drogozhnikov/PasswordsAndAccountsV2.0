@@ -10,10 +10,9 @@ import javafx.scene.layout.VBox;
 import panda.controllers.views.DataManageService;
 import panda.models.Account;
 import panda.views.elements.components.LimitedTextField;
+import panda.views.elements.components.OwnersListView;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 public class DataManageView extends BorderPane {
 
@@ -63,7 +62,7 @@ public class DataManageView extends BorderPane {
         initSizes();
         initPositions();
         initCancelButton();
-        initClearButoon();
+        initClearButton();
     }
 
     private void initPositions() {
@@ -153,6 +152,14 @@ public class DataManageView extends BorderPane {
         });
     }
 
+    public void refreshOwnersList() {
+        ownersListView.getItems().clear();
+        for (String s : dataManageService.getOwnersList()) {
+            ownersListView.getItems().add(s);
+            ownersListView.getSelectionModel().select(0);
+        }
+    }
+
     private void initActionButton(Account account) {
         actionButton.setText("Save");
         fillFields(account);
@@ -171,7 +178,7 @@ public class DataManageView extends BorderPane {
         });
     }
 
-    private void initClearButoon() {
+    private void initClearButton() {
         clearButton.setOnAction(event -> clear());
     }
 

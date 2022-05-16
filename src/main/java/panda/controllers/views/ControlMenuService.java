@@ -4,7 +4,7 @@ import javafx.scene.layout.HBox;
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
 import panda.views.elements.ControlMenuView;
-import panda.views.elements.OwnersListView;
+import panda.views.elements.components.OwnersListView;
 
 public class ControlMenuService {
 

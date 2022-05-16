@@ -12,6 +12,8 @@ import panda.utils.io.xml.XMLio;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DataManager {
 
@@ -89,6 +91,17 @@ public class DataManager {
             logger.error("DB pass check Error ");
         }
         return result;
+    }
+
+    public ArrayList<String> getOwnerList(){
+        Set<String> ownersList = new HashSet<>();
+        try{
+            ownersList = new HashSet<>(databaseController.selectOwnerList());
+        }catch (SQLException ownerList){
+            logger.error("DB owners get error");
+            ownerList.printStackTrace();
+        }
+        return new ArrayList<>(ownersList);
     }
 
 
