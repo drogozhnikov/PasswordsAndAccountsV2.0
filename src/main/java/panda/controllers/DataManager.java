@@ -22,7 +22,6 @@ public class DataManager {
     private CryptionController cryptionController;
     private DatabaseController databaseController;
     private PropertiesController propertiesController;
-    private FieldsValidationController fieldsValidationController;
 
     private PathFinder pathFinder;
 
@@ -34,7 +33,6 @@ public class DataManager {
             backupController = new BackupController("backups", new XMLio());
             cryptionController = new CryptionController(new AesCrypt());
             appDataController = new AppDataController(databaseController);
-            fieldsValidationController = new FieldsValidationController();
         } catch (SQLException e) {
             logger.error("DataBase init exception", e);
         } catch (Exception e) {
@@ -82,8 +80,15 @@ public class DataManager {
         return output;
     }
 
-    public String validateAccount(Account input){
-        return fieldsValidationController.validate(input);
+    public int validatePassword(String inputPassword){
+        String crypted = cryptionController.cryptIt(inputPassword);
+        int result = 0;
+        try{
+            result = databaseController.checkPass(crypted);
+        }catch (SQLException passcheck){
+            logger.error("DB pass check Error ");
+        }
+        return result;
     }
 
 

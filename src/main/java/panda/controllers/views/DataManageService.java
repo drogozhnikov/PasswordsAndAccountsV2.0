@@ -8,7 +8,10 @@ import panda.models.Account;
 import panda.views.elements.DataManageView;
 import panda.views.elements.OwnersListView;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.Set;
 
 public class DataManageService {
 
@@ -31,39 +34,19 @@ public class DataManageService {
     }
 
     public void addAction(Account account) {
-        String validationMessage = dataManager.validateAccount(account);
-            if (validationMessage.length() > 0) {
-                Optional<ButtonType> option = viewServicesManager.alert(
-                        "Add Warning",
-                        "Are you sure you want to add a new account with a data that already exists in the database?",
-                        validationMessage);
-                alertAction(option, account);
-            } else {
-                dataManager.addAccount(account);
-
-            }
+        dataManager.addAccount(account);
     }
 
     public void updateAction(Account account) {
-        String validationMessage = dataManager.validateAccount(account);
-            if (validationMessage.length() > 0) {
-                Optional<ButtonType> option = viewServicesManager.alert(
-                        "Update Warning",
-                        "Are you sure you want to update account with a data that already exists or have some problems&",
-                        validationMessage);
-                alertAction(option, account);
-            } else {
-                dataManager.addAccount(account);
-            }
+        dataManager.updateAccount(account);
     }
 
     public void cancelAction() {
         viewServicesManager.hideDataManage();
     }
 
-    private void alertAction(Optional<ButtonType> option, Account account){
+    private void alertAction(Optional<ButtonType> option) {
         if (option.get() == ButtonType.OK) {
-            dataManager.addAccount(account);
             viewServicesManager.refresh();
         } else if (option.get() == ButtonType.CANCEL) {
 
@@ -72,12 +55,32 @@ public class DataManageService {
         }
     }
 
-    public void hideDataManage(){
+    public boolean validate(HashMap<String, String> validatedFieldsMap) {
+        Set<String> keys = validatedFieldsMap.keySet();
+        Iterator<String> iterator = keys.iterator();
+        StringBuilder emptyfields = new StringBuilder();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            if (validatedFieldsMap.get(key).equals("")) {
+                emptyfields.append("-" + key);
+            }
+        }
+        if(!emptyfields.toString().equals("")){
+            viewServicesManager.alert("Warning!"," Not enough data",emptyfields.toString());
+            return false;
+        }
+        return true;
+    }
+
+    public void hideDataManage() {
         refresh();
         viewServicesManager.hideDataManage();
     }
 
-    public void refresh(){
+    public void refresh() {
         viewServicesManager.refresh();
     }
+
+    //Are you sure you want to update account with a data that already exists or have some problems&
+    //Are you sure you want to add a new account with a data that already exists in the database?
 }

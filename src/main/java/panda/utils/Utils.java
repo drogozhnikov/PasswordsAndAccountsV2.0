@@ -27,11 +27,18 @@ public class Utils {
     return output;
     }
 
-    public Map<String, Double> getFullScreenDimension() {
+    public static Map<String, Double> getFullScreenDimension() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         HashMap<String, Double> resultDimention = new HashMap<>();
             resultDimention.put("height", screenSize.getHeight());
             resultDimention.put("width", screenSize.getWidth());
         return resultDimention;
+    }
+
+    public static boolean isEmptyOrNull(String input){
+        if(input == null || input.equals("")){
+            return true;
+        }
+        return false;
     }
 }

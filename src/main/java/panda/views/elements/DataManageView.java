@@ -9,6 +9,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import panda.controllers.views.DataManageService;
 import panda.models.Account;
+import panda.views.elements.components.LimitedTextField;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class DataManageView extends BorderPane {
 
@@ -23,12 +28,12 @@ public class DataManageView extends BorderPane {
     private Label accountLabel = new Label("Account: ");
     private Label passwordLabel = new Label("Password: ");
 
-    private TextField inputName = new TextField();
-    private TextField inputOwner = new TextField();
-    private TextField inputLink = new TextField();
-    private TextField inputMail = new TextField();
-    private TextField inputAccount = new TextField();
-    private TextField inputPassword = new TextField();
+    private LimitedTextField inputName = new LimitedTextField(90);
+    private LimitedTextField inputOwner = new LimitedTextField(50);
+    private LimitedTextField inputLink = new LimitedTextField(500);
+    private LimitedTextField inputMail = new LimitedTextField(100);
+    private LimitedTextField inputAccount = new LimitedTextField(100);
+    private LimitedTextField inputPassword = new LimitedTextField(500);
 
     private TextArea inputDescription = new TextArea("Description");
 
@@ -43,20 +48,12 @@ public class DataManageView extends BorderPane {
     private CheckBox stayOnAction = new CheckBox("Stay On Action");
     private CheckBox clearWhenAction = new CheckBox("Clear When Action");
 
-    private int nameSize = 90;
-    private int ownerSize = 50;
-    private int linkSize = 500;
-    private int mailSize = 100;
-    private int accountSize = 100;
-    private int passwordSize = 50;
-    private int descriptionSize = 500;
-
     private int spacing = 1;
     private int fieldSize = 300;
 
     private DataManageService dataManageService;
 
-    public DataManageView(DataManageService dataManageService,OwnersListView ownersListView) {
+    public DataManageView(DataManageService dataManageService, OwnersListView ownersListView) {
         this.dataManageService = dataManageService;
         this.ownersListView = ownersListView;
 
@@ -149,17 +146,21 @@ public class DataManageView extends BorderPane {
     private void initActionButton() {
         actionButton.setText("Add");
         actionButton.setOnAction(event -> {
-            dataManageService.addAction(collectFieldsData());
-            endAction();
+            if(validate()){
+                dataManageService.addAction(collectFieldsData());
+                endAction();
+            }
         });
     }
 
     private void initActionButton(Account account) {
         actionButton.setText("Save");
-            fillFields(account);
+        fillFields(account);
         actionButton.setOnAction(event -> {
-            dataManageService.updateAction(collectFieldsData());
-            endAction();
+            if(validate()){
+                dataManageService.updateAction(collectFieldsData());
+                endAction();
+            }
         });
     }
 
@@ -185,34 +186,19 @@ public class DataManageView extends BorderPane {
         inputDescription.clear();
     }
 
-    public void hide() {
-        if (!stayOnAction.isSelected()) {
-            //TODO show root menu
-        }
-    }
-
-    public void show() {
-        //TODO Refresh owners
-        initActionButton();
-    }
-
-    public void show(Account account) {
-        //TODO Refresh owners and selectedAccount = account
-        initActionButton(account);
-    }
-
-    private Account collectFieldsData(){
+    private Account collectFieldsData() {
         Account account = new Account();
-            account.setName(inputName.getText());
-            account.setOwner(inputOwner.getText());
-            account.setLink(inputLink.getText());
-            account.setMail(inputMail.getText());
-            account.setAccount(inputAccount.getText());
-            account.setPassword(inputPassword.getText());
-            account.setInfo(inputDescription.getText());
+        account.setName(inputName.getText());
+        account.setOwner(inputOwner.getText());
+        account.setLink(inputLink.getText());
+        account.setMail(inputMail.getText());
+        account.setAccount(inputAccount.getText());
+        account.setPassword(inputPassword.getText());
+        account.setInfo(inputDescription.getText());
         return account;
     }
-    private void fillFields(Account input){
+
+    private void fillFields(Account input) {
         inputName.setText(input.getName());
         inputOwner.setText(input.getOwner());
         inputLink.setText(input.getLink());
@@ -222,11 +208,18 @@ public class DataManageView extends BorderPane {
         inputDescription.setText(input.getInfo());
     }
 
-    private void endAction(){
-        if(clearWhenAction.isSelected()){
+    private boolean validate() {
+        HashMap<String,String> validatedFieldsMap = new HashMap<>();
+            validatedFieldsMap.put("name", inputName.getText());
+            validatedFieldsMap.put("password", inputPassword.getText());
+        return dataManageService.validate(validatedFieldsMap);
+    }
+
+    private void endAction() {
+        if (clearWhenAction.isSelected()) {
             clear();
         }
-        if(!stayOnAction.isSelected()){
+        if (!stayOnAction.isSelected()) {
             dataManageService.hideDataManage();
         }
         dataManageService.refresh();
