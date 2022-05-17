@@ -25,7 +25,7 @@ public class ContextMenuView extends ContextMenu {
         });
 
         contextMenuItemDelete.setOnAction(event -> {
-            //TODO contextMenuItemDelete
+            contextMenuService.delete();//TODO contextMenuItemDelete
         });
 
         contextMenuItemUpdate.setOnAction(event -> {

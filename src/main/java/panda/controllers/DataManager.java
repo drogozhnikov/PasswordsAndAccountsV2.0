@@ -1,6 +1,5 @@
 package panda.controllers;
 
-import javafx.scene.control.PasswordField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import panda.controllers.core.*;
@@ -12,7 +11,6 @@ import panda.utils.PathFinder;
 import panda.utils.cryption.AesCrypt;
 import panda.utils.io.xml.XMLio;
 
-import javax.crypto.Cipher;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,6 +19,8 @@ import java.util.Set;
 public class DataManager {
 
     private static final Logger logger = LoggerFactory.getLogger(DataManager.class);
+
+    private ViewServicesManager viewServicesManager;
 
     private AppDataController appDataController;
     private BackupController backupController;
@@ -47,20 +47,41 @@ public class DataManager {
         }
     }
 
-    public void addAccount(Account account){
-        try{
-            databaseController.insertAccount(account);
+    public void initViewServiceManager(ViewServicesManager viewServicesManager) {
+        this.viewServicesManager = viewServicesManager;
+    }
 
-        }catch (SQLException inserting){
+    public void addAccount(Account account) {
+        try {
+            if (!databaseController.isPasswordExist(cryptionController.cryptIt(account.getPassword()))) {
+                account.setPassword(cryptionController.cryptIt(account.getPassword())); // CRYPTION!
+                databaseController.insertAccount(account);
+            } else {
+                viewServicesManager.alert("Warning!", "Same account already exist", "");
+            }
+        } catch (SQLException inserting) {
             logger.error("Error while inserting new account");
             inserting.printStackTrace();
         }
     }
-    public void updateAccount(Account account){
-        try{
+
+    public void updateAccount(Account account) {
+        try {
             databaseController.updateFullAccount(account);
-        }catch (SQLException inserting){
+        } catch (SQLException inserting) {
             logger.error("Error while updating account");
+        }
+    }
+
+    public void deleteAccount(ArrayList<Integer> deleteListId) {
+        try {
+            if (deleteListId != null && deleteListId.size() > 0) {
+                for (Integer id : deleteListId) {
+                    databaseController.deleteAccount(id);
+                }
+            }
+        } catch (SQLException delete) {
+            logger.error("Can't delete account");
         }
     }
 
@@ -71,41 +92,45 @@ public class DataManager {
     public int checkAccess(String input) {
         cryptionController.init(new AesCrypt(), input);
         String specialCheckWord = cryptionController.getSpecialCheckWord();
-        return  appDataController.checkAccess(specialCheckWord);
+        return appDataController.checkAccess(specialCheckWord);
     }
 
-    public AppData getAppData(){
+    public AppData getAppData() {
         return appDataController.getAppData();
     }
 
-    public ArrayList<PandaAccount> selectPandaAccounts(){
-        ArrayList<PandaAccount> output = null;
-        try{
-            output = databaseController.selectPandas(databaseController.getOwnerName(appDataController.getAppData().getOwner()));
-        }catch (SQLException selectAll){
+    public ArrayList<PandaAccount> selectPandaAccounts() {
+        ArrayList<PandaAccount> output = new ArrayList<>();
+        try {
+            ArrayList<PandaAccount> pandaAccountsList = databaseController.selectPandas(databaseController.getOwnerName(appDataController.getAppData().getOwner()));
+            for (PandaAccount panda : pandaAccountsList) {
+                panda.setTableFieldPassword(cryptionController.deCriptIt(panda.getTableFieldPassword()));
+                output.add(panda);
+            }
+        } catch (SQLException selectAll) {
             logger.error("Select All Error");
         }
         return output;
     }
 
-    public String generatePassword(){
-        try{
+    public String generatePassword() {
+        try {
             String pass = passwordGenerator.generatePassword(appDataController.getPassTeamplate());
-            while(databaseController.isPasswordExist(pass)){
+            while (databaseController.isPasswordExist(pass)) {
                 pass = passwordGenerator.generatePassword(appDataController.getPassTeamplate());
             }
             return pass;
-        }catch (SQLException check){
+        } catch (SQLException check) {
             logger.error("Can't Check new password");
         }
         return "";
     }
 
-    public ArrayList<String> getOwnerList(){
+    public ArrayList<String> getOwnerList() {
         Set<String> ownersList = new HashSet<>();
-        try{
+        try {
             ownersList = new HashSet<>(databaseController.selectOwnerList());
-        }catch (SQLException ownerList){
+        } catch (SQLException ownerList) {
             logger.error("DB owners get error");
             ownerList.printStackTrace();
         }

@@ -59,11 +59,7 @@ public class DatabaseController {
     }
 
     public void insertAccount(Account account) throws SQLException {
-        if (!database.isPasswordExist(account.getPassword())) {
             database.insertAccount(account);
-        } else {
-            //TODO Action when password Exist in DB
-        }
     }
 
     public void updateFullAccount(Account account) throws SQLException {

@@ -11,6 +11,7 @@ import panda.models.PandaAccount;
 import panda.views.elements.TableView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class TableService {
 
@@ -41,7 +42,15 @@ public class TableService {
     }
 
     public void selectCells() {
-        System.out.println("cellSelected"); //TODO selectCellAction
+        Iterator iterator = tableView.getSelectionModel().getSelectedItems().iterator();
+        ArrayList<Integer> selectedAccountsList = new ArrayList<>();
+            while(iterator.hasNext()){
+                PandaAccount temp = (PandaAccount) iterator.next();
+                selectedAccountsList.add(temp.getAccountId());
+            }
+        if(selectedAccountsList != null && selectedAccountsList.size()>0){
+            viewServicesManager.setLastSelectedAccounts(selectedAccountsList);
+        }
     }
 
     public TableView getTableView() {

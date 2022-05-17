@@ -24,4 +24,9 @@ public class ContextMenuService {
     public ContextMenu getContextMenuView() {
         return contextMenuView;
     }
+
+    public void delete(){
+        dataManager.deleteAccount(viewServicesManager.getIdLastSelectedAccounts());
+        viewServicesManager.refresh();
+    }
 }

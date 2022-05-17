@@ -32,8 +32,9 @@ public class StageManager {
         dm = new DataManager("//src");
         vm = new ViewServicesManager(this, dm);
 
+        dm.initViewServiceManager(vm);
+
         initHelloScene(dm.getAppData().getHelloScreenWidth(), dm.getAppData().getHelloScreenHeight());
-        initPandaScene(dm.getAppData().getScreenWidth(), dm.getAppData().getScreenHeight());
 
 //        setCSS(rootPandaScene);
 
@@ -61,9 +62,9 @@ public class StageManager {
         });
     }
 
-    public void initPandaScene(int width, int height) {
+    public void initPandaScene() {
         PandaRootView pandaRootView = vm.init();
-        rootPandaScene = new Scene(pandaRootView, width, height);
+        rootPandaScene = new Scene(pandaRootView, dm.getAppData().getScreenWidth(), dm.getAppData().getScreenHeight());
     }
 
     public void showPandaScene(){

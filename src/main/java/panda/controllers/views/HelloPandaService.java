@@ -34,6 +34,7 @@ public class HelloPandaService {
 
         switch (result) {
             case accessConfirmed: {
+                viewServicesManager.initPandaScene();
                 viewServicesManager.showPandaScene();
                 break;
             }

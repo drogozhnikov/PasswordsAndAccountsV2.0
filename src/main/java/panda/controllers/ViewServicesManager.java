@@ -5,9 +5,11 @@ import javafx.scene.control.ButtonType;
 import panda.controllers.views.*;
 import panda.controllers.views.components.InfoService;
 import panda.controllers.views.components.OwnersListService;
+import panda.models.Account;
 import panda.views.PandaRootView;
 import panda.views.elements.HelloPandaView;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class ViewServicesManager {
@@ -26,6 +28,8 @@ public class ViewServicesManager {
 
     private DataManager dataManager;
     private StageManager stageManager;
+
+    private ArrayList<Integer> lastSelectedAccount;
 
     public ViewServicesManager(StageManager stageManager, DataManager dataManager) {
         this.dataManager = dataManager;
@@ -99,6 +103,10 @@ public class ViewServicesManager {
         return helloPandaService.getHelloPandaView();
     }
 
+    public void initPandaScene(){
+        stageManager.initPandaScene();
+    }
+
     public void showPandaScene() {
         stageManager.showPandaScene();
     }
@@ -112,6 +120,13 @@ public class ViewServicesManager {
         Optional<ButtonType> option = alert.showAndWait();
 
         return option;
+    }
+
+    public void setLastSelectedAccounts(ArrayList<Integer> input){
+        this.lastSelectedAccount = input;
+    }
+    public ArrayList<Integer> getIdLastSelectedAccounts(){
+        return lastSelectedAccount;
     }
 
 
