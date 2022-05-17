@@ -1,4 +1,4 @@
-package panda.controllers.views;
+package panda.controllers.views.components;
 
 import javafx.scene.text.Text;
 import panda.controllers.DataManager;

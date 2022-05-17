@@ -4,6 +4,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
+import panda.controllers.views.components.OwnersListService;
 import panda.models.Account;
 import panda.views.elements.DataManageView;
 import panda.views.elements.components.OwnersListView;
@@ -82,6 +83,10 @@ public class DataManageService {
 
     public ArrayList<String> getOwnersList(){
         return dataManager.getOwnerList();
+    }
+
+    public String generateButton(){
+        return dataManager.generatePassword();
     }
 
     //Are you sure you want to update account with a data that already exists or have some problems&

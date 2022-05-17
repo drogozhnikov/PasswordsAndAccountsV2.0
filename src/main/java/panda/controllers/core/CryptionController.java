@@ -11,12 +11,17 @@ public class CryptionController {
 
     private static final Logger logger = LoggerFactory.getLogger(CryptionController.class);
 
-    private final Сipher cipher;
+    private Сipher cipher;
     private final String cryptPassPhrase = "HelloWorldMotherFucker";
 
     public CryptionController(Сipher cipher){
         this.cipher = cipher;
         logger.info("initialization completed successfully");
+    }
+
+    public void init(Сipher cipher, String input){
+        this.cipher = cipher;
+        cipher.init(input);
     }
 
     public String cryptIt(String input){
@@ -28,9 +33,7 @@ public class CryptionController {
     }
 
     //return special phrase encrypted by inputWord.
-    public String getSpecialCheckWord(Сipher cipher, String input){
-        cipher.init(input);
-        System.out.println(cipher.encrypt(cryptPassPhrase) + " " + cipher.encrypt(cryptPassPhrase).length());
+    public String getSpecialCheckWord(){
         return cipher.encrypt(cryptPassPhrase);
     }
 

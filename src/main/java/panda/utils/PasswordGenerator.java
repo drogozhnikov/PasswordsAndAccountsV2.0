@@ -5,23 +5,24 @@ import java.util.regex.Pattern;
 
 public class PasswordGenerator {
 
-    private String lowCase = "qwertyuiopasdfghjklzxcvbnm";
-    private String numses = "0123456789";
-    private final String defaultTemplate = "Rezcjlwige27690";
+    private final String lowCase = "qwertyuiopasdfghjklzxcvbnm";
+    private final String numses = "0123456789";
+    private final String pattern = "Rezcjlwige27690";
 
-    private int minimumSize = 3;
-    private int maximumSize = 49;
+    private final int minimumSize = 3;
+    private final int maximumSize = 49;
 
-    private Pattern upperCasePattern = Pattern.compile(".*[A-Z].*");
-    private Pattern lowerCasePattern = Pattern.compile(".*[a-z].*");
-    private Pattern numberPattern = Pattern.compile("\\d");
+    private final Pattern upperCasePattern = Pattern.compile(".*[A-Z].*");
+    private final Pattern lowerCasePattern = Pattern.compile(".*[a-z].*");
+    private final Pattern numberPattern = Pattern.compile("\\d");
 
     private final Random random = new Random();
 
-    public PasswordGenerator() {}
+    public PasswordGenerator() {
+    }
 
     public String generatePassword(String inputExample){
-        char[] templateArray = defaultTemplate.toCharArray();
+        char[] templateArray = pattern.toCharArray();
         if (inputExample != null && inputExample.length() > minimumSize && inputExample.length() < maximumSize) {
             templateArray = inputExample.toCharArray();
         }

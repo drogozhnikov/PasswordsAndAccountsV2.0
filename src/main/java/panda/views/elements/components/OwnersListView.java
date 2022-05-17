@@ -17,6 +17,5 @@ public class OwnersListView extends ComboBox<String> {
             super.getSelectionModel().select(0);
         }
     }
-
     //TODO SplitMenuButton
 }

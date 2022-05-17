@@ -1,4 +1,4 @@
-package panda.views.elements;
+package panda.views.elements.components;
 
 import javafx.scene.text.Text;
 

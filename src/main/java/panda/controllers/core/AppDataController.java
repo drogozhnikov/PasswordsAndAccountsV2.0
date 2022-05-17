@@ -39,6 +39,10 @@ public class AppDataController {
         }
     }
 
+    public String getPassTeamplate(){
+        return appData.getPassGenPattern();
+    }
+
     public AppData getAppData(){
         return appData;
     }

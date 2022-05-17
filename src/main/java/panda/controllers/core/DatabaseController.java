@@ -87,6 +87,10 @@ public class DatabaseController {
         return database.checkAccessPass(input);
     }
 
+    public boolean isPasswordExist(String input) throws SQLException{
+        return database.isPasswordExist(input);
+    }
+
     public int updatePass(String oldPass, String newPass) throws SQLException {
         return database.updateExistedAppPass(oldPass, newPass);
     }

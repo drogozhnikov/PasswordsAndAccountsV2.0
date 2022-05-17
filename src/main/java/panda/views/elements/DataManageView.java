@@ -34,15 +34,15 @@ public class DataManageView extends BorderPane {
     private LimitedTextField inputAccount = new LimitedTextField(100);
     private LimitedTextField inputPassword = new LimitedTextField(500);
 
-    private TextArea inputDescription = new TextArea("Description");
+    private TextArea inputDescription = new TextArea("Info");
 
     private Button actionButton = new Button("action");
     private Button cancelButton = new Button("Cancel");
     private Button clearButton = new Button("Clear");
 
-    private Button generatePasswordButton = new Button("New");
+    private Button generatePasswordButton = new Button("Gen");
 
-    private OwnersListView ownersListView; //TODO owners list
+    private OwnersListView ownersListView;
 
     private CheckBox stayOnAction = new CheckBox("Stay On Action");
     private CheckBox clearWhenAction = new CheckBox("Clear When Action");
@@ -63,6 +63,8 @@ public class DataManageView extends BorderPane {
         initPositions();
         initCancelButton();
         initClearButton();
+        initOwnersList();
+
     }
 
     private void initPositions() {
@@ -139,7 +141,9 @@ public class DataManageView extends BorderPane {
     }
 
     private void initGenerateButton() {
-        //TODO init Generate new password button
+        generatePasswordButton.setOnAction(event -> {
+            inputPassword.setText(dataManageService.generateButton());
+        });
     }
 
     private void initActionButton() {
@@ -152,12 +156,10 @@ public class DataManageView extends BorderPane {
         });
     }
 
-    public void refreshOwnersList() {
-        ownersListView.getItems().clear();
-        for (String s : dataManageService.getOwnersList()) {
-            ownersListView.getItems().add(s);
-            ownersListView.getSelectionModel().select(0);
-        }
+    private void initOwnersList(){
+            ownersListView.setOnAction(event -> {
+                inputOwner.setText(ownersListView.getValue());
+            });
     }
 
     private void initActionButton(Account account) {
@@ -196,12 +198,18 @@ public class DataManageView extends BorderPane {
     private Account collectFieldsData() {
         Account account = new Account();
         account.setName(inputName.getText());
-        account.setOwner(inputOwner.getText());
         account.setLink(inputLink.getText());
         account.setMail(inputMail.getText());
         account.setAccount(inputAccount.getText());
         account.setPassword(inputPassword.getText());
         account.setInfo(inputDescription.getText());
+
+        if(inputOwner.getText()!=null && !inputOwner.getText().equals("")){
+            account.setOwner(inputOwner.getText());
+        }else{
+            account.setOwner(ownersListView.getValue());
+        }
+
         return account;
     }
 

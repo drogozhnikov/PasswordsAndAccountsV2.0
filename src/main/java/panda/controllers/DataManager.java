@@ -1,15 +1,18 @@
 package panda.controllers;
 
+import javafx.scene.control.PasswordField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import panda.controllers.core.*;
 import panda.models.Account;
 import panda.models.AppData;
 import panda.models.PandaAccount;
+import panda.utils.PasswordGenerator;
 import panda.utils.PathFinder;
 import panda.utils.cryption.AesCrypt;
 import panda.utils.io.xml.XMLio;
 
+import javax.crypto.Cipher;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,6 +27,7 @@ public class DataManager {
     private CryptionController cryptionController;
     private DatabaseController databaseController;
     private PropertiesController propertiesController;
+    private PasswordGenerator passwordGenerator;
 
     private PathFinder pathFinder;
 
@@ -35,6 +39,7 @@ public class DataManager {
             backupController = new BackupController("backups", new XMLio());
             cryptionController = new CryptionController(new AesCrypt());
             appDataController = new AppDataController(databaseController);
+            passwordGenerator = new PasswordGenerator();
         } catch (SQLException e) {
             logger.error("DataBase init exception", e);
         } catch (Exception e) {
@@ -64,7 +69,8 @@ public class DataManager {
     }
 
     public int checkAccess(String input) {
-        String specialCheckWord = cryptionController.getSpecialCheckWord(new AesCrypt(), input);
+        cryptionController.init(new AesCrypt(), input);
+        String specialCheckWord = cryptionController.getSpecialCheckWord();
         return  appDataController.checkAccess(specialCheckWord);
     }
 
@@ -82,15 +88,17 @@ public class DataManager {
         return output;
     }
 
-    public int validatePassword(String inputPassword){
-        String crypted = cryptionController.cryptIt(inputPassword);
-        int result = 0;
+    public String generatePassword(){
         try{
-            result = databaseController.checkPass(crypted);
-        }catch (SQLException passcheck){
-            logger.error("DB pass check Error ");
+            String pass = passwordGenerator.generatePassword(appDataController.getPassTeamplate());
+            while(databaseController.isPasswordExist(pass)){
+                pass = passwordGenerator.generatePassword(appDataController.getPassTeamplate());
+            }
+            return pass;
+        }catch (SQLException check){
+            logger.error("Can't Check new password");
         }
-        return result;
+        return "";
     }
 
     public ArrayList<String> getOwnerList(){
@@ -103,8 +111,5 @@ public class DataManager {
         }
         return new ArrayList<>(ownersList);
     }
-
-
-
 
 }
