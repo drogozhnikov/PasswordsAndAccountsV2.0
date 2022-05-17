@@ -4,7 +4,10 @@ import javafx.scene.image.Image;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,10 +38,11 @@ public class Utils {
         return resultDimention;
     }
 
-    public static boolean isEmptyOrNull(String input){
-        if(input == null || input.equals("")){
-            return true;
-        }
-        return false;
+    public static void startLink(String link) throws IOException, URISyntaxException {
+            URI uri = new URI(link);
+            Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+            if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+                desktop.browse(uri);
+            }
     }
 }

@@ -89,4 +89,5 @@ public class StageManager {
         scene.getStylesheets().add(cssPath);
         // create menu. add controlsButtons. undecorate stage
     }
+
 }

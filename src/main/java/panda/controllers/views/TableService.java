@@ -33,22 +33,22 @@ public class TableService {
 
     public void refresh() {
         ArrayList<PandaAccount> pandaList = dataManager.selectPandaAccounts();
-        if(pandaList != null && pandaList.size()>0){
-            ObservableList<PandaAccount> list = FXCollections.observableArrayList(pandaList);
-            tableView.refresh(list);
-        }else{
-            logger.error("Selected pandas list is empty");
+        if (pandaList.size() == 0) {
+            logger.info("Selected pandas list is empty");
         }
+        ObservableList<PandaAccount> list = FXCollections.observableArrayList(pandaList);
+        tableView.refresh(list);
+
     }
 
     public void selectCells() {
         Iterator iterator = tableView.getSelectionModel().getSelectedItems().iterator();
         ArrayList<Integer> selectedAccountsList = new ArrayList<>();
-            while(iterator.hasNext()){
-                PandaAccount temp = (PandaAccount) iterator.next();
-                selectedAccountsList.add(temp.getAccountId());
-            }
-        if(selectedAccountsList != null && selectedAccountsList.size()>0){
+        while (iterator.hasNext()) {
+            PandaAccount temp = (PandaAccount) iterator.next();
+            selectedAccountsList.add(temp.getAccountId());
+        }
+        if (selectedAccountsList != null && selectedAccountsList.size() > 0) {
             viewServicesManager.setLastSelectedAccounts(selectedAccountsList);
         }
     }
@@ -58,6 +58,11 @@ public class TableService {
     }
 
     public void initContext(ContextMenu input) {
-        tableView.setOnContextMenuRequested(event -> input.show(tableView, event.getScreenX(), event.getScreenY()));
+//        tableView.setOnContextMenuRequested(event -> input.show(tableView, event.getScreenX(), event.getScreenY()));
+        tableView.setContextMenu(input);
+    }
+
+    public boolean isHidePass() {
+        return dataManager.isHidePass();
     }
 }

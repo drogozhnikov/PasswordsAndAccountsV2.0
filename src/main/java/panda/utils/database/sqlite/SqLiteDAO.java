@@ -123,7 +123,8 @@ public class SqLiteDAO implements Database {
     public ArrayList<String> selectOwnerList() throws SQLException {
         try (Statement statement = this.connection.createStatement()) {
             ArrayList<String> dataList = new ArrayList<>();
-            ResultSet resultSet = statement.executeQuery("select name from owners");
+            String query = "select name from owners";
+            ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 dataList.add(resultSet.getString("name"));
             }
@@ -135,7 +136,10 @@ public class SqLiteDAO implements Database {
     public Account selectAccountById(int id) throws SQLException, ParseException {
         Account output = null;
         try (Statement statement = this.connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("select * from accounts where id = " + id);
+            String query = "select distinct " +
+                    "a.id, a.name as a_name, o.name as o_name, link, account, mail, password, info, update_date " +
+                    "from accounts a join owners o on a.owner = o.id where a.id = " + id;
+            ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 output = new Account(
                         resultSet.getInt("id"),
@@ -198,8 +202,8 @@ public class SqLiteDAO implements Database {
                         "mail = ? ," +
                         "account = ? ," +
                         "password = ? ," +
-                        "info = ? ," +
-                        " WHERE id = ?")) {
+                        "info = ? " +
+                        "WHERE id = ?")) {
             statement.setObject(1, account.getName());
             statement.setObject(2, ownerIndex);
             statement.setObject(3, account.getLink());
@@ -207,16 +211,27 @@ public class SqLiteDAO implements Database {
             statement.setObject(5, account.getAccount());
             statement.setObject(6, account.getPassword());
             statement.setObject(7, account.getInfo());
+            statement.setObject(8, account.getId());
             statement.executeUpdate();
         }
     }
 
     @Override
-    public void deleteAccount(int id) throws SQLException {
+    public void deleteAccount(int id) throws SQLException { //TODO owners delition
         try (PreparedStatement statement = this.connection.prepareStatement(
                 "DELETE FROM accounts WHERE id = ?")) {
             statement.setObject(1, id);
             statement.execute();
+        }
+    }
+
+    private boolean isMultipleOwners(String input) throws SQLException{
+        try (Statement statement = this.connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("select count(*) from accounts where owner = '" + input + "'");
+            if (resultSet.getInt("count(*)") > 1) {
+                return true;
+            }
+            return false;
         }
     }
 
@@ -329,6 +344,36 @@ public class SqLiteDAO implements Database {
         }
     }
 
+    private void clearDataBase(String pass) throws SQLException{
+        if(checkAccessPass(pass)==1){
+            try (PreparedStatement statement = this.connection.prepareStatement(
+                    "Vacuum;")) {
+                statement.execute();
+            }
+            try (PreparedStatement statement = this.connection.prepareStatement(
+                    "delete from accounts;")) {
+                statement.execute();
+            }
+            try (PreparedStatement statement = this.connection.prepareStatement(
+                    "delete from owners;")) {
+                statement.execute();
+            }
+            try (PreparedStatement statement = this.connection.prepareStatement(
+                    "UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'accounts';")) {
+                statement.execute();
+            }
+            try (PreparedStatement statement = this.connection.prepareStatement(
+                    "UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'owners';")) {
+                statement.execute();
+            }
+            try (PreparedStatement statement = this.connection.prepareStatement(
+                    "INSERT INTO owners('name')" +
+                            "VALUES(?)")) {
+                statement.setObject(1, "all");
+                statement.execute();
+            }
+        }
+    }
 
     private GregorianCalendar translateDate(String input) throws ParseException {
         GregorianCalendar output = new GregorianCalendar();

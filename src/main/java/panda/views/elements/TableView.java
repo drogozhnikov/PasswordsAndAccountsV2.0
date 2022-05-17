@@ -3,15 +3,16 @@ package panda.views.elements;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 import panda.controllers.views.TableService;
 import panda.models.PandaAccount;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.GregorianCalendar;
 
 public class TableView extends javafx.scene.control.TableView<PandaAccount> {
 
@@ -42,7 +43,13 @@ public class TableView extends javafx.scene.control.TableView<PandaAccount> {
         name.setCellValueFactory(new PropertyValueFactory<>("tableFieldName"));
         mail.setCellValueFactory(new PropertyValueFactory<>("tableFieldMail"));
         account.setCellValueFactory(new PropertyValueFactory<>("tableFieldAccount"));
-        password.setCellValueFactory(new PropertyValueFactory<>("tableFieldPassword"));
+
+        if(tableService.isHidePass()){
+            password.setCellValueFactory(new PropertyValueFactory<>("tableFieldPasswordHiden"));
+        }else{
+            password.setCellValueFactory(new PropertyValueFactory<>("tableFieldPassword"));
+        }
+
     }
 
     public void init() {

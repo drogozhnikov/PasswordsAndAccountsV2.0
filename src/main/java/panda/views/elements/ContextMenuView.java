@@ -25,15 +25,15 @@ public class ContextMenuView extends ContextMenu {
         });
 
         contextMenuItemDelete.setOnAction(event -> {
-            contextMenuService.delete();//TODO contextMenuItemDelete
+            contextMenuService.delete();
         });
 
         contextMenuItemUpdate.setOnAction(event -> {
-            //TODO contextMenuItemUpdate
+            contextMenuService.update();
         });
 
         startLinkMenuItem.setOnAction(event -> {
-            //TODO startLinkMenuItem
+            contextMenuService.startLink();
         });
 
         descriptionMenuItem.setOnAction(event -> {
@@ -41,6 +41,5 @@ public class ContextMenuView extends ContextMenu {
         });
 
         super.getItems().addAll(contextMenuItemUpdate, contextMenuitemSave, startLinkMenuItem, descriptionMenuItem, contextMenuItemDelete);
-        //TODO TableView.setOnContextMenuRequested(event -> contextMenuView.show(pandaTableView, event.getScreenX(), event.getScreenY()));
     }
 }

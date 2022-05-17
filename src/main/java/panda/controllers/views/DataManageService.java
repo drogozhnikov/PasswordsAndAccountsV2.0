@@ -45,16 +45,6 @@ public class DataManageService {
         viewServicesManager.hideDataManage();
     }
 
-    private void alertAction(Optional<ButtonType> option) {
-        if (option.get() == ButtonType.OK) {
-            viewServicesManager.refresh();
-        } else if (option.get() == ButtonType.CANCEL) {
-
-        } else {
-
-        }
-    }
-
     public boolean validate(HashMap<String, String> validatedFieldsMap) {
         Set<String> keys = validatedFieldsMap.keySet();
         Iterator<String> iterator = keys.iterator();
@@ -87,6 +77,10 @@ public class DataManageService {
 
     public String generateButton(){
         return dataManager.generatePassword();
+    }
+
+    public void fillFieldsByAccount(Account account){
+        dataManageView.fillFields(account);
     }
 
     //Are you sure you want to update account with a data that already exists or have some problems&

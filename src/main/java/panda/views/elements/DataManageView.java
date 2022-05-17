@@ -213,7 +213,7 @@ public class DataManageView extends BorderPane {
         return account;
     }
 
-    private void fillFields(Account input) {
+    public void fillFields(Account input) {
         inputName.setText(input.getName());
         inputOwner.setText(input.getOwner());
         inputLink.setText(input.getLink());

@@ -10,6 +10,8 @@ public class PandaAccount {
     private String tableFieldAccount;           //Column # 2
     private String tableFieldPassword;          //Column # 3
 
+    private String tableFieldPasswordHiden = "***************";          //Column # 3
+
     private int selectedColumn = 0;
 
     public PandaAccount(){
@@ -43,6 +45,8 @@ public class PandaAccount {
     public String getTableFieldPassword() {
         return tableFieldPassword;
     }
+
+    public String getTableFieldPasswordHiden() { return tableFieldPasswordHiden; }
 
 
 

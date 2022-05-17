@@ -8,10 +8,14 @@ import panda.models.AppData;
 import panda.models.PandaAccount;
 import panda.utils.PasswordGenerator;
 import panda.utils.PathFinder;
+import panda.utils.Utils;
 import panda.utils.cryption.AesCrypt;
 import panda.utils.io.xml.XMLio;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -68,8 +72,9 @@ public class DataManager {
     public void updateAccount(Account account) {
         try {
             databaseController.updateFullAccount(account);
-        } catch (SQLException inserting) {
+        } catch (SQLException updating) {
             logger.error("Error while updating account");
+            updating.printStackTrace();
         }
     }
 
@@ -83,6 +88,19 @@ public class DataManager {
         } catch (SQLException delete) {
             logger.error("Can't delete account");
         }
+    }
+
+    public Account getAccountById(int id){
+        Account account = null;
+        try{
+            account = databaseController.selectAccountById(id);
+            String uncriptedPass = cryptionController.deCriptIt(account.getPassword());
+            account.setPassword(uncriptedPass);
+        }catch (SQLException | ParseException e){
+            logger.error("Find Account by id Error");
+            e.printStackTrace();
+        }
+        return account;
     }
 
     public String findPath(String fileName) {
@@ -135,6 +153,21 @@ public class DataManager {
             ownerList.printStackTrace();
         }
         return new ArrayList<>(ownersList);
+    }
+
+    public boolean isHidePass(){
+        return appDataController.getAppData().isHidePass();
+    }
+    public void setPropertyHidePass(boolean value){
+        appDataController.getAppData().setHidePass(value);
+    }
+
+    public void startLink(String link){
+        try{
+            Utils.startLink(link);
+        }catch (URISyntaxException | IOException syntax){
+            logger.error("Error while trying startLink");
+        }
     }
 
 }

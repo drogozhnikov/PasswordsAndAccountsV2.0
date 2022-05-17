@@ -12,6 +12,7 @@ public class AppData {
     //specials
     private int helloScreenWidth = 500;
     private int helloScreenHeight = 100;
+    private boolean hidePass = true;
 
     public AppData(String passGenPattern, String theme, int owner, int screenWidth, int screenHeight) {
         this.passGenPattern = passGenPattern;
@@ -50,6 +51,15 @@ public class AppData {
     public int getHelloScreenHeight() {
         return helloScreenHeight;
     }
+
+    public boolean isHidePass() {
+        return hidePass;
+    }
+
+    public void setHidePass(boolean hidePass) {
+        this.hidePass = hidePass;
+    }
+
 
 
     public void setPassGenPattern(String passGenPattern) {

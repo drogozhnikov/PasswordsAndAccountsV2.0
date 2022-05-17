@@ -80,9 +80,13 @@ public class ViewServicesManager {
         tableService.initContext(contextMenuService.getContextMenuView());
     }
 
-//    public PandaRootView getRoot(){
-//        return pandaRootView;
-//    }
+
+    public void showUpdateDataManage(Account account){
+        refresh();
+        dataManageService.init(ownersListService.getOwnersListClearView());
+        dataManageService.fillFieldsByAccount(account);
+        pandaRootView.setRootTop(dataManageService.getDataManageView());
+    }
 
     public void showDataManage() {
         dataManageService.init(ownersListService.getOwnersListClearView());
@@ -111,7 +115,7 @@ public class ViewServicesManager {
         stageManager.showPandaScene();
     }
 
-    public Optional<ButtonType> alert(String title, String headerText, String contextText) {
+    public ButtonType alert(String title, String headerText, String contextText) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(headerText);
@@ -119,7 +123,7 @@ public class ViewServicesManager {
 
         Optional<ButtonType> option = alert.showAndWait();
 
-        return option;
+        return option.get();
     }
 
     public void setLastSelectedAccounts(ArrayList<Integer> input){
