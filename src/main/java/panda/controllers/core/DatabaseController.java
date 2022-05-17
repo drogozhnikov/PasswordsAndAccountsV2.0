@@ -66,7 +66,7 @@ public class DatabaseController {
         database.updateFullAccount(account);
     }
 
-    public void deleteAccount(int id) throws SQLException {
+    public void deleteAccount(int id) throws SQLException, ParseException {
         database.deleteAccount(id);
     }
 
@@ -96,7 +96,7 @@ public class DatabaseController {
     }
 
     public int getOwnerId(String name)throws SQLException{
-        return database.getOnwerIndex(name);
+        return database.getOwnerIndex(name);
     }
 
 

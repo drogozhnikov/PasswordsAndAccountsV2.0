@@ -9,7 +9,6 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
@@ -176,7 +175,7 @@ public class SqLiteDAO implements Database {
 
     @Override
     public void insertAccount(Account account) throws SQLException {
-        int ownerIndex = getOnwerIndex(account.getOwner());
+        int ownerIndex = getOwnerIndex(account.getOwner());
         try (PreparedStatement statement = this.connection.prepareStatement(
                 "INSERT INTO accounts('name','owner','link','mail','account','password','info')" +
                         "VALUES(?,?,?,?,?,?,?)")) {
@@ -193,7 +192,7 @@ public class SqLiteDAO implements Database {
 
     @Override
     public void updateFullAccount(Account account) throws SQLException {
-        int ownerIndex = getOnwerIndex(account.getOwner());
+        int ownerIndex = getOwnerIndex(account.getOwner());
         try (PreparedStatement statement = this.connection.prepareStatement(
                 "UPDATE accounts SET " +
                         "name = ?, " +
@@ -217,7 +216,8 @@ public class SqLiteDAO implements Database {
     }
 
     @Override
-    public void deleteAccount(int id) throws SQLException { //TODO owners delition
+    public void deleteAccount(int id) throws SQLException, ParseException {
+        deleteOwnerIfLast(id); //TODO Не работает!
         try (PreparedStatement statement = this.connection.prepareStatement(
                 "DELETE FROM accounts WHERE id = ?")) {
             statement.setObject(1, id);
@@ -225,13 +225,22 @@ public class SqLiteDAO implements Database {
         }
     }
 
-    private boolean isMultipleOwners(String input) throws SQLException{
+    private void deleteOwnerIfLast(int id) throws SQLException, ParseException {
+        String accountOwner = selectAccountById(id).getOwner();
+        int ownerId = getOwnerIndex(accountOwner);
         try (Statement statement = this.connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("select count(*) from accounts where owner = '" + input + "'");
+            ResultSet resultSet = statement.executeQuery("select count(*) from accounts where owner = '" + ownerId + "'");
             if (resultSet.getInt("count(*)") > 1) {
-                return true;
+                deleteOwner(ownerId);
             }
-            return false;
+        }
+    }
+
+    private void deleteOwner(int ownerId)throws SQLException {
+        try (PreparedStatement statement = this.connection.prepareStatement(
+                "DELETE FROM owners WHERE id = ?")) {
+            statement.setObject(1, ownerId);
+            statement.execute();
         }
     }
 
@@ -247,7 +256,7 @@ public class SqLiteDAO implements Database {
     }
 
     @Override
-    public int getOnwerIndex(String ownerName) throws SQLException {
+    public int getOwnerIndex(String ownerName) throws SQLException {
         try (Statement statement = this.connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("select count(*) from owners where name = '" + ownerName + "'");
             if (resultSet.getInt("count(*)") == 0) {

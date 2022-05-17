@@ -22,10 +22,10 @@ public interface Database {
 
     void insertAccount(Account account) throws SQLException;
     void updateFullAccount(Account account) throws SQLException;
-    void deleteAccount(int id) throws SQLException;
+    void deleteAccount(int id) throws SQLException, ParseException;
     boolean isPasswordExist(String inputPassword) throws SQLException;
 
-    int getOnwerIndex(String ownerName) throws SQLException;
+    int getOwnerIndex(String ownerName) throws SQLException;
     String getOwnerName(int id) throws SQLException;
 
     AppData selectAppData() throws SQLException;

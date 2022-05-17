@@ -85,7 +85,7 @@ public class DataManager {
                     databaseController.deleteAccount(id);
                 }
             }
-        } catch (SQLException delete) {
+        } catch (SQLException | ParseException delete) {
             logger.error("Can't delete account");
         }
     }
