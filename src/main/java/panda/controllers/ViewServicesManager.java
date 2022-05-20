@@ -106,7 +106,6 @@ public class ViewServicesManager {
     }
 
     public OptionsView getOptionsView() {
-        optionsService.getOptionsView().setMenuPane(menuService.getMenuView());
         return optionsService.getOptionsView();
     }
 

@@ -18,21 +18,21 @@ public class OptionsView extends BorderPane {
 
     private ListView<Button> buttonListView = new ListView<>();
 
-    private Button buttonResolution = new Button("Resolution");
+    private Button buttonGeneral = new Button("General");
     private Button buttonAccess = new Button("Access");
-    private Button buttonGeneration = new Button("Generation");
 
     private Button separator = new Button();
 
     private Button saveButton = new Button("Save");
     private Button cancelButton = new Button("Cancel");
 
-    private ResolutionPaneView resolutionPaneView;
-
+    private GeneralPaneView generalPaneView;
+    private AсcessPaneView aсcessPaneView;
 
     public OptionsView(OptionsService optionsService) {
         this.optionsService = optionsService;
-        resolutionPaneView = new ResolutionPaneView(optionsService);
+        generalPaneView = new GeneralPaneView(optionsService);
+        aсcessPaneView = new AсcessPaneView(optionsService);
 
         initSizes();
         initPositions();
@@ -41,7 +41,8 @@ public class OptionsView extends BorderPane {
         initOptionsList();
         initSeparator();
 
-        initResolutionButton();
+        initGeneralButton();
+        initAccessButton();
     }
 
     private void initSizes() {
@@ -53,9 +54,8 @@ public class OptionsView extends BorderPane {
 
         setMaxSize(saveButton);
         setMaxSize(cancelButton);
-        setMaxSize(buttonResolution);
+        setMaxSize(buttonGeneral);
         setMaxSize(buttonAccess);
-        setMaxSize(buttonGeneration);
         setMaxSize(separator);
 
         buttonListView.setMaxWidth(300);
@@ -79,14 +79,14 @@ public class OptionsView extends BorderPane {
 
     private void initOptionsList() {
         ArrayList<Button> buttons = new ArrayList<>();
-        buttons.add(buttonResolution);
+        buttons.add(buttonGeneral);
         buttons.add(buttonAccess);
-        buttons.add(buttonGeneration);
 
         buttons.add(separator);
 
         buttons.add(saveButton);
         buttons.add(cancelButton);
+
         ObservableList<Button> list = FXCollections.observableArrayList(buttons);
         buttonListView.setItems(list);
         buttonListView.setEditable(false);
@@ -106,9 +106,14 @@ public class OptionsView extends BorderPane {
         super.setCenter(input);
     }
 
-    private void initResolutionButton(){
-        buttonResolution.setOnAction(event -> {
-            setOptionsCenterPane(resolutionPaneView);
+    private void initGeneralButton(){
+        buttonGeneral.setOnAction(event -> {
+            setOptionsCenterPane(generalPaneView);
+        });
+    }
+    private void initAccessButton(){
+        buttonAccess.setOnAction(event -> {
+            setOptionsCenterPane(aсcessPaneView);
         });
     }
 

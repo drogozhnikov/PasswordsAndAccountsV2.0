@@ -36,6 +36,12 @@ public class DatabaseController {
         return pandas;
     }
 
+    public ArrayList<Account> selectAccounts() throws SQLException, ParseException {
+        ArrayList<Account> accounts = database.selectAll();
+        Collections.reverse(accounts);
+        return accounts;
+    }
+
     public ArrayList<PandaAccount> search(String searchValue, String ownerValue) throws SQLException {
         ArrayList<PandaAccount> founded = database.search(searchValue, ownerValue);
         Collections.reverse(founded);
@@ -101,6 +107,14 @@ public class DatabaseController {
 
     public void updateAppDataResolution(int width, int height) throws SQLException {
         database.updateAppDataResolution(width,height);
+    }
+
+    public void updateExistedAppPass(String oldPass, String newPass)  throws SQLException {
+        database.updateExistedAppPass(oldPass, newPass);
+    }
+
+    public void clear(String pass) throws SQLException {
+        database.clearDataBase(pass);
     }
 
 

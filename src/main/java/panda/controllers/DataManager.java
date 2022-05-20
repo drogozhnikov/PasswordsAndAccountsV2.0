@@ -104,14 +104,23 @@ public class DataManager {
         return account;
     }
 
+    public ArrayList<Account> selectAccounts() {
+        ArrayList<Account> accounts = new ArrayList<>();
+        try {
+            accounts = databaseController.selectAll();
+        } catch (SQLException | ParseException selectAll) {
+            logger.error("Error while selecting accounts");
+        }
+        return accounts;
+    }
+
     public String findPath(String fileName) {
         return pathFinder.findPath(fileName);
     }
 
     public int checkAccess(String input) {
         cryptionController.init(new AesCrypt(), input);
-        String specialCheckWord = cryptionController.getSpecialCheckWord();
-        return appDataController.checkAccess(specialCheckWord);
+        return appDataController.checkAccess(cryptionController.getSpecialCheckWord());
     }
 
     public AppData getAppData() {
@@ -185,6 +194,47 @@ public class DataManager {
             logger.error("Error while updating resolution");
             e.printStackTrace();
         }
+    }
+
+    public void reinitAccessPass(String inputNewPass, String inputOldPass) {
+        ArrayList<Account> accounts = selectAccounts();
+        ArrayList<Account> decrypted = new ArrayList<>();
+        if (accounts.size() > 0) {
+            for (Account account : accounts) {
+                String decryptedPass = cryptionController.deCriptIt(account.getPassword());
+                Account temp = account;
+                temp.setPassword(decryptedPass);
+                decrypted.add(temp);
+            }
+        }
+        try {
+            //TODO сука не рабоатет!!!!
+            logger.info("inputNewPass=" + inputNewPass + " inputOldPass= " + inputOldPass);
+            inputOldPass = cryptionController.cryptIt(cryptionController.getSpecialCheckWord());
+            cryptionController.init(new AesCrypt(), inputNewPass);
+            inputNewPass = cryptionController.cryptIt(cryptionController.getSpecialCheckWord());
+            logger.info("inputNewPass=" + inputNewPass + " inputOldPass" + inputOldPass);
+            databaseController.updateExistedAppPass(inputOldPass, inputNewPass);
+        } catch (SQLException e) {
+            logger.error("Error password replacing");
+            viewServicesManager.alert("Error", "Password updating", "");
+        }
+        int access = checkAccess(inputNewPass);
+            if(access==1){
+                try{
+                    databaseController.clear(inputNewPass);
+                    for (Account account : decrypted) {
+                        String cryptedPass = cryptionController.cryptIt(account.getPassword());
+                        Account temp = account;
+                        temp.setPassword(cryptedPass);
+                        databaseController.insertAccount(temp);
+                    }
+                }catch (SQLException databaseUpdate){
+                    logger.error("Database accounts update error");
+                }
+            }else{
+                viewServicesManager.alert("Access info", "Access Denied", "Passwords missmatch");
+            }
     }
 
 }

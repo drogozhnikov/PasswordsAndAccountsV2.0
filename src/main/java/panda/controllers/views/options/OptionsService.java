@@ -1,13 +1,8 @@
 package panda.controllers.views.options;
 
-import javafx.scene.layout.BorderPane;
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
 import panda.views.elements.options.OptionsView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class OptionsService {
 
@@ -37,7 +32,33 @@ public class OptionsService {
         viewServicesManager.showPandaScene();
     }
 
-    public void saveCurrentResolution(){
+    public void saveAccessAction(String inputOld, String inputTemp, String inputNew) {
+        if (inputOld != null && inputTemp != null && inputNew != null) {
+            if (!inputOld.equals("") && !inputTemp.equals("") && !inputNew.equals("")) {
+                int acess = 0;
+                System.out.println(acess);
+                if (inputOld.equals(inputTemp)) {
+                    acess = dataManager.checkAccess(inputOld);
+                }
+                if (acess == 1) {
+                    dataManager.reinitAccessPass(inputNew, inputOld);
+                } else {
+                    viewServicesManager.alert(
+                            "Access Error",
+                            "Access denied",
+                            "please check the correctness of the entered data");
+                }
+            }else{
+                viewServicesManager.alert(
+                        "Access Info",
+                        "Imposible Action",
+                        "please check the correctness of the entered data");
+            }
+        }
+
+    }
+
+    public void saveCurrentResolution() {
         dataManager.saveCurrentResolution();
     }
 

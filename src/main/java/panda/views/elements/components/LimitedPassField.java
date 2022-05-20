@@ -1,13 +1,13 @@
 package panda.views.elements.components;
 
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
+import javafx.scene.control.PasswordField;
 
-public class LimitedTextField extends TextField {
+public class LimitedPassField extends PasswordField {
 
     private final int limit;
 
-    public LimitedTextField(int limit) {
+    public LimitedPassField(int limit) {
         this.limit = limit;
     }
 
@@ -31,7 +31,7 @@ public class LimitedTextField extends TextField {
         }
     }
 
-    private void alert(){
+    private void alert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Field owersize");
         alert.setHeaderText("Text field limit reached");

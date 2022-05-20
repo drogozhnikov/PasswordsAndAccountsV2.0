@@ -359,16 +359,16 @@ public class SqLiteDAO implements Database {
                 String query = "select count(*) from appdata where cipher_word = \'" + input + "\'";
                 ResultSet resultCount = statement.executeQuery(query);
                 if (resultCount.getInt("count(*)") != 0) {
-                    return 1;
+                    return 1; //access OK
                 }
-                return -1;
+                return -1;//pass not Exist
             } else {
-                return 0;
+                return 0;//access Denied
             }
         }
     }
 
-    private void clearDataBase(String pass) throws SQLException {
+    public void clearDataBase(String pass) throws SQLException {
         if (checkAccessPass(pass) == 1) {
             try (PreparedStatement statement = this.connection.prepareStatement(
                     "Vacuum;")) {
