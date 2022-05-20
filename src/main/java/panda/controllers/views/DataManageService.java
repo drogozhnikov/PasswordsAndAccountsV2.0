@@ -51,7 +51,7 @@ public class DataManageService {
         StringBuilder emptyfields = new StringBuilder();
         while (iterator.hasNext()) {
             String key = iterator.next();
-            if (validatedFieldsMap.get(key).equals("")) {
+            if (validatedFieldsMap.get(key) == null || validatedFieldsMap.get(key).equals("")) {
                 emptyfields.append("-" + key);
             }
         }

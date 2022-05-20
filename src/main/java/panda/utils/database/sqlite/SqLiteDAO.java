@@ -230,7 +230,7 @@ public class SqLiteDAO implements Database {
         int ownerId = getOwnerIndex(accountOwner);
         try (Statement statement = this.connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("select count(*) from accounts where owner = '" + ownerId + "'");
-            if (resultSet.getInt("count(*)") > 1) {
+            if (resultSet.getInt("count(*)") == 1) {
                 deleteOwner(ownerId);
             }
         }

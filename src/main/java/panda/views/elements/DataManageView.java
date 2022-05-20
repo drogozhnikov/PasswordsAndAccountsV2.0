@@ -227,6 +227,7 @@ public class DataManageView extends BorderPane {
         HashMap<String,String> validatedFieldsMap = new HashMap<>();
             validatedFieldsMap.put("name", inputName.getText());
             validatedFieldsMap.put("password", inputPassword.getText());
+            validatedFieldsMap.put("owner", inputOwner.getText());
         return dataManageService.validate(validatedFieldsMap);
     }
 
