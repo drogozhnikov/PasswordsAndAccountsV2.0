@@ -67,8 +67,9 @@ public class SqLiteDAO implements Database {
             return output;
         }
     }
+
     @Override
-    public String getOwnerName(int ownerId) throws SQLException{
+    public String getOwnerName(int ownerId) throws SQLException {
         String outputName = "all";
         try (Statement statement = this.connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("select name from owners where id = " + ownerId);
@@ -78,10 +79,11 @@ public class SqLiteDAO implements Database {
         }
         return outputName;
     }
-    public String getOwnerId(String ownerName) throws SQLException{
+
+    public String getOwnerId(String ownerName) throws SQLException {
         String outputName = "all";
         try (Statement statement = this.connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("select id from owners where name = \'" + ownerName +"\'");
+            ResultSet resultSet = statement.executeQuery("select id from owners where name = \'" + ownerName + "\'");
             while (resultSet.next()) {
                 outputName = resultSet.getString("name");
             }
@@ -236,7 +238,7 @@ public class SqLiteDAO implements Database {
         }
     }
 
-    private void deleteOwner(int ownerId)throws SQLException {
+    private void deleteOwner(int ownerId) throws SQLException {
         try (PreparedStatement statement = this.connection.prepareStatement(
                 "DELETE FROM owners WHERE id = ?")) {
             statement.setObject(1, ownerId);
@@ -284,9 +286,9 @@ public class SqLiteDAO implements Database {
                         resultSet.getInt("selected_owner"),
                         resultSet.getInt("screen_width"),
                         resultSet.getInt("screen_height")
-                       );
+                );
             }
-           return output;
+            return output;
         }
     }
 
@@ -299,7 +301,7 @@ public class SqLiteDAO implements Database {
                         "selected_owner = ? ," +
                         "screen_width = ? ," +
                         "screen_height = ? ,"
-                        )) {
+        )) {
             statement.setObject(1, input.getPassGenPattern());
             statement.setObject(2, input.getTheme());
             statement.setObject(3, input.getOwner());
@@ -309,28 +311,41 @@ public class SqLiteDAO implements Database {
         }
     }
 
+    @Override
+    public void updateAppDataResolution(int width, int height) throws SQLException {
+        try (PreparedStatement statement = this.connection.prepareStatement(
+                "UPDATE appdata SET " +
+                        "screen_width = ? ," +
+                        "screen_height = ? " +
+                        "WHERE id = 1")) {
+            statement.setObject(1, width);
+            statement.setObject(2, height);
+            statement.executeUpdate();
+        }
+    }
+
     // 1-pass updated, 0 pass inserted, -1 - wrong old pass
     @Override
-    public int updateExistedAppPass(String oldPass, String newPass) throws SQLException{
+    public int updateExistedAppPass(String oldPass, String newPass) throws SQLException {
         final int passUpdated = 1;
         final int passInsrted = 0;
         final int passMissmatch = -1;
 
         int oldPassStatus = checkAccessPass(oldPass);
-        if(oldPassStatus == 1 || oldPassStatus==0){
+        if (oldPassStatus == 1 || oldPassStatus == 0) {
             try (PreparedStatement statement = this.connection.prepareStatement(
                     "UPDATE appdata SET cipher_Word = ?"
             )) {
                 statement.setObject(1, newPass);
             }
 
-            if(oldPassStatus == 1){
+            if (oldPassStatus == 1) {
                 return passUpdated;
-            }else{
+            } else {
                 return passInsrted;
             }
 
-        }else {
+        } else {
             return passMissmatch;
         }
     }
@@ -340,21 +355,21 @@ public class SqLiteDAO implements Database {
     public int checkAccessPass(String input) throws SQLException {
         try (Statement statement = this.connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("select count(*) from appdata");
-            if (resultSet.getInt("count(*)") != 0 && input!="") {
+            if (resultSet.getInt("count(*)") != 0 && input != "") {
                 String query = "select count(*) from appdata where cipher_word = \'" + input + "\'";
                 ResultSet resultCount = statement.executeQuery(query);
-                if(resultCount.getInt("count(*)") != 0){
+                if (resultCount.getInt("count(*)") != 0) {
                     return 1;
                 }
                 return -1;
-            }else{
+            } else {
                 return 0;
             }
         }
     }
 
-    private void clearDataBase(String pass) throws SQLException{
-        if(checkAccessPass(pass)==1){
+    private void clearDataBase(String pass) throws SQLException {
+        if (checkAccessPass(pass) == 1) {
             try (PreparedStatement statement = this.connection.prepareStatement(
                     "Vacuum;")) {
                 statement.execute();

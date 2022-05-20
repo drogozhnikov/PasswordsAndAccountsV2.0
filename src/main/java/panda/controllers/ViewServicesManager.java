@@ -5,11 +5,14 @@ import javafx.scene.control.ButtonType;
 import panda.controllers.views.*;
 import panda.controllers.views.components.InfoService;
 import panda.controllers.views.components.OwnersListService;
+import panda.controllers.views.options.OptionsService;
 import panda.models.Account;
 import panda.views.PandaRootView;
 import panda.views.elements.HelloPandaView;
+import panda.views.elements.options.OptionsView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 
 public class ViewServicesManager {
@@ -98,13 +101,13 @@ public class ViewServicesManager {
         pandaRootView.setRootTop(controlMenuService.getControlMenuView());
     }
 
-    public void showOptionslPanel() {
-        optionsService.init();
-        pandaRootView.setRootTop(optionsService.getOptionsView());
-    }
-
     public HelloPandaView getHelloPandaView() {
         return helloPandaService.getHelloPandaView();
+    }
+
+    public OptionsView getOptionsView() {
+        optionsService.getOptionsView().setMenuPane(menuService.getMenuView());
+        return optionsService.getOptionsView();
     }
 
     public void initPandaScene(){
@@ -113,6 +116,11 @@ public class ViewServicesManager {
 
     public void showPandaScene() {
         stageManager.showPandaScene();
+    }
+
+    public void showOptionslPanel() {
+        stageManager.initOptionsScene();
+        stageManager.showOptionsScene();
     }
 
     public ButtonType alert(String title, String headerText, String contextText) {
@@ -133,5 +141,8 @@ public class ViewServicesManager {
         return lastSelectedAccount;
     }
 
+    public HashMap<String, Double> getCurrentResolution(){
+        return stageManager.getStageDimension();
+    }
 
 }

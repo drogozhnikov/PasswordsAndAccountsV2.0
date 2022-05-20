@@ -1,9 +1,13 @@
-package panda.controllers.views;
+package panda.controllers.views.options;
 
 import javafx.scene.layout.BorderPane;
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
-import panda.views.elements.OptionsView;
+import panda.views.elements.options.OptionsView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class OptionsService {
 
@@ -21,15 +25,20 @@ public class OptionsService {
         optionsView = new OptionsView(this);
     }
 
-    public BorderPane getOptionsView() {
+    public OptionsView getOptionsView() {
         return optionsView;
     }
 
     public void saveButton() {
-        viewServicesManager.hideDataManage();
+        viewServicesManager.showPandaScene();
     }
 
     public void cancelButton() {
-        viewServicesManager.hideDataManage();
+        viewServicesManager.showPandaScene();
     }
+
+    public void saveCurrentResolution(){
+        dataManager.saveCurrentResolution();
+    }
+
 }

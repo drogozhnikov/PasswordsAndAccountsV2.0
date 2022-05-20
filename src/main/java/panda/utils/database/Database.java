@@ -35,6 +35,8 @@ public interface Database {
 
     int checkAccessPass(String input) throws SQLException;
 
+    void updateAppDataResolution(int width, int height) throws SQLException;
+
 
 
 }

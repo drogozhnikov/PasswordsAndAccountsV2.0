@@ -59,7 +59,7 @@ public class DatabaseController {
     }
 
     public void insertAccount(Account account) throws SQLException {
-            database.insertAccount(account);
+        database.insertAccount(account);
     }
 
     public void updateFullAccount(Account account) throws SQLException {
@@ -83,7 +83,7 @@ public class DatabaseController {
         return database.checkAccessPass(input);
     }
 
-    public boolean isPasswordExist(String input) throws SQLException{
+    public boolean isPasswordExist(String input) throws SQLException {
         return database.isPasswordExist(input);
     }
 
@@ -91,12 +91,16 @@ public class DatabaseController {
         return database.updateExistedAppPass(oldPass, newPass);
     }
 
-    public String getOwnerName(int id)throws SQLException{
+    public String getOwnerName(int id) throws SQLException {
         return database.getOwnerName(id);
     }
 
-    public int getOwnerId(String name)throws SQLException{
+    public int getOwnerId(String name) throws SQLException {
         return database.getOwnerIndex(name);
+    }
+
+    public void updateAppDataResolution(int width, int height) throws SQLException {
+        database.updateAppDataResolution(width,height);
     }
 
 

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import panda.models.AppData;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class AppDataController {
 
@@ -45,6 +46,17 @@ public class AppDataController {
 
     public AppData getAppData(){
         return appData;
+    }
+
+    public void setResolution(HashMap<String, Double> input){
+
+        int infelicityH = 39;
+        int infelicityW = 16;
+
+        appData.setScreenHeight(input.get("height").intValue()-infelicityH);
+        appData.setScreenWidth(input.get("width").intValue()-infelicityW);
+
+        logger.info("Updating Resolution to: " + appData.getScreenWidth() + "x" + appData.getScreenHeight());
     }
 
 

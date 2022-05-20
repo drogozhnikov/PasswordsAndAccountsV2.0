@@ -45,4 +45,16 @@ public class Utils {
                 desktop.browse(uri);
             }
     }
+
+    public void screens(){
+        GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] devices = environment.getScreenDevices();
+
+        // Get size of each screen
+        for (int i=0; i<devices.length; i++) {
+            DisplayMode dmode = devices[i].getDisplayMode();
+            int screenWidth = dmode.getWidth();
+            int screenHeight = dmode.getHeight();
+        }
+    }
 }

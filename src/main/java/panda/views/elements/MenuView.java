@@ -14,7 +14,6 @@ public class MenuView extends MenuBar {
     private Menu editMenu = new Menu("Edit");
     private Menu helpMenu = new Menu("Help");
 
-
     private MenuItem optionsMenuItem = new MenuItem("Options");
     private MenuItem saveMenuItem = new MenuItem("Save");
     private MenuItem loadMenuItem = new MenuItem("Load");

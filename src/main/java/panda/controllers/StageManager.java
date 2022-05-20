@@ -9,6 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import panda.views.PandaRootView;
 import panda.views.elements.HelloPandaView;
+import panda.views.elements.options.OptionsView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class StageManager {
 
@@ -17,6 +21,7 @@ public class StageManager {
     private Stage rootStage;
     private Scene rootHelloScene;
     private Scene rootPandaScene;
+    private Scene rootOptionsScene;
 
     private DataManager dm;
     private ViewServicesManager vm;
@@ -67,6 +72,13 @@ public class StageManager {
         rootPandaScene = new Scene(pandaRootView, dm.getAppData().getScreenWidth(), dm.getAppData().getScreenHeight());
     }
 
+    public void initOptionsScene() {
+        if(rootOptionsScene == null){
+            OptionsView optionsView = vm.getOptionsView();
+            rootOptionsScene = new Scene(optionsView, dm.getAppData().getScreenWidth(), dm.getAppData().getScreenHeight());
+        }
+    }
+
     public void showPandaScene(){
         rootStage.close();
         rootStage = new Stage();
@@ -83,11 +95,26 @@ public class StageManager {
         rootStage.show();
     }
 
+    public void showOptionsScene(){
+        rootStage.close();
+        rootStage = new Stage();
+        rootStage.initStyle(StageStyle.DECORATED);
+        rootStage.setScene(rootOptionsScene);
+        rootStage.show();
+    }
+
     private void setCSS(Scene scene) {
         String cssPath = "file:///" + "D:\\mProjects\\PasswordsAndAccountsV2.0\\src\\main\\resources\\styles\\style1.css";
         cssPath = cssPath.replace("\\", "/");
         scene.getStylesheets().add(cssPath);
         // create menu. add controlsButtons. undecorate stage
+    }
+
+    public HashMap<String, Double> getStageDimension(){
+       HashMap<String, Double> dimension = new HashMap<>();
+        dimension.put("height", rootStage.getHeight());
+        dimension.put("width", rootStage.getWidth());
+        return dimension;
     }
 
 }

@@ -17,6 +17,7 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -90,13 +91,13 @@ public class DataManager {
         }
     }
 
-    public Account getAccountById(int id){
+    public Account getAccountById(int id) {
         Account account = null;
-        try{
+        try {
             account = databaseController.selectAccountById(id);
             String uncriptedPass = cryptionController.deCriptIt(account.getPassword());
             account.setPassword(uncriptedPass);
-        }catch (SQLException | ParseException e){
+        } catch (SQLException | ParseException e) {
             logger.error("Find Account by id Error");
             e.printStackTrace();
         }
@@ -155,18 +156,34 @@ public class DataManager {
         return new ArrayList<>(ownersList);
     }
 
-    public boolean isHidePass(){
+    public boolean isHidePass() {
         return appDataController.getAppData().isHidePass();
     }
-    public void setPropertyHidePass(boolean value){
+
+    public void setPropertyHidePass(boolean value) {
         appDataController.getAppData().setHidePass(value);
     }
 
-    public void startLink(String link){
-        try{
+    public void startLink(String link) {
+        try {
             Utils.startLink(link);
-        }catch (URISyntaxException | IOException syntax){
+        } catch (URISyntaxException | IOException syntax) {
             logger.error("Error while trying startLink");
+        }
+    }
+
+    public void saveCurrentResolution() {
+        HashMap<String, Double> resolution = viewServicesManager.getCurrentResolution();
+        appDataController.setResolution(resolution);
+
+        try {
+            databaseController.updateAppDataResolution(
+                    appDataController.getAppData().getScreenWidth(),
+                    appDataController.getAppData().getScreenHeight());
+            logger.info("Resolution update succesfully");
+        } catch (SQLException e) {
+            logger.error("Error while updating resolution");
+            e.printStackTrace();
         }
     }
 

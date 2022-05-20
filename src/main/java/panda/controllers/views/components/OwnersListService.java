@@ -14,6 +14,8 @@ public class OwnersListService {
     private OwnersListView ownersListView;
     private OwnersListView ownersListClearView;
 
+    private int lastSelectedOwner = 1;
+
     public OwnersListService(ViewServicesManager viewServicesManager, DataManager dataManager) {
         this.viewServicesManager = viewServicesManager;
         this.dataManager = dataManager;
@@ -26,15 +28,16 @@ public class OwnersListService {
 
     public void refresh(){
         ownersListView.refresh(dataManager.getOwnerList());
+        ownersListClearView.getSelectionModel().selectFirst();
         refreshWithoutItemAll();
     }
 
     public void refreshWithoutItemAll(){
         ArrayList<String> ownersList = dataManager.getOwnerList();
             ownersList.remove("all");
+        ownersListClearView.getSelectionModel().selectLast();
         ownersListClearView.refresh(ownersList);
     }
-
 
     public OwnersListView getOwnersListView(){
         return ownersListView;
