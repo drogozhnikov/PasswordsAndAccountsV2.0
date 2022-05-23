@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Separator;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -50,6 +51,7 @@ public class AсcessPaneView extends BorderPane {
         initPositions();
         initStyles();
         initSaveButton();
+        initEnterAction();
 
     }
 
@@ -93,10 +95,22 @@ public class AсcessPaneView extends BorderPane {
     private void initSaveButton() {
         saveButton.setOnAction(event -> {
             optionsService.saveAccessAction(
-                    inputOldPassword.getText(),
-                    inputTempPassword.getText(),
-                    inputNewPassword.getText()
+                    new StringBuilder(inputOldPassword.getText()),
+                    new StringBuilder(inputTempPassword.getText()),
+                    new StringBuilder(inputNewPassword.getText())
             );
+        });
+    }
+
+    private void initEnterAction(){
+        super.setOnKeyReleased(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                optionsService.saveAccessAction(
+                        new StringBuilder(inputOldPassword.getText()),
+                        new StringBuilder(inputTempPassword.getText()),
+                        new StringBuilder(inputNewPassword.getText())
+                );
+            }
         });
     }
 

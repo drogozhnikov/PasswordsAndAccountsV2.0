@@ -26,7 +26,7 @@ public class HelloPandaService {
     }
 
     public void confirm(String input) {
-        int result = dataManager.checkAccess(input);
+        int result = dataManager.checkAccess(new StringBuilder(input));
 
         final int accessConfirmed = 1;
         final int accessDenied = -1;

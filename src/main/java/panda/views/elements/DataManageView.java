@@ -201,7 +201,7 @@ public class DataManageView extends BorderPane {
         account.setLink(inputLink.getText());
         account.setMail(inputMail.getText());
         account.setAccount(inputAccount.getText());
-        account.setPassword(inputPassword.getText());
+        account.setPassword(new StringBuilder(inputPassword.getText()));
         account.setInfo(inputDescription.getText());
 
         if(inputOwner.getText()!=null && !inputOwner.getText().equals("")){
@@ -219,7 +219,7 @@ public class DataManageView extends BorderPane {
         inputLink.setText(input.getLink());
         inputMail.setText(input.getMail());
         inputAccount.setText(input.getAccount());
-        inputPassword.setText(input.getPassword());
+        inputPassword.setText(input.getPassword().toString());
         inputDescription.setText(input.getInfo());
     }
 

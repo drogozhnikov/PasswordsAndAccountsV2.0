@@ -4,10 +4,10 @@ import javax.crypto.SecretKey;
 
 public interface Сipher {
 
-    void init(String word);
+    void init(StringBuilder word);
 
-    String encrypt(String input);
-    String decrypt(String input);
+    StringBuilder encrypt(StringBuilder input);
+    StringBuilder decrypt(StringBuilder input);
 
     SecretKey getSpicificKey(String input);
 

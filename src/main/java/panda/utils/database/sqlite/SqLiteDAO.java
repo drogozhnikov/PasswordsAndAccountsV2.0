@@ -35,7 +35,7 @@ public class SqLiteDAO implements Database {
                         resultSet.getString("link"),
                         resultSet.getString("mail"),
                         resultSet.getString("account"),
-                        resultSet.getString("password"),
+                        new StringBuilder(resultSet.getString("password")),
                         resultSet.getString("info"),
                         translateDate(resultSet.getString("update_date"))
                 ));
@@ -149,7 +149,7 @@ public class SqLiteDAO implements Database {
                         resultSet.getString("link"),
                         resultSet.getString("mail"),
                         resultSet.getString("account"),
-                        resultSet.getString("password"),
+                        new StringBuilder(resultSet.getString("password")),
                         resultSet.getString("info"),
                         translateDate(resultSet.getString("update_date")));
             }
@@ -247,7 +247,7 @@ public class SqLiteDAO implements Database {
     }
 
     @Override
-    public boolean isPasswordExist(String inputPassword) throws SQLException {
+    public boolean isPasswordExist(StringBuilder inputPassword) throws SQLException {
         try (Statement statement = this.connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("select count(*) from accounts where password = '" + inputPassword + "'");
             if (resultSet.getInt("count(*)") != 0) {
@@ -326,36 +326,21 @@ public class SqLiteDAO implements Database {
 
     // 1-pass updated, 0 pass inserted, -1 - wrong old pass
     @Override
-    public int updateExistedAppPass(String oldPass, String newPass) throws SQLException {
-        final int passUpdated = 1;
-        final int passInsrted = 0;
-        final int passMissmatch = -1;
-
-        int oldPassStatus = checkAccessPass(oldPass);
-        if (oldPassStatus == 1 || oldPassStatus == 0) {
-            try (PreparedStatement statement = this.connection.prepareStatement(
-                    "UPDATE appdata SET cipher_Word = ?"
-            )) {
-                statement.setObject(1, newPass);
-            }
-
-            if (oldPassStatus == 1) {
-                return passUpdated;
-            } else {
-                return passInsrted;
-            }
-
-        } else {
-            return passMissmatch;
+    public void updateExistedAppPass(StringBuilder newPass) throws SQLException {
+        try (PreparedStatement statement = this.connection.prepareStatement(
+                "UPDATE appdata SET cipher_word = ? where id = 1"
+        )) {
+            statement.setObject(1, newPass.toString());
+            statement.executeUpdate();
         }
     }
 
     //-1 pass not exist. 0 if not matches. 1 if exist
     @Override
-    public int checkAccessPass(String input) throws SQLException {
+    public int checkAccessPass(StringBuilder input) throws SQLException {
         try (Statement statement = this.connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("select count(*) from appdata");
-            if (resultSet.getInt("count(*)") != 0 && input != "") {
+            if (resultSet.getInt("count(*)") != 0 && input.toString() != "") {
                 String query = "select count(*) from appdata where cipher_word = \'" + input + "\'";
                 ResultSet resultCount = statement.executeQuery(query);
                 if (resultCount.getInt("count(*)") != 0) {
@@ -368,7 +353,7 @@ public class SqLiteDAO implements Database {
         }
     }
 
-    public void clearDataBase(String pass) throws SQLException {
+    public void clearDataBase(StringBuilder pass) throws SQLException {
         if (checkAccessPass(pass) == 1) {
             try (PreparedStatement statement = this.connection.prepareStatement(
                     "Vacuum;")) {

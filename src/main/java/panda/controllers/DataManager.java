@@ -59,7 +59,7 @@ public class DataManager {
     public void addAccount(Account account) {
         try {
             if (!databaseController.isPasswordExist(cryptionController.cryptIt(account.getPassword()))) {
-                account.setPassword(cryptionController.cryptIt(account.getPassword())); // CRYPTION!
+                account.setPassword(cryptionController.cryptIt(new StringBuilder(account.getPassword()))); // CRYPTION!
                 databaseController.insertAccount(account);
             } else {
                 viewServicesManager.alert("Warning!", "Same account already exist", "");
@@ -95,7 +95,7 @@ public class DataManager {
         Account account = null;
         try {
             account = databaseController.selectAccountById(id);
-            String uncriptedPass = cryptionController.deCriptIt(account.getPassword());
+            StringBuilder uncriptedPass = cryptionController.deCriptIt(account.getPassword());
             account.setPassword(uncriptedPass);
         } catch (SQLException | ParseException e) {
             logger.error("Find Account by id Error");
@@ -118,7 +118,7 @@ public class DataManager {
         return pathFinder.findPath(fileName);
     }
 
-    public int checkAccess(String input) {
+    public int checkAccess(StringBuilder input) {
         cryptionController.init(new AesCrypt(), input);
         return appDataController.checkAccess(cryptionController.getSpecialCheckWord());
     }
@@ -130,9 +130,11 @@ public class DataManager {
     public ArrayList<PandaAccount> selectPandaAccounts() {
         ArrayList<PandaAccount> output = new ArrayList<>();
         try {
-            ArrayList<PandaAccount> pandaAccountsList = databaseController.selectPandas(databaseController.getOwnerName(appDataController.getAppData().getOwner()));
+            ArrayList<PandaAccount> pandaAccountsList = databaseController.selectPandas(
+                    databaseController.getOwnerName(appDataController.getAppData().getOwner()));
             for (PandaAccount panda : pandaAccountsList) {
-                panda.setTableFieldPassword(cryptionController.deCriptIt(panda.getTableFieldPassword()));
+                panda.setTableFieldPassword(cryptionController.deCriptIt(
+                        new StringBuilder(panda.getTableFieldPassword())).toString());
                 output.add(panda);
             }
         } catch (SQLException selectAll) {
@@ -144,7 +146,7 @@ public class DataManager {
     public String generatePassword() {
         try {
             String pass = passwordGenerator.generatePassword(appDataController.getPassTeamplate());
-            while (databaseController.isPasswordExist(pass)) {
+            while (databaseController.isPasswordExist(new StringBuilder(pass))) {
                 pass = passwordGenerator.generatePassword(appDataController.getPassTeamplate());
             }
             return pass;
@@ -196,45 +198,36 @@ public class DataManager {
         }
     }
 
-    public void reinitAccessPass(String inputNewPass, String inputOldPass) {
-        ArrayList<Account> accounts = selectAccounts();
-        ArrayList<Account> decrypted = new ArrayList<>();
-        if (accounts.size() > 0) {
-            for (Account account : accounts) {
-                String decryptedPass = cryptionController.deCriptIt(account.getPassword());
-                Account temp = account;
-                temp.setPassword(decryptedPass);
-                decrypted.add(temp);
+    public void reinitAccessPass(StringBuilder inputNewPass) {
+        ArrayList<Account> decryptedAccounts = new ArrayList<>();
+        ArrayList<Account> tempAccounts = new ArrayList<>();
+            for(Account account: selectAccounts()){
+                account.setPassword(cryptionController.deCriptIt(account.getPassword()));
+                decryptedAccounts.add(account);
             }
-        }
-        try {
-            //TODO сука не рабоатет!!!!
-            logger.info("inputNewPass=" + inputNewPass + " inputOldPass= " + inputOldPass);
-            inputOldPass = cryptionController.cryptIt(cryptionController.getSpecialCheckWord());
-            cryptionController.init(new AesCrypt(), inputNewPass);
-            inputNewPass = cryptionController.cryptIt(cryptionController.getSpecialCheckWord());
-            logger.info("inputNewPass=" + inputNewPass + " inputOldPass" + inputOldPass);
-            databaseController.updateExistedAppPass(inputOldPass, inputNewPass);
-        } catch (SQLException e) {
-            logger.error("Error password replacing");
-            viewServicesManager.alert("Error", "Password updating", "");
-        }
-        int access = checkAccess(inputNewPass);
-            if(access==1){
-                try{
-                    databaseController.clear(inputNewPass);
-                    for (Account account : decrypted) {
-                        String cryptedPass = cryptionController.cryptIt(account.getPassword());
-                        Account temp = account;
-                        temp.setPassword(cryptedPass);
-                        databaseController.insertAccount(temp);
-                    }
-                }catch (SQLException databaseUpdate){
-                    logger.error("Database accounts update error");
-                }
+         int updateStatus = updatePass(inputNewPass);
+            if(updateStatus==1){
+                   for (Account account:decryptedAccounts){
+                       account.setPassword(cryptionController.cryptIt(account.getPassword()));
+                       tempAccounts.add(account);
+                       //TODO save to base
+                   }
+                //TODO refresh and check
             }else{
-                viewServicesManager.alert("Access info", "Access Denied", "Passwords missmatch");
+                logger.warn("Update warning", "Update password unsuccessfull");
             }
+    }
+
+    private int updatePass(StringBuilder inputNewPass){
+        int result = -1;
+        try{
+            cryptionController.init(new AesCrypt(), inputNewPass);
+            databaseController.updatePass(cryptionController.getSpecialCheckWord());
+            result = appDataController.checkAccess(cryptionController.getSpecialCheckWord());
+        }catch (SQLException update){
+            logger.warn("Update pass exception");
+        }
+        return result;
     }
 
 }

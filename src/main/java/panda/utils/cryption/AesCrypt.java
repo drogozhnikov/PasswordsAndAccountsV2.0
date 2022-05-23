@@ -19,8 +19,8 @@ public class AesCrypt implements Сipher {
 
     public AesCrypt(){}
 
-    public void init(String checkWord){
-        key = getSpicificKey(checkWord);
+    public void init(StringBuilder checkWord){
+        key = getSpicificKey(checkWord.toString());
         try {
             cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -48,28 +48,28 @@ public class AesCrypt implements Сipher {
         return new SecretKeySpec(sixteenChars.getBytes(), "AES");
     }
 
-    public String encrypt(String input) {
+    public StringBuilder encrypt(StringBuilder input) {
         String result = "";
         try {
-            result = Base64.encodeBase64String(cipher.doFinal(input.getBytes()));
+            result = Base64.encodeBase64String(cipher.doFinal(input.toString().getBytes()));
         } catch (IllegalBlockSizeException e) {
             logger.error("AesCrypt: IllegalBlockSizeException");
         } catch (BadPaddingException e) {
             logger.error("AesCrypt: BadPaddingException");
         }
-        return result;
+        return new StringBuilder(result);
     }
 
-    public String decrypt(String input){
+    public StringBuilder decrypt(StringBuilder input){
         byte[] decrypterBytes = new byte[0];
         try {
-            decrypterBytes = decrypter.doFinal(Base64.decodeBase64(input));
+            decrypterBytes = decrypter.doFinal(Base64.decodeBase64(input.toString()));
         } catch (IllegalBlockSizeException e) {
             logger.error("AesCrypt: IllegalBlockSizeException");
         } catch (BadPaddingException e) {
             logger.error("AesCrypt: BadPaddingException");
         }
-        return new String(decrypterBytes);
+        return new StringBuilder(new String(decrypterBytes));
     }
 
     private String prepareToKeyGen(String input){

@@ -70,13 +70,13 @@ public class Account implements Comparable<Account> {
     @XmlElement(name = "Account")
     protected String account;
     @XmlElement(name = "Password")
-    protected String password;
+    protected StringBuilder password;
     @XmlElement(name = "Info")
     protected String info  = "Default Info";
     @XmlElement(name = "Date")
     protected GregorianCalendar date;
 
-    public Account(int id, String name, String owner, String link, String mail, String account, String password, String info, GregorianCalendar date) {
+    public Account(int id, String name, String owner, String link, String mail, String account, StringBuilder password, String info, GregorianCalendar date) {
         this.id = id;
         this.name = name;
         this.owner = owner;
@@ -243,7 +243,7 @@ public class Account implements Comparable<Account> {
      *     {@link String }
      *     
      */
-    public String getPassword() {
+    public StringBuilder getPassword() {
         return password;
     }
 
@@ -255,7 +255,7 @@ public class Account implements Comparable<Account> {
      *     {@link String }
      *     
      */
-    public void setPassword(String value) {
+    public void setPassword(StringBuilder value) {
         this.password = value;
     }
 
@@ -335,7 +335,7 @@ public class Account implements Comparable<Account> {
 
     @Override
     public int compareTo(Account o) {
-        return this.password.compareTo(o.getPassword());
+        return this.password.toString().compareTo(o.getPassword().toString());
     }
 
 }

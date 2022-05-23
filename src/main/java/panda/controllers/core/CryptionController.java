@@ -12,28 +12,28 @@ public class CryptionController {
     private static final Logger logger = LoggerFactory.getLogger(CryptionController.class);
 
     private Сipher cipher;
-    private final String cryptPassPhrase = "HelloWorldMotherFucker";
+    private final StringBuilder cryptPassPhrase = new StringBuilder("HelloWorldMotherFucker");
 
     public CryptionController(Сipher cipher){
         this.cipher = cipher;
         logger.info("initialization completed successfully");
     }
 
-    public void init(Сipher cipher, String input){
+    public void init(Сipher cipher, StringBuilder input){
         this.cipher = cipher;
         cipher.init(input);
     }
 
-    public String cryptIt(String input){
+    public StringBuilder cryptIt(StringBuilder input){
         return cipher.encrypt(input);
     }
 
-    public String deCriptIt(String input){
+    public StringBuilder deCriptIt(StringBuilder input){
         return cipher.decrypt(input);
     }
 
     //return special phrase encrypted by inputWord.
-    public String getSpecialCheckWord(){
+    public StringBuilder getSpecialCheckWord(){
         return cipher.encrypt(cryptPassPhrase);
     }
 

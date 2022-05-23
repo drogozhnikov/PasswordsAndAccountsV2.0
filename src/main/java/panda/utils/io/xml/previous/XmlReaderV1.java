@@ -71,7 +71,7 @@ public class XmlReaderV1 {
 //                    System.out.println("id5");
                 }
                 try {
-                    output.setPassword(getTagValue("password", element));
+                    output.setPassword(new StringBuilder(getTagValue("password", element)));
                 } catch (NullPointerException e) {
 //                    System.out.println("id5");
                 }

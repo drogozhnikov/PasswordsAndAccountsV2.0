@@ -32,16 +32,15 @@ public class OptionsService {
         viewServicesManager.showPandaScene();
     }
 
-    public void saveAccessAction(String inputOld, String inputTemp, String inputNew) {
+    public void saveAccessAction(StringBuilder inputOld, StringBuilder inputTemp, StringBuilder inputNew) {
         if (inputOld != null && inputTemp != null && inputNew != null) {
             if (!inputOld.equals("") && !inputTemp.equals("") && !inputNew.equals("")) {
                 int acess = 0;
-                System.out.println(acess);
-                if (inputOld.equals(inputTemp)) {
+                if (inputOld.toString().equals(inputTemp.toString())) {
                     acess = dataManager.checkAccess(inputOld);
                 }
                 if (acess == 1) {
-                    dataManager.reinitAccessPass(inputNew, inputOld);
+                    dataManager.reinitAccessPass(new StringBuilder(inputNew));
                 } else {
                     viewServicesManager.alert(
                             "Access Error",

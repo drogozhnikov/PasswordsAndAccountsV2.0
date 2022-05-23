@@ -85,16 +85,16 @@ public class DatabaseController {
         database.updateAppData(input);
     }
 
-    public int checkPass(String input) throws SQLException {
+    public int checkPass(StringBuilder input) throws SQLException {
         return database.checkAccessPass(input);
     }
 
-    public boolean isPasswordExist(String input) throws SQLException {
+    public boolean isPasswordExist(StringBuilder input) throws SQLException {
         return database.isPasswordExist(input);
     }
 
-    public int updatePass(String oldPass, String newPass) throws SQLException {
-        return database.updateExistedAppPass(oldPass, newPass);
+    public void updatePass(StringBuilder newPass) throws SQLException {
+        database.updateExistedAppPass(newPass);
     }
 
     public String getOwnerName(int id) throws SQLException {
@@ -109,11 +109,7 @@ public class DatabaseController {
         database.updateAppDataResolution(width,height);
     }
 
-    public void updateExistedAppPass(String oldPass, String newPass)  throws SQLException {
-        database.updateExistedAppPass(oldPass, newPass);
-    }
-
-    public void clear(String pass) throws SQLException {
+    public void clear(StringBuilder pass) throws SQLException {
         database.clearDataBase(pass);
     }
 

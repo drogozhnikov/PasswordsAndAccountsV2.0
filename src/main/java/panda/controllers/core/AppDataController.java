@@ -19,7 +19,7 @@ public class AppDataController {
         refreshAppData();
     }
 
-    public int checkAccess(String specialCheckWord) {
+    public int checkAccess(StringBuilder specialCheckWord) {
         int value = -1;
         try {
             value = databaseController.checkPass(specialCheckWord);
