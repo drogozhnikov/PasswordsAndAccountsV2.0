@@ -3,9 +3,12 @@ package panda.controllers.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import panda.models.Account;
+import panda.utils.cryption.AesCrypt;
 import panda.utils.cryption.Сipher;
 
 import javax.crypto.Cipher;
+import java.util.ArrayList;
 
 public class CryptionController {
 
@@ -33,8 +36,23 @@ public class CryptionController {
     }
 
     //return special phrase encrypted by inputWord.
-    public StringBuilder getSpecialCheckWord(){
+    public StringBuilder encryptPassPhrase(){
         return cipher.encrypt(cryptPassPhrase);
+    }
+
+    public StringBuilder getEncryptedInput(StringBuilder inputWord){
+        Сipher cipher = new AesCrypt();
+        cipher.init(inputWord);
+        return cipher.encrypt(cryptPassPhrase);
+    }
+
+    public ArrayList<Account> getDecryptedAccounts(ArrayList<Account> inputList){
+        ArrayList<Account> output = new ArrayList<>();
+        for(Account account: inputList){
+            account.setPassword(deCriptIt(account.getPassword()));
+            output.add(account);
+        }
+        return output;
     }
 
 

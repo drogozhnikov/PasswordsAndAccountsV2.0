@@ -18,6 +18,7 @@ public class GeneralPaneView extends BorderPane {
 
     private Label labelResolution = new Label("Resolution");
     private Button saveCurrentResolution = new Button("Save current resolution");
+    private Button restoreResolution = new Button("Restore standart resolution");
     private Separator separatorResolution = new Separator();
 
     private Label labelPasswordGeneration = new Label("Password Generation");
@@ -26,6 +27,10 @@ public class GeneralPaneView extends BorderPane {
     private Label labelStyles = new Label("Styles");
     private Separator separatorStyles = new Separator();
 
+    private Label labelBaseCommand = new Label(" Data Base");
+    private Button buttonClearBase = new Button(" Clear Base");
+    private Separator separatorBaseCommand = new Separator();
+
     public GeneralPaneView(OptionsService optionsService) {
         this.optionsService = optionsService;
 
@@ -33,6 +38,8 @@ public class GeneralPaneView extends BorderPane {
         initStyles();
         initPositions();
         initSaveResolution();
+        initRestoreResolution();
+        initDataBase();
     }
 
     private void initSizes() {
@@ -44,7 +51,7 @@ public class GeneralPaneView extends BorderPane {
         VBox centerGeneralbox = new VBox();
 
             VBox resolution = new VBox();
-            resolution.getChildren().addAll(labelResolution,saveCurrentResolution,separatorResolution);
+            resolution.getChildren().addAll(labelResolution,saveCurrentResolution,restoreResolution,separatorResolution);
             resolution.setAlignment(Pos.CENTER);
         centerGeneralbox.getChildren().add(resolution);
 
@@ -58,6 +65,11 @@ public class GeneralPaneView extends BorderPane {
             styles.setAlignment(Pos.CENTER);
         centerGeneralbox.getChildren().add(styles);
 
+            VBox dataBase = new VBox();
+            styles.getChildren().addAll(labelBaseCommand, buttonClearBase, separatorBaseCommand);
+            styles.setAlignment(Pos.CENTER);
+        centerGeneralbox.getChildren().add(dataBase);
+
         super.setCenter(centerGeneralbox);
     }
 
@@ -69,12 +81,24 @@ public class GeneralPaneView extends BorderPane {
         labelResolution.setFont(Font.font(family, fontPosture, headersSize));
         labelPasswordGeneration.setFont(Font.font(family, fontPosture, headersSize));
         labelStyles.setFont(Font.font(family, fontPosture, headersSize));
-
+        labelBaseCommand.setFont(Font.font(family, fontPosture, headersSize));
     }
 
     private void initSaveResolution() {
         saveCurrentResolution.setOnAction(event -> {
             optionsService.saveCurrentResolution();
+        });
+    }
+
+    private void initRestoreResolution() {
+        restoreResolution.setOnAction(event -> {
+            optionsService.resResolution();
+        });
+    }
+
+    private void initDataBase(){
+        buttonClearBase.setOnAction(event -> {
+            optionsService.clearBase();
         });
     }
 

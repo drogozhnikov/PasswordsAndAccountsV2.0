@@ -1,5 +1,6 @@
 package panda.controllers.views;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import panda.controllers.DataManager;
@@ -32,11 +33,11 @@ public class ContextMenuService {
 
     public void delete(){
         if(isSelectedExist()){
-            ButtonType temp = viewServicesManager.alert(
-                    "Warning",
+            boolean confirm = viewServicesManager.ask(
+                    "Removing",
                     "Do you really want to remove this line?",
                     ""); //TODO Row data in alert
-            if(temp.equals(ButtonType.OK)){
+            if(confirm){
                 dataManager.deleteAccount(viewServicesManager.getIdLastSelectedAccounts());
                 viewServicesManager.refresh();
             }
@@ -59,7 +60,7 @@ public class ContextMenuService {
         if(list.size()==1){
             return list.get(0);
         }else{
-            viewServicesManager.alert("Warning", "Multiple selections found. Please choose only one row.","");
+            viewServicesManager.alert(Alert.AlertType.WARNING, "Multiple selections found. Please choose only one row.","");
             return 0;
         }
     }
@@ -67,7 +68,7 @@ public class ContextMenuService {
     private boolean isSelectedExist(){
         if(viewServicesManager.getIdLastSelectedAccounts()==null ||
                 viewServicesManager.getIdLastSelectedAccounts().size()==0){
-            viewServicesManager.alert("Warning", "No items selected","");
+            viewServicesManager.alert(Alert.AlertType.WARNING, "No items selected","");
             return false;
         }
         return true;
@@ -81,7 +82,7 @@ public class ContextMenuService {
                     if(link!=null && !link.equals("")){
                         dataManager.startLink(link);
                     }else{
-                     viewServicesManager.alert("Sorry", "Looks like this row is missing a link.","");
+                     viewServicesManager.alert(Alert.AlertType.WARNING, "Looks like this row is missing a link.","");
                     }
                 }
         }

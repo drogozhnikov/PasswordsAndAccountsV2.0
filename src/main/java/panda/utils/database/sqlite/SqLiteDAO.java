@@ -16,6 +16,10 @@ public class SqLiteDAO implements Database {
 
     private Connection connection;
 
+    private final int allowed = 1;
+    private final int denied = 0;
+    private final int notExist = -1;
+
     public SqLiteDAO(String baseFilePath) throws SQLException {
         DriverManager.registerDriver(new org.sqlite.JDBC());
         this.connection = DriverManager.getConnection("jdbc:sqlite:" + baseFilePath);
@@ -344,43 +348,41 @@ public class SqLiteDAO implements Database {
                 String query = "select count(*) from appdata where cipher_word = \'" + input + "\'";
                 ResultSet resultCount = statement.executeQuery(query);
                 if (resultCount.getInt("count(*)") != 0) {
-                    return 1; //access OK
+                    return allowed; //1
                 }
-                return -1;//pass not Exist
+                return notExist;// -1
             } else {
-                return 0;//access Denied
+                return denied;// 0
             }
         }
     }
 
-    public void clearDataBase(StringBuilder pass) throws SQLException {
-        if (checkAccessPass(pass) == 1) {
-            try (PreparedStatement statement = this.connection.prepareStatement(
-                    "Vacuum;")) {
-                statement.execute();
-            }
-            try (PreparedStatement statement = this.connection.prepareStatement(
-                    "delete from accounts;")) {
-                statement.execute();
-            }
-            try (PreparedStatement statement = this.connection.prepareStatement(
-                    "delete from owners;")) {
-                statement.execute();
-            }
-            try (PreparedStatement statement = this.connection.prepareStatement(
-                    "UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'accounts';")) {
-                statement.execute();
-            }
-            try (PreparedStatement statement = this.connection.prepareStatement(
-                    "UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'owners';")) {
-                statement.execute();
-            }
-            try (PreparedStatement statement = this.connection.prepareStatement(
-                    "INSERT INTO owners('name')" +
-                            "VALUES(?)")) {
-                statement.setObject(1, "all");
-                statement.execute();
-            }
+    public void clearDataBase() throws SQLException {
+        try (PreparedStatement statement = this.connection.prepareStatement(
+                "Vacuum;")) {
+            statement.execute();
+        }
+        try (PreparedStatement statement = this.connection.prepareStatement(
+                "delete from accounts;")) {
+            statement.execute();
+        }
+        try (PreparedStatement statement = this.connection.prepareStatement(
+                "delete from owners;")) {
+            statement.execute();
+        }
+        try (PreparedStatement statement = this.connection.prepareStatement(
+                "UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'accounts';")) {
+            statement.execute();
+        }
+        try (PreparedStatement statement = this.connection.prepareStatement(
+                "UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'owners';")) {
+            statement.execute();
+        }
+        try (PreparedStatement statement = this.connection.prepareStatement(
+                "INSERT INTO owners('name')" +
+                        "VALUES(?)")) {
+            statement.setObject(1, "all");
+            statement.execute();
         }
     }
 

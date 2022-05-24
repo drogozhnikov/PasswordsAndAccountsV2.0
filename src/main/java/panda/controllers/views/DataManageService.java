@@ -1,10 +1,9 @@
 package panda.controllers.views;
 
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
-import panda.controllers.views.components.OwnersListService;
 import panda.models.Account;
 import panda.views.elements.DataManageView;
 import panda.views.elements.components.OwnersListView;
@@ -32,7 +31,7 @@ public class DataManageService {
     }
 
     public void addAction(Account account) {
-        dataManager.addAccount(account);
+        dataManager.insertAccount(account);
         viewServicesManager.refresh();
     }
 
@@ -56,7 +55,7 @@ public class DataManageService {
             }
         }
         if(!emptyfields.toString().equals("")){
-            viewServicesManager.alert("Warning!"," Not enough data",emptyfields.toString());
+            viewServicesManager.alert(Alert.AlertType.WARNING," Not enough data",emptyfields.toString());
             return false;
         }
         return true;

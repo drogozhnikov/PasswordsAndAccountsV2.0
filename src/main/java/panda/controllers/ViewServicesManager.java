@@ -1,7 +1,8 @@
 package panda.controllers;
 
+
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+
 import panda.controllers.views.*;
 import panda.controllers.views.components.InfoService;
 import panda.controllers.views.components.OwnersListService;
@@ -9,11 +10,11 @@ import panda.controllers.views.options.OptionsService;
 import panda.models.Account;
 import panda.views.PandaRootView;
 import panda.views.elements.HelloPandaView;
+import panda.views.elements.additional.PandaAlert;
 import panda.views.elements.options.OptionsView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
 
 public class ViewServicesManager {
 
@@ -31,6 +32,8 @@ public class ViewServicesManager {
 
     private DataManager dataManager;
     private StageManager stageManager;
+
+    private PandaAlert alert = new PandaAlert();
 
     private ArrayList<Integer> lastSelectedAccount;
 
@@ -122,15 +125,16 @@ public class ViewServicesManager {
         stageManager.showOptionsScene();
     }
 
-    public ButtonType alert(String title, String headerText, String contextText) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(headerText);
-        alert.setContentText(contextText);
+    public void alert(Alert.AlertType type, String headerText, String contextText) {
+        alert.show(type, headerText, contextText);
+    }
 
-        Optional<ButtonType> option = alert.showAndWait();
+    public boolean ask(String title, String headerText, String contextText) {
+        return alert.ask(title, headerText, contextText);
+    }
 
-        return option.get();
+    public StringBuilder askPass(String title, String headerText) {
+        return alert.askWithPass(title, headerText);
     }
 
     public void setLastSelectedAccounts(ArrayList<Integer> input){

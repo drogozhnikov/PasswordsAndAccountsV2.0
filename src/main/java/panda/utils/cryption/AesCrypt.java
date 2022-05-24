@@ -53,9 +53,9 @@ public class AesCrypt implements Сipher {
         try {
             result = Base64.encodeBase64String(cipher.doFinal(input.toString().getBytes()));
         } catch (IllegalBlockSizeException e) {
-            logger.error("AesCrypt: IllegalBlockSizeException");
+            logger.error("IllegalBlockSizeException");
         } catch (BadPaddingException e) {
-            logger.error("AesCrypt: BadPaddingException");
+            logger.error("BadPaddingException");
         }
         return new StringBuilder(result);
     }
@@ -65,9 +65,9 @@ public class AesCrypt implements Сipher {
         try {
             decrypterBytes = decrypter.doFinal(Base64.decodeBase64(input.toString()));
         } catch (IllegalBlockSizeException e) {
-            logger.error("AesCrypt: IllegalBlockSizeException");
+            logger.error("IllegalBlockSizeException");
         } catch (BadPaddingException e) {
-            logger.error("AesCrypt: BadPaddingException");
+            logger.error("BadPaddingException. The wrong key is being used");
         }
         return new StringBuilder(new String(decrypterBytes));
     }

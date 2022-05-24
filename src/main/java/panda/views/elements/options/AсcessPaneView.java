@@ -51,7 +51,9 @@ public class AсcessPaneView extends BorderPane {
         initPositions();
         initStyles();
         initSaveButton();
-        initEnterAction();
+        initEnterAction(inputNewPassword);
+        initEnterAction(inputTempPassword);
+        initEnterAction(inputOldPassword);
 
     }
 
@@ -99,17 +101,19 @@ public class AсcessPaneView extends BorderPane {
                     new StringBuilder(inputTempPassword.getText()),
                     new StringBuilder(inputNewPassword.getText())
             );
+            clearFields();
         });
     }
 
-    private void initEnterAction(){
-        super.setOnKeyReleased(event -> {
+    private void initEnterAction(LimitedPassField input){
+        input.setOnKeyReleased(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 optionsService.saveAccessAction(
                         new StringBuilder(inputOldPassword.getText()),
                         new StringBuilder(inputTempPassword.getText()),
                         new StringBuilder(inputNewPassword.getText())
                 );
+                clearFields();
             }
         });
     }
@@ -140,6 +144,12 @@ public class AсcessPaneView extends BorderPane {
     private void setLabelMaxSize(Label input) {
         input.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(input, Priority.ALWAYS);
+    }
+
+    private void clearFields(){
+        inputNewPassword.setText("");
+        inputTempPassword.setText("");
+        inputOldPassword.setText("");
     }
 
     public void setInfoText(String input, Color color){

@@ -109,8 +109,8 @@ public class DatabaseController {
         database.updateAppDataResolution(width,height);
     }
 
-    public void clear(StringBuilder pass) throws SQLException {
-        database.clearDataBase(pass);
+    public void clear() throws SQLException {
+        database.clearDataBase();
     }
 
 

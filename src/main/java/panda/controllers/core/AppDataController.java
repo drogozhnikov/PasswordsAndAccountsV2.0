@@ -19,10 +19,10 @@ public class AppDataController {
         refreshAppData();
     }
 
-    public int checkAccess(StringBuilder specialCheckWord) {
+    public int checkAccess(StringBuilder inputPassword) {
         int value = -1;
         try {
-            value = databaseController.checkPass(specialCheckWord);
+            value = databaseController.checkPass(inputPassword);
         } catch (SQLException pass) {
             logger.error("DataBase check pass exception", pass);
         }

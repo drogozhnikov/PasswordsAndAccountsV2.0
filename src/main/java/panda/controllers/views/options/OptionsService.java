@@ -1,5 +1,6 @@
 package panda.controllers.views.options;
 
+import javafx.scene.control.Alert;
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
 import panda.views.elements.options.OptionsView;
@@ -33,32 +34,36 @@ public class OptionsService {
     }
 
     public void saveAccessAction(StringBuilder inputOld, StringBuilder inputTemp, StringBuilder inputNew) {
-        if (inputOld != null && inputTemp != null && inputNew != null) {
-            if (!inputOld.equals("") && !inputTemp.equals("") && !inputNew.equals("")) {
-                int acess = 0;
-                if (inputOld.toString().equals(inputTemp.toString())) {
-                    acess = dataManager.checkAccess(inputOld);
-                }
-                if (acess == 1) {
-                    dataManager.reinitAccessPass(new StringBuilder(inputNew));
-                } else {
-                    viewServicesManager.alert(
-                            "Access Error",
-                            "Access denied",
-                            "please check the correctness of the entered data");
-                }
-            }else{
+        if (!inputOld.toString().equals("") && !inputTemp.toString().equals("") && !inputNew.toString().equals("")) {
+            int acess = 0;
+            if (inputOld.toString().equals(inputTemp.toString())) {
+                acess = dataManager.checkAccess(inputOld);
+            }
+            if (acess == 1) {
+                dataManager.reinitAccessPass(new StringBuilder(inputNew));
+            } else {
                 viewServicesManager.alert(
-                        "Access Info",
-                        "Imposible Action",
+                        Alert.AlertType.ERROR,
+                        "Access denied",
                         "please check the correctness of the entered data");
             }
         }
-
     }
 
     public void saveCurrentResolution() {
         dataManager.saveCurrentResolution();
+    }
+
+    public void resResolution() {
+        dataManager.restoreResolution();
+    }
+
+    public void clearBase() {
+        StringBuilder pass = viewServicesManager.askPass("Changing Password",
+                "By confirming the action, you will completely and irrevocably clear the database");
+        if (!pass.equals(new StringBuilder(""))) {
+            dataManager.clearBase(pass);
+        }
     }
 
 }

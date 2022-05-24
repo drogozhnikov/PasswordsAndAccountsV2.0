@@ -1,5 +1,6 @@
 package panda.controllers;
 
+import javafx.scene.control.Alert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import panda.controllers.core.*;
@@ -56,17 +57,35 @@ public class DataManager {
         this.viewServicesManager = viewServicesManager;
     }
 
-    public void addAccount(Account account) {
+    public void insertAccount(Account account) {
         try {
             if (!databaseController.isPasswordExist(cryptionController.cryptIt(account.getPassword()))) {
                 account.setPassword(cryptionController.cryptIt(new StringBuilder(account.getPassword()))); // CRYPTION!
                 databaseController.insertAccount(account);
             } else {
-                viewServicesManager.alert("Warning!", "Same account already exist", "");
+                viewServicesManager.alert(Alert.AlertType.WARNING,
+                        "Same account already exist",
+                        "");
             }
         } catch (SQLException inserting) {
             logger.error("Error while inserting new account");
-            inserting.printStackTrace();
+            viewServicesManager.alert(Alert.AlertType.WARNING,
+                    "Same account already exist",
+                    "");
+        }
+    }
+
+    private void insertAndCryptList(ArrayList<Account> inputList) {
+        try {
+            for (Account account : inputList) {
+                account.setPassword(cryptionController.cryptIt(account.getPassword()));
+                databaseController.insertAccount(account);
+            }
+        } catch (SQLException insert) {
+            logger.error("Error while inserting account");
+            viewServicesManager.alert(Alert.AlertType.ERROR,
+                    "Error while inserting account",
+                    "");
         }
     }
 
@@ -120,7 +139,7 @@ public class DataManager {
 
     public int checkAccess(StringBuilder input) {
         cryptionController.init(new AesCrypt(), input);
-        return appDataController.checkAccess(cryptionController.getSpecialCheckWord());
+        return appDataController.checkAccess(cryptionController.encryptPassPhrase());
     }
 
     public AppData getAppData() {
@@ -198,36 +217,71 @@ public class DataManager {
         }
     }
 
-    public void reinitAccessPass(StringBuilder inputNewPass) {
-        ArrayList<Account> decryptedAccounts = new ArrayList<>();
-        ArrayList<Account> tempAccounts = new ArrayList<>();
-            for(Account account: selectAccounts()){
-                account.setPassword(cryptionController.deCriptIt(account.getPassword()));
-                decryptedAccounts.add(account);
-            }
-         int updateStatus = updatePass(inputNewPass);
-            if(updateStatus==1){
-                   for (Account account:decryptedAccounts){
-                       account.setPassword(cryptionController.cryptIt(account.getPassword()));
-                       tempAccounts.add(account);
-                       //TODO save to base
-                   }
-                //TODO refresh and check
-            }else{
-                logger.warn("Update warning", "Update password unsuccessfull");
-            }
+    public void restoreResolution() {
+        final int width = 900;
+        final int height = 600;
+        try {
+            databaseController.updateAppDataResolution(width, height);
+            logger.info("Resolution update succesfully");
+        } catch (SQLException e) {
+            logger.error("Error while updating resolution");
+            e.printStackTrace();
+        }
     }
 
-    private int updatePass(StringBuilder inputNewPass){
+    public void reinitAccessPass(StringBuilder inputNewPass) {
+        ArrayList<Account> decryptedAccounts = cryptionController.getDecryptedAccounts(selectAccounts());
+        int updatePassStatus = updatePass(inputNewPass);
+        if (decryptedAccounts.size() > 0) {
+            if (updatePassStatus == 1) {
+                clearBase(cryptionController.getEncryptedInput(inputNewPass));
+                cryptionController.init(new AesCrypt(), inputNewPass);
+                insertAndCryptList(decryptedAccounts);
+
+                logger.info("Password changing and recrypting accounts successfull");
+                viewServicesManager.alert(Alert.AlertType.INFORMATION,
+                        "Password changing and recrypting accounts successfull",
+                        "");
+            } else {
+                logger.warn("Password changing error");
+                viewServicesManager.alert(Alert.AlertType.INFORMATION,
+                        "Password changing error",
+                        "");
+            }
+        } else {
+            if (updatePassStatus == 1) {
+                viewServicesManager.alert(Alert.AlertType.INFORMATION, "Update password successfull", "");
+            } else {
+                viewServicesManager.alert(Alert.AlertType.WARNING, "Update password error", "");
+            }
+        }
+    }
+
+    private int updatePass(StringBuilder inputNewPass) {
         int result = -1;
-        try{
-            cryptionController.init(new AesCrypt(), inputNewPass);
-            databaseController.updatePass(cryptionController.getSpecialCheckWord());
-            result = appDataController.checkAccess(cryptionController.getSpecialCheckWord());
-        }catch (SQLException update){
+        try {
+            StringBuilder tempInputPass = cryptionController.getEncryptedInput(inputNewPass);
+            databaseController.updatePass(tempInputPass);
+            result = appDataController.checkAccess(tempInputPass);
+        } catch (SQLException update) {
             logger.warn("Update pass exception");
         }
         return result;
+    }
+
+    public void clearBase(StringBuilder input) {
+        int result = checkAccess(input);
+        if (result == 1) {
+            try {
+                //TODO backupDatabaseBeforeClear
+                databaseController.clear();
+                logger.error("Clear base successfull");
+            } catch (SQLException clear) {
+                logger.error("Clear base exception");
+            }
+        } else {
+            logger.warn("incorrect access. clear base");
+        }
     }
 
 }
