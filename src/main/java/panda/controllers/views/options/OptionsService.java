@@ -34,19 +34,20 @@ public class OptionsService {
     }
 
     public void saveAccessAction(StringBuilder inputOld, StringBuilder inputTemp, StringBuilder inputNew) {
-        if (!inputOld.toString().equals("") && !inputTemp.toString().equals("") && !inputNew.toString().equals("")) {
-            int acess = 0;
-            if (inputOld.toString().equals(inputTemp.toString())) {
-                acess = dataManager.checkAccess(inputOld);
-            }
-            if (acess == 1) {
-                dataManager.reinitAccessPass(new StringBuilder(inputNew));
+        if (!inputOld.toString().equals("") && !inputNew.toString().equals("") && !inputTemp.toString().equals("")) {
+            if (inputNew.toString().equals(inputTemp.toString())) {
+                dataManager.reinitAccessPass(new StringBuilder(inputNew),new StringBuilder(inputOld));
             } else {
                 viewServicesManager.alert(
-                        Alert.AlertType.ERROR,
+                        Alert.AlertType.WARNING,
                         "Access denied",
-                        "please check the correctness of the entered data");
+                        "Passwords missmatch");
             }
+        }else {
+            viewServicesManager.alert(
+                    Alert.AlertType.WARNING,
+                    "Access denied",
+                    "Empty fields detected");
         }
     }
 

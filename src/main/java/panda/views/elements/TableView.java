@@ -58,7 +58,7 @@ public class TableView extends javafx.scene.control.TableView<PandaAccount> {
 
     private void selectCells(ListChangeListener.Change<? extends TablePosition> c) {
         c.getList().forEach(tablePosition -> {
-            tableService.selectCells();
+            tableService.selectCells(tablePosition.getRow(), tablePosition.getColumn());
         });
     }
 

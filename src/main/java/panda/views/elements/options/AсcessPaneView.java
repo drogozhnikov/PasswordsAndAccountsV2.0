@@ -5,7 +5,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.Separator;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -25,7 +24,7 @@ public class AсcessPaneView extends BorderPane {
     private Label lableInfo = new Label("");
 
     private Label labelOldPassword = new Label("--Your old password: ");
-    private Label labelTempPassword = new Label("--Repeat old password: ");
+    private Label labelTempPassword = new Label("--Repeat new password: ");
     private Label labelNewPassword = new Label("--Your new password: ");
 
     private int passLimit = 20;
@@ -74,15 +73,15 @@ public class AсcessPaneView extends BorderPane {
 
     private void initPositions() {
         boxOldPass.getChildren().addAll(labelOldPassword, inputOldPassword);
-        boxTempPass.getChildren().addAll(labelTempPassword, inputTempPassword);
         boxNewPass.getChildren().addAll(labelNewPassword, inputNewPassword);
+        boxTempPass.getChildren().addAll(labelTempPassword, inputTempPassword);
 
-        fullBox.getChildren().addAll(boxOldPass, boxTempPass, boxNewPass, saveButton);
+        fullBox.getChildren().addAll(boxOldPass, boxNewPass, boxTempPass, saveButton);
 
         setMargin(fullBox, new Insets(spacing));
 
         VBox accessBox = new VBox();
-        accessBox.getChildren().addAll(lableHeader,fullBox);
+        accessBox.getChildren().addAll(lableHeader, fullBox);
         accessBox.setAlignment(Pos.TOP_CENTER);
 
         super.setCenter(accessBox);
@@ -105,7 +104,7 @@ public class AсcessPaneView extends BorderPane {
         });
     }
 
-    private void initEnterAction(LimitedPassField input){
+    private void initEnterAction(LimitedPassField input) {
         input.setOnKeyReleased(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 optionsService.saveAccessAction(
@@ -146,13 +145,13 @@ public class AсcessPaneView extends BorderPane {
         HBox.setHgrow(input, Priority.ALWAYS);
     }
 
-    private void clearFields(){
+    private void clearFields() {
         inputNewPassword.setText("");
         inputTempPassword.setText("");
         inputOldPassword.setText("");
     }
 
-    public void setInfoText(String input, Color color){
+    public void setInfoText(String input, Color color) {
         lableHeader.setTextFill(color);
         lableHeader.setText(input);
     }

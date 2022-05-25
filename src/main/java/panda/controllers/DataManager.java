@@ -1,8 +1,11 @@
 package panda.controllers;
 
 import javafx.scene.control.Alert;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.ls.LSOutput;
 import panda.controllers.core.*;
 import panda.models.Account;
 import panda.models.AppData;
@@ -75,20 +78,6 @@ public class DataManager {
         }
     }
 
-    private void insertAndCryptList(ArrayList<Account> inputList) {
-        try {
-            for (Account account : inputList) {
-                account.setPassword(cryptionController.cryptIt(account.getPassword()));
-                databaseController.insertAccount(account);
-            }
-        } catch (SQLException insert) {
-            logger.error("Error while inserting account");
-            viewServicesManager.alert(Alert.AlertType.ERROR,
-                    "Error while inserting account",
-                    "");
-        }
-    }
-
     public void updateAccount(Account account) {
         try {
             databaseController.updateFullAccount(account);
@@ -114,7 +103,7 @@ public class DataManager {
         Account account = null;
         try {
             account = databaseController.selectAccountById(id);
-            StringBuilder uncriptedPass = cryptionController.deCriptIt(account.getPassword());
+            StringBuilder uncriptedPass = cryptionController.deCryptIt(account.getPassword());
             account.setPassword(uncriptedPass);
         } catch (SQLException | ParseException e) {
             logger.error("Find Account by id Error");
@@ -137,9 +126,23 @@ public class DataManager {
         return pathFinder.findPath(fileName);
     }
 
-    public int checkAccess(StringBuilder input) {
-        cryptionController.init(new AesCrypt(), input);
-        return appDataController.checkAccess(cryptionController.encryptPassPhrase());
+    public boolean checkAccess(StringBuilder cryptedInput) {
+        try {
+            return databaseController.checkPass(cryptedInput);
+        } catch (SQLException acess) {
+            logger.error("DataBase check pass exception");
+        }
+        return false;
+    }
+
+    public boolean initCheckAccess(StringBuilder input) {
+        try {
+            cryptionController.init(new AesCrypt(), input);
+            return databaseController.checkPass(cryptionController.getEncryptedInput(input));
+        } catch (SQLException acess) {
+            logger.error("DataBase check pass exception");
+        }
+        return false;
     }
 
     public AppData getAppData() {
@@ -152,7 +155,7 @@ public class DataManager {
             ArrayList<PandaAccount> pandaAccountsList = databaseController.selectPandas(
                     databaseController.getOwnerName(appDataController.getAppData().getOwner()));
             for (PandaAccount panda : pandaAccountsList) {
-                panda.setTableFieldPassword(cryptionController.deCriptIt(
+                panda.setTableFieldPassword(cryptionController.deCryptIt(
                         new StringBuilder(panda.getTableFieldPassword())).toString());
                 output.add(panda);
             }
@@ -229,49 +232,70 @@ public class DataManager {
         }
     }
 
-    public void reinitAccessPass(StringBuilder inputNewPass) {
-        ArrayList<Account> decryptedAccounts = cryptionController.getDecryptedAccounts(selectAccounts());
-        int updatePassStatus = updatePass(inputNewPass);
-        if (decryptedAccounts.size() > 0) {
-            if (updatePassStatus == 1) {
-                clearBase(cryptionController.getEncryptedInput(inputNewPass));
-                cryptionController.init(new AesCrypt(), inputNewPass);
-                insertAndCryptList(decryptedAccounts);
+    public void reinitAccessPass(StringBuilder inputNewPass, StringBuilder inputOldPass) {
+        ArrayList<Account> backupDbAccounts = selectAccounts();
+        ArrayList<Account> databaseAccounts = selectAccounts();
+        cryptionController.decryptAccounts(databaseAccounts);
+        final StringBuilder cryptedNewPass = cryptionController.getEncryptedInput(inputNewPass);
+        final StringBuilder cryptedOldPass = cryptionController.getEncryptedInput(inputOldPass);
 
-                logger.info("Password changing and recrypting accounts successfull");
-                viewServicesManager.alert(Alert.AlertType.INFORMATION,
-                        "Password changing and recrypting accounts successfull",
-                        "");
-            } else {
-                logger.warn("Password changing error");
-                viewServicesManager.alert(Alert.AlertType.INFORMATION,
-                        "Password changing error",
-                        "");
+        if (checkAccess(cryptedOldPass)) {
+            try {
+                if(updatePass(cryptedNewPass, cryptedOldPass)){
+                    clearBase(cryptedNewPass);
+                    initCheckAccess(inputNewPass);
+                    if(checkAccess(cryptedNewPass) && backupDbAccounts.size()>0){
+                        for (Account account : databaseAccounts) {
+                            account.setPassword(cryptionController.cryptIt(account.getPassword()));
+                            databaseController.insertAccount(account);
+                        }
+                        viewServicesManager.refresh();
+                    }
+                }
+            } catch (SQLException insert) {
+                restore(cryptedOldPass, backupDbAccounts);
+                logger.error("Database insert expeption while reencrypting");
             }
         } else {
-            if (updatePassStatus == 1) {
-                viewServicesManager.alert(Alert.AlertType.INFORMATION, "Update password successfull", "");
-            } else {
-                viewServicesManager.alert(Alert.AlertType.WARNING, "Update password error", "");
-            }
+            logger.warn("Access to change password denied");
+            viewServicesManager.alert(Alert.AlertType.WARNING, "Access to change password denied", "");
         }
+
+        if(backupDbAccounts.size()>0){
+            String backup = backupDbAccounts.get(0).getName();
+            String updated = backupDbAccounts.get(0).getName();
+
+            System.out.println("Backup: "+ backup + " pass: " + backupDbAccounts.get(0).getPassword());
+            System.out.println("Updated: "+ updated + " pass: " + selectAccounts().get(0).getPassword());
+        }
+        System.out.println("Old pass: " + inputOldPass + " Crypted: " + cryptedOldPass + " " + checkAccess(cryptedOldPass));
+        System.out.println("New pass: " + inputNewPass + " Crypted: " + cryptedNewPass + " " + checkAccess(cryptedNewPass));
+
     }
 
-    private int updatePass(StringBuilder inputNewPass) {
-        int result = -1;
+    private void restore(StringBuilder cryptedPass, ArrayList<Account> cryptedAccountsList) {
         try {
-            StringBuilder tempInputPass = cryptionController.getEncryptedInput(inputNewPass);
-            databaseController.updatePass(tempInputPass);
-            result = appDataController.checkAccess(tempInputPass);
-        } catch (SQLException update) {
-            logger.warn("Update pass exception");
+            for (Account account : cryptedAccountsList) {
+                databaseController.insertAccount(account);
+            }
+            //TODO resrote pass
+        } catch (SQLException insert) {
+            logger.error("Restore db buffer exception");
         }
-        return result;
     }
 
-    public void clearBase(StringBuilder input) {
-        int result = checkAccess(input);
-        if (result == 1) {
+    private boolean updatePass(StringBuilder cryptedNewPass, StringBuilder cryptedOldPass) {
+        try{
+            logger.info("updatePass Sucessfull");
+            return databaseController.updatePass(cryptedNewPass, cryptedOldPass);
+        }catch (SQLException passUpdate){
+            logger.error("Password update Error");
+        }
+        return false;
+    }
+
+    public void clearBase(StringBuilder cryptedInput) {
+        if (checkAccess(cryptedInput)) {
             try {
                 //TODO backupDatabaseBeforeClear
                 databaseController.clear();
@@ -280,7 +304,7 @@ public class DataManager {
                 logger.error("Clear base exception");
             }
         } else {
-            logger.warn("incorrect access. clear base");
+            logger.warn("incorrect access. Base cannot be cleared");
         }
     }
 

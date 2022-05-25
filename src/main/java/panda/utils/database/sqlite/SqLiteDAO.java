@@ -330,13 +330,17 @@ public class SqLiteDAO implements Database {
 
     // 1-pass updated, 0 pass inserted, -1 - wrong old pass
     @Override
-    public void updateExistedAppPass(StringBuilder newPass) throws SQLException {
-        try (PreparedStatement statement = this.connection.prepareStatement(
-                "UPDATE appdata SET cipher_word = ? where id = 1"
-        )) {
-            statement.setObject(1, newPass.toString());
-            statement.executeUpdate();
+    public int updateExistedAppPass(StringBuilder newPass, StringBuilder oldPass) throws SQLException {
+        int checkPass = checkAccessPass(oldPass);
+        if(checkPass == allowed){
+            try (PreparedStatement statement = this.connection.prepareStatement(
+                    "UPDATE appdata SET cipher_word = ? where id = 1"
+            )) {
+                statement.setObject(1, newPass.toString());
+                statement.executeUpdate();
+            }
         }
+        return checkPass;
     }
 
     //-1 pass not exist. 0 if not matches. 1 if exist

@@ -85,16 +85,24 @@ public class DatabaseController {
         database.updateAppData(input);
     }
 
-    public int checkPass(StringBuilder input) throws SQLException {
-        return database.checkAccessPass(input);
+    public boolean checkPass(StringBuilder input) throws SQLException {
+        int result = database.checkAccessPass(input);
+        if(result == 1){
+            return true;
+        }
+        return false;
     }
 
     public boolean isPasswordExist(StringBuilder input) throws SQLException {
         return database.isPasswordExist(input);
     }
 
-    public void updatePass(StringBuilder newPass) throws SQLException {
-        database.updateExistedAppPass(newPass);
+    public boolean updatePass(StringBuilder cryptedNewPass, StringBuilder cryptedOldPass) throws SQLException {
+        int result = database.updateExistedAppPass(cryptedNewPass,cryptedOldPass);
+        if(result == 1){
+            return true;
+        }
+        return false;
     }
 
     public String getOwnerName(int id) throws SQLException {

@@ -31,7 +31,7 @@ public interface Database {
     AppData selectAppData() throws SQLException;
     void updateAppData(AppData input) throws SQLException;
 
-    void updateExistedAppPass(StringBuilder newPass)throws SQLException;
+    int updateExistedAppPass(StringBuilder newPass, StringBuilder oldPass)throws SQLException;
 
     int checkAccessPass(StringBuilder input) throws SQLException;
 

@@ -26,26 +26,11 @@ public class HelloPandaService {
     }
 
     public void confirm(String input) {
-        int result = dataManager.checkAccess(new StringBuilder(input));
-
-        final int accessConfirmed = 1;
-        final int accessDenied = -1;
-        final int passNotFount = 0;
-
-        switch (result) {
-            case accessConfirmed: {
-                viewServicesManager.initPandaScene();
-                viewServicesManager.showPandaScene();
-                break;
-            }
-            case accessDenied: {
-                logger.warn("Access Denied");
-                break;
-            }
-            case passNotFount: {
-                logger.warn("Password not exist");
-                break;
-            }
+        if (dataManager.initCheckAccess(new StringBuilder(input))) {
+            viewServicesManager.initPandaScene();
+            viewServicesManager.showPandaScene();
+        }else{
+            logger.warn("Access Denied");
         }
     }
 

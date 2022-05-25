@@ -148,4 +148,8 @@ public class ViewServicesManager {
         return stageManager.getStageDimension();
     }
 
+    public void setInfoText(StringBuilder input){
+        infoService.setInfoText(input);
+    }
+
 }

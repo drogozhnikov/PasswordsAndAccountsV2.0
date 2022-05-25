@@ -2,12 +2,10 @@ package panda.controllers.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import panda.models.Account;
 import panda.utils.cryption.AesCrypt;
 import panda.utils.cryption.Сipher;
 
-import javax.crypto.Cipher;
 import java.util.ArrayList;
 
 public class CryptionController {
@@ -31,7 +29,7 @@ public class CryptionController {
         return cipher.encrypt(input);
     }
 
-    public StringBuilder deCriptIt(StringBuilder input){
+    public StringBuilder deCryptIt(StringBuilder input){
         return cipher.decrypt(input);
     }
 
@@ -46,14 +44,9 @@ public class CryptionController {
         return cipher.encrypt(cryptPassPhrase);
     }
 
-    public ArrayList<Account> getDecryptedAccounts(ArrayList<Account> inputList){
-        ArrayList<Account> output = new ArrayList<>();
+    public void decryptAccounts(ArrayList<Account> inputList){
         for(Account account: inputList){
-            account.setPassword(deCriptIt(account.getPassword()));
-            output.add(account);
+            account.setPassword(deCryptIt(account.getPassword()));
         }
-        return output;
     }
-
-
 }
