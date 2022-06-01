@@ -158,7 +158,7 @@ public class DataManageView extends BorderPane {
 
     private void initOwnersList(){
             ownersListView.setOnAction(event -> {
-                inputOwner.setText(ownersListView.getValue());
+                inputOwner.setText(ownersListView.getValue().getName());
             });
     }
 
@@ -207,7 +207,7 @@ public class DataManageView extends BorderPane {
         if(inputOwner.getText()!=null && !inputOwner.getText().equals("")){
             account.setOwner(inputOwner.getText());
         }else{
-            account.setOwner(ownersListView.getValue());
+            account.setOwner(ownersListView.getValue().getName());
         }
 
         return account;

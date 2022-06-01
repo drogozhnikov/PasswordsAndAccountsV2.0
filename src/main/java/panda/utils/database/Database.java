@@ -2,6 +2,7 @@ package panda.utils.database;
 
 import panda.models.Account;
 import panda.models.AppData;
+import panda.models.Owner;
 import panda.models.PandaAccount;
 
 import java.sql.SQLException;
@@ -15,7 +16,7 @@ public interface Database {
     ArrayList<PandaAccount> selectPandas(String ownerName) throws SQLException;
     ArrayList<PandaAccount> search(String searchValue, String ownerValue) throws SQLException;
 
-    ArrayList<String> selectOwnerList() throws SQLException;
+    ArrayList<Owner>  selectOwnerList() throws SQLException;
 
     Account selectAccountById(int id) throws SQLException, ParseException;
     PandaAccount selectPandaById(int id) throws SQLException;

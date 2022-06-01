@@ -1,21 +1,38 @@
 package panda.views.elements.components;
 
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.util.Callback;
+import panda.controllers.views.components.OwnersListService;
+import panda.models.Owner;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class OwnersListView extends ComboBox<String> {
+public class OwnersListView extends ChoiceBox<Owner> {
 
-    public OwnersListView() {
+    private OwnersListService ownersListService;
 
+    public OwnersListView(OwnersListService ownersListService) {
+        this.ownersListService = ownersListService;
+        initOwnersList();
     }
 
-    public void refresh(ArrayList<String> owners){
+    public void refresh(ArrayList<Owner> owners){
+        Collections.sort(owners);
         super.getItems().clear();
-        for (String s : owners) {
+        for (Owner s : owners) {
             super.getItems().add(s);
-            super.getSelectionModel().select(0);
         }
     }
 
+    public void initOwnersList(){
+        super.setOnAction(event -> {
+            if(super.getValue()!= null){
+                ownersListService.setLastSelectedOwner(super.getValue());
+            }
+        });
+    }
 }

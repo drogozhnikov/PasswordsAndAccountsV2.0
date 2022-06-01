@@ -2,6 +2,7 @@ package panda.controllers.views.components;
 
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
+import panda.models.Owner;
 import panda.views.elements.components.OwnersListView;
 
 import java.util.ArrayList;
@@ -14,29 +15,36 @@ public class OwnersListService {
     private OwnersListView ownersListView;
     private OwnersListView ownersListClearView;
 
-    private int lastSelectedOwner = 1;
-
     public OwnersListService(ViewServicesManager viewServicesManager, DataManager dataManager) {
         this.viewServicesManager = viewServicesManager;
         this.dataManager = dataManager;
     }
 
     public void init(){
-        ownersListClearView = new OwnersListView();
-        ownersListView = new OwnersListView();
+        ownersListClearView = new OwnersListView(this);
+        ownersListView = new OwnersListView(this);
     }
 
     public void refresh(){
-        ownersListView.refresh(dataManager.getOwnerList());
-        ownersListClearView.getSelectionModel().selectFirst();
+        ArrayList<Owner> ownersList = dataManager.getOwnerList();
+        ownersListView.refresh(ownersList);
         refreshWithoutItemAll();
     }
 
     public void refreshWithoutItemAll(){
-        ArrayList<String> ownersList = dataManager.getOwnerList();
-            ownersList.remove("all");
-        ownersListClearView.getSelectionModel().selectLast();
-        ownersListClearView.refresh(ownersList);
+        ArrayList<Owner> ownersList = dataManager.getOwnerList();
+        ArrayList<Owner> ownersListClear = new ArrayList<>();
+            for(Owner owner:ownersList){
+                if(!owner.getName().equals("all")){
+                    ownersListClear.add(owner);
+                }
+            }
+        ownersListClearView.refresh(ownersListClear);
+    }
+
+    public void setLastSelectedOwner(Owner selectedOwner){
+        dataManager.setLastSelectedOwner(selectedOwner);
+        viewServicesManager.refresh();
     }
 
     public OwnersListView getOwnersListView(){

@@ -5,24 +5,25 @@ public class AppData {
     //all properties are selected and saved in base
     private String passGenPattern = "Aaaaaaaaaa11111";
     private String theme = "style1.css";
-    private int owner = 1;
     private int screenWidth = 900;
     private int screenHeight = 700;
+    private Owner selectedOwner = new Owner();
 
     //specials
     private int helloScreenWidth = 500;
     private int helloScreenHeight = 100;
     private boolean hidePass = true;
 
-    public AppData(String passGenPattern, String theme, int owner, int screenWidth, int screenHeight) {
+    public AppData(String passGenPattern, String theme, int screenWidth, int screenHeight, Owner selectedOwner) {
         this.passGenPattern = passGenPattern;
         this.theme = theme;
-        this.owner = owner;
+        this.selectedOwner = selectedOwner;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
     }
 
-    public AppData(){}
+    public AppData() {
+    }
 
     public String getPassGenPattern() {
         return passGenPattern;
@@ -32,8 +33,8 @@ public class AppData {
         return theme;
     }
 
-    public int getOwner() {
-        return owner;
+    public Owner getSelectedOwner() {
+        return selectedOwner;
     }
 
     public int getScreenWidth() {
@@ -61,7 +62,6 @@ public class AppData {
     }
 
 
-
     public void setPassGenPattern(String passGenPattern) {
         this.passGenPattern = passGenPattern;
     }
@@ -70,8 +70,8 @@ public class AppData {
         this.theme = theme;
     }
 
-    public void setOwner(int owner) {
-        this.owner = owner;
+    public void setSelectedOwner(Owner selectedOwner) {
+        this.selectedOwner = selectedOwner;
     }
 
     public void setScreenWidth(int screenWidth) {

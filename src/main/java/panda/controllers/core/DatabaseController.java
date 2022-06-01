@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import panda.models.Account;
 import panda.models.AppData;
+import panda.models.Owner;
 import panda.models.PandaAccount;
 import panda.utils.database.Database;
 import panda.utils.database.sqlite.SqLiteDAO;
@@ -48,8 +49,8 @@ public class DatabaseController {
         return founded;
     }
 
-    public ArrayList<String> selectOwnerList() throws SQLException {
-        ArrayList<String> owners = database.selectOwnerList();
+    public ArrayList<Owner> selectOwnerList() throws SQLException {
+        ArrayList<Owner> owners = database.selectOwnerList();
         Collections.sort(owners);
         return owners;
     }
@@ -110,7 +111,10 @@ public class DatabaseController {
     }
 
     public int getOwnerId(String name) throws SQLException {
-        return database.getOwnerIndex(name);
+        if(name!=null){
+            return database.getOwnerIndex(name);
+        }
+        return 0;
     }
 
     public void updateAppDataResolution(int width, int height) throws SQLException {

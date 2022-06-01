@@ -3,6 +3,7 @@ package panda.controllers.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import panda.models.AppData;
+import panda.models.Owner;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -58,6 +59,25 @@ public class AppDataController {
 
         logger.info("Updating Resolution to: " + appData.getScreenWidth() + "x" + appData.getScreenHeight());
     }
+
+    public void setLastSelectedOwner(Owner owner){
+        appData.setSelectedOwner(owner);
+        updateAppData();
+    }
+
+    public Owner getLastSelectedOwner(){
+        return appData.getSelectedOwner();
+    }
+
+    private void updateAppData(){
+        try{
+            databaseController.updateAppData(appData);
+        }catch (SQLException update){
+            update.printStackTrace();
+            logger.error("Error updating App Data");
+        }
+    }
+
 
 
 }

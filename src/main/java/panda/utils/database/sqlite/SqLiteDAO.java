@@ -2,6 +2,7 @@ package panda.utils.database.sqlite;
 
 import panda.models.Account;
 import panda.models.AppData;
+import panda.models.Owner;
 import panda.models.PandaAccount;
 import panda.utils.database.Database;
 
@@ -9,6 +10,7 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
@@ -125,14 +127,18 @@ public class SqLiteDAO implements Database {
     }
 
     @Override
-    public ArrayList<String> selectOwnerList() throws SQLException {
+    public ArrayList<Owner> selectOwnerList() throws SQLException {
         try (Statement statement = this.connection.createStatement()) {
-            ArrayList<String> dataList = new ArrayList<>();
-            String query = "select name from owners";
+            ArrayList<Owner> dataList = new ArrayList<>();
+            String query = "select * from owners";
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
-                dataList.add(resultSet.getString("name"));
+                dataList.add(
+                        new Owner(
+                                resultSet.getInt("id"),
+                                resultSet.getString("name")));
             }
+            Collections.reverse(dataList);
             return dataList;
         }
     }
@@ -263,33 +269,40 @@ public class SqLiteDAO implements Database {
 
     @Override
     public int getOwnerIndex(String ownerName) throws SQLException {
-        try (Statement statement = this.connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("select count(*) from owners where name = '" + ownerName + "'");
-            if (resultSet.getInt("count(*)") == 0) {
-                try (PreparedStatement insertStatement = this.connection.prepareStatement(
-                        "Insert into owners(name) values (?)")) {
-                    insertStatement.setObject(1, ownerName);
-                    insertStatement.execute();
+            try (Statement statement = this.connection.createStatement()) {
+                ResultSet resultSet = statement.executeQuery("select count(*) from owners where name = '" + ownerName + "'");
+                if (resultSet.getInt("count(*)") == 0) {
+                    try (PreparedStatement insertStatement = this.connection.prepareStatement(
+                            "Insert into owners(name) values (?)")) {
+                        insertStatement.setObject(1, ownerName);
+                        insertStatement.execute();
+                    }
+                    return statement.executeQuery("select last_insert_rowid()").getInt("last_insert_rowid()");
+                } else {
+                    String query = "select id from owners where name = '" + ownerName + "'";
+                    return statement.executeQuery(query).getInt("id");
                 }
-                return statement.executeQuery("select last_insert_rowid()").getInt("last_insert_rowid()");
-            } else {
-                return statement.executeQuery("select id from owners where name = '" + ownerName + "'").getInt("id");
             }
-        }
     }
 
     @Override
     public AppData selectAppData() throws SQLException {
         try (Statement statement = this.connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("select * from appdata");
+            String query = "select distinct a.id, pass_gen_pattern, cipher_word, selected_theme, o.id, name, screen_width, screen_height" +
+                    " from appdata a join owners o on a.id = o.id";
+            ResultSet resultSet = statement.executeQuery("query");
             AppData output = null;
             while (resultSet.next()) {
                 output = new AppData(
                         resultSet.getString("pass_gen_pattern"),
                         resultSet.getString("selected_theme"),
-                        resultSet.getInt("selected_owner"),
                         resultSet.getInt("screen_width"),
-                        resultSet.getInt("screen_height")
+                        resultSet.getInt("screen_height"),
+                        new Owner(
+                                resultSet.getInt("id"),
+                                resultSet.getString("name")
+                        )
+
                 );
             }
             return output;
@@ -304,11 +317,11 @@ public class SqLiteDAO implements Database {
                         "selected_theme = ? ," +
                         "selected_owner = ? ," +
                         "screen_width = ? ," +
-                        "screen_height = ? ,"
+                        "screen_height = ?  where id = 1"
         )) {
             statement.setObject(1, input.getPassGenPattern());
             statement.setObject(2, input.getTheme());
-            statement.setObject(3, input.getOwner());
+            statement.setObject(3, input.getSelectedOwner().getId());
             statement.setObject(4, input.getScreenWidth());
             statement.setObject(5, input.getScreenHeight());
             statement.executeUpdate();

@@ -26,10 +26,12 @@ public class OptionsService {
     }
 
     public void saveButton() {
+        viewServicesManager.refresh();
         viewServicesManager.showPandaScene();
     }
 
     public void cancelButton() {
+        viewServicesManager.refresh();
         viewServicesManager.showPandaScene();
     }
 
@@ -60,8 +62,8 @@ public class OptionsService {
     }
 
     public void clearBase() {
-        StringBuilder pass = viewServicesManager.askPass("Changing Password",
-                "By confirming the action, you will completely and irrevocably clear the database");
+        StringBuilder pass = viewServicesManager.askPass("Clear Base access",
+                "By confirming the action, you will completely and irrevocably clear the database.");
         if (!pass.equals(new StringBuilder(""))) {
             dataManager.clearBase(pass);
         }

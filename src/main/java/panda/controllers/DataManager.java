@@ -1,14 +1,12 @@
 package panda.controllers;
 
 import javafx.scene.control.Alert;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.ls.LSOutput;
 import panda.controllers.core.*;
 import panda.models.Account;
 import panda.models.AppData;
+import panda.models.Owner;
 import panda.models.PandaAccount;
 import panda.utils.PasswordGenerator;
 import panda.utils.PathFinder;
@@ -153,7 +151,8 @@ public class DataManager {
         ArrayList<PandaAccount> output = new ArrayList<>();
         try {
             ArrayList<PandaAccount> pandaAccountsList = databaseController.selectPandas(
-                    databaseController.getOwnerName(appDataController.getAppData().getOwner()));
+                    appDataController.getLastSelectedOwner().getName()
+            );
             for (PandaAccount panda : pandaAccountsList) {
                 panda.setTableFieldPassword(cryptionController.deCryptIt(
                         new StringBuilder(panda.getTableFieldPassword())).toString());
@@ -178,15 +177,15 @@ public class DataManager {
         return "";
     }
 
-    public ArrayList<String> getOwnerList() {
-        Set<String> ownersList = new HashSet<>();
+    public ArrayList<Owner> getOwnerList() {
+        Set<Owner> ownersList = new HashSet<>();
         try {
-            ownersList = new HashSet<>(databaseController.selectOwnerList());
+            ownersList = new HashSet<Owner>(databaseController.selectOwnerList());
         } catch (SQLException ownerList) {
             logger.error("DB owners get error");
             ownerList.printStackTrace();
         }
-        return new ArrayList<>(ownersList);
+        return new ArrayList<Owner>(ownersList);
     }
 
     public boolean isHidePass() {
@@ -241,10 +240,10 @@ public class DataManager {
 
         if (checkAccess(cryptedOldPass)) {
             try {
-                if(updatePass(cryptedNewPass, cryptedOldPass)){
-                    clearBase(cryptedNewPass);
+                if (updatePass(cryptedNewPass, cryptedOldPass)) {
+                    clearBase(inputNewPass);
                     initCheckAccess(inputNewPass);
-                    if(checkAccess(cryptedNewPass) && backupDbAccounts.size()>0){
+                    if (checkAccess(cryptedNewPass) && backupDbAccounts.size() > 0) {
                         for (Account account : databaseAccounts) {
                             account.setPassword(cryptionController.cryptIt(account.getPassword()));
                             databaseController.insertAccount(account);
@@ -261,12 +260,12 @@ public class DataManager {
             viewServicesManager.alert(Alert.AlertType.WARNING, "Access to change password denied", "");
         }
 
-        if(backupDbAccounts.size()>0){
+        if (backupDbAccounts.size() > 0) {
             String backup = backupDbAccounts.get(0).getName();
             String updated = backupDbAccounts.get(0).getName();
 
-            System.out.println("Backup: "+ backup + " pass: " + backupDbAccounts.get(0).getPassword());
-            System.out.println("Updated: "+ updated + " pass: " + selectAccounts().get(0).getPassword());
+            System.out.println("Backup: " + backup + " pass: " + backupDbAccounts.get(0).getPassword());
+            System.out.println("Updated: " + updated + " pass: " + selectAccounts().get(0).getPassword());
         }
         System.out.println("Old pass: " + inputOldPass + " Crypted: " + cryptedOldPass + " " + checkAccess(cryptedOldPass));
         System.out.println("New pass: " + inputNewPass + " Crypted: " + cryptedNewPass + " " + checkAccess(cryptedNewPass));
@@ -285,17 +284,18 @@ public class DataManager {
     }
 
     private boolean updatePass(StringBuilder cryptedNewPass, StringBuilder cryptedOldPass) {
-        try{
+        try {
             logger.info("updatePass Sucessfull");
             return databaseController.updatePass(cryptedNewPass, cryptedOldPass);
-        }catch (SQLException passUpdate){
+        } catch (SQLException passUpdate) {
             logger.error("Password update Error");
         }
         return false;
     }
 
-    public void clearBase(StringBuilder cryptedInput) {
-        if (checkAccess(cryptedInput)) {
+    public void clearBase(StringBuilder unCryptedInput) {
+        final StringBuilder cryptedPass = cryptionController.getEncryptedInput(unCryptedInput);
+        if (checkAccess(cryptedPass)) {
             try {
                 //TODO backupDatabaseBeforeClear
                 databaseController.clear();
@@ -306,6 +306,14 @@ public class DataManager {
         } else {
             logger.warn("incorrect access. Base cannot be cleared");
         }
+    }
+
+    public void setLastSelectedOwner(Owner owner) {
+        appDataController.setLastSelectedOwner(owner);
+    }
+
+    public Owner getSelectedOwnerName() {
+        return appDataController.getAppData().getSelectedOwner();
     }
 
 }

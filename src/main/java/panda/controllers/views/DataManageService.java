@@ -70,10 +70,6 @@ public class DataManageService {
         viewServicesManager.refresh();
     }
 
-    public ArrayList<String> getOwnersList(){
-        return dataManager.getOwnerList();
-    }
-
     public String generateButton(){
         return dataManager.generatePassword();
     }
