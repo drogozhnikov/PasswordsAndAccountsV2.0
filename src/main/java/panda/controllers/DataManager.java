@@ -316,4 +316,17 @@ public class DataManager {
         return appDataController.getAppData().getSelectedOwner();
     }
 
+    public ArrayList<PandaAccount> search(String value, Owner owner){
+        ArrayList<PandaAccount> foundedList = new ArrayList<>();
+        if(owner==null){
+            owner = new Owner();
+        }
+        try{
+            foundedList = databaseController.search(value, owner.getName());
+        }catch (SQLException search){
+            logger.error("Search Exception");
+        }
+        return foundedList;
+    }
+
 }

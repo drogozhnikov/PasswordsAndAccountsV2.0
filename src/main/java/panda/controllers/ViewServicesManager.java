@@ -8,6 +8,7 @@ import panda.controllers.views.components.InfoService;
 import panda.controllers.views.components.OwnersListService;
 import panda.controllers.views.options.OptionsService;
 import panda.models.Account;
+import panda.models.PandaAccount;
 import panda.views.PandaRootView;
 import panda.views.elements.HelloPandaView;
 import panda.views.elements.additional.PandaAlert;
@@ -74,6 +75,10 @@ public class ViewServicesManager {
     public void refresh() {
         tableService.refresh();
         ownersListService.refresh();
+    }
+
+    public void refresh(ArrayList<PandaAccount> input){
+        tableService.refresh(input);
     }
 
     private void initRootPositions() {

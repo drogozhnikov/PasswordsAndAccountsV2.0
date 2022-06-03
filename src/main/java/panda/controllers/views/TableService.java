@@ -40,7 +40,11 @@ public class TableService {
         }
         ObservableList<PandaAccount> list = FXCollections.observableArrayList(pandaList);
         tableView.refresh(list);
+    }
 
+    public void refresh(ArrayList<PandaAccount> input) {
+        ObservableList<PandaAccount> list = FXCollections.observableArrayList(input);
+        tableView.refresh(list);
     }
 
     public void selectCells(int row, int column) {

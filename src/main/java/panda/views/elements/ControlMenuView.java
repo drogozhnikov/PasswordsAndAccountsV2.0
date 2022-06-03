@@ -6,6 +6,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import panda.controllers.views.ControlMenuService;
 import panda.controllers.views.components.OwnersListService;
+import panda.models.Owner;
 import panda.views.elements.components.OwnersListView;
 
 public class ControlMenuView extends HBox {
@@ -51,12 +52,16 @@ public class ControlMenuView extends HBox {
 
     private void initSearchField() {
         searchField.setOnKeyReleased(event -> {
-            //TODO viewController.searchAction(event.getCode(), searchField.getText())
+            controlMenuService.search(event.getCode(), searchField.getText());
         });
     }
 
     private void initOwnersList(){
 
+    }
+
+    public Owner getOwner(){
+        return ownersListView.getValue();
     }
 
 }
