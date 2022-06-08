@@ -4,11 +4,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
-import panda.controllers.views.components.OwnersListService;
-import panda.models.Account;
 import panda.models.PandaAccount;
 import panda.views.elements.ControlMenuView;
-import panda.views.elements.components.OwnersListView;
 
 import java.util.ArrayList;
 
@@ -24,8 +21,8 @@ public class ControlMenuService {
         this.dataManager = dataManager;
     }
 
-    public void init(OwnersListView ownersListView) {
-        controlMenuView = new ControlMenuView(this, ownersListView);
+    public void init() {
+        controlMenuView = new ControlMenuView(this);
     }
 
     public HBox getControlMenuView() {
@@ -38,12 +35,12 @@ public class ControlMenuService {
 
     public void search(KeyCode code, String value){
         ArrayList<PandaAccount> foundedFields = new ArrayList<>();
-        foundedFields = dataManager.search(value, controlMenuView.getOwner());
+//        foundedFields = dataManager.search(value, controlMenuView.getOwner());//TODO ownersList
         switch (code.toString()) {
             case ("BACK_SPACE"):
-                foundedFields = dataManager.search(value, controlMenuView.getOwner());
+//                foundedFields = dataManager.search(value, controlMenuView.getOwner());//TODO ownersList
             case ("DELETE"):
-                foundedFields = dataManager.search(value, controlMenuView.getOwner());
+//                foundedFields = dataManager.search(value, controlMenuView.getOwner());//TODO ownersList
         }
         if (value.equals("")) {
             foundedFields = dataManager.selectPandaAccounts();

@@ -10,7 +10,6 @@ import javafx.scene.layout.VBox;
 import panda.controllers.views.DataManageService;
 import panda.models.Account;
 import panda.views.elements.components.LimitedTextField;
-import panda.views.elements.components.OwnersListView;
 
 import java.util.HashMap;
 
@@ -42,8 +41,6 @@ public class DataManageView extends BorderPane {
 
     private Button generatePasswordButton = new Button("Gen");
 
-    private OwnersListView ownersListView;
-
     private CheckBox stayOnAction = new CheckBox("Stay On Action");
     private CheckBox clearWhenAction = new CheckBox("Clear When Action");
 
@@ -52,9 +49,9 @@ public class DataManageView extends BorderPane {
 
     private DataManageService dataManageService;
 
-    public DataManageView(DataManageService dataManageService, OwnersListView ownersListView) {
+    public DataManageView(DataManageService dataManageService) {
         this.dataManageService = dataManageService;
-        this.ownersListView = ownersListView;
+        //TODO ownersList
 
         initActionButton();
         initCancelButton();
@@ -69,7 +66,7 @@ public class DataManageView extends BorderPane {
 
     private void initPositions() {
         HBox name = new HBox(spacing, nameLabel, inputName);
-        HBox owner = new HBox(spacing, ownerLabel, inputOwner, ownersListView);
+        HBox owner = new HBox(spacing, ownerLabel, inputOwner);//TODO ownersList
         HBox link = new HBox(spacing, linkLabel, inputLink);
         HBox mail = new HBox(spacing, mailLabel, inputMail);
         HBox acc = new HBox(spacing, accountLabel, inputAccount);
@@ -124,10 +121,10 @@ public class DataManageView extends BorderPane {
         HBox.setHgrow(inputPassword, Priority.ALWAYS);
 
         generatePasswordButton.setPrefWidth(labelsSize);
-        ownersListView.setPrefWidth(labelsSize);
+        //TODO ownersList
 
         HBox.setHgrow(generatePasswordButton, Priority.ALWAYS);
-        HBox.setHgrow(ownersListView, Priority.ALWAYS);
+        //TODO ownersList
 
         actionButton.setMaxWidth(Double.MAX_VALUE);
         cancelButton.setMaxWidth(Double.MAX_VALUE);
@@ -157,9 +154,7 @@ public class DataManageView extends BorderPane {
     }
 
     private void initOwnersList(){
-            ownersListView.setOnAction(event -> {
-                inputOwner.setText(ownersListView.getValue().getName());
-            });
+        //TODO ownersList
     }
 
     private void initActionButton(Account account) {
@@ -207,7 +202,7 @@ public class DataManageView extends BorderPane {
         if(inputOwner.getText()!=null && !inputOwner.getText().equals("")){
             account.setOwner(inputOwner.getText());
         }else{
-            account.setOwner(ownersListView.getValue().getName());
+//            account.setOwner(ownersListView.getValue().getName());//TODO ownersList
         }
 
         return account;

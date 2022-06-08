@@ -6,7 +6,6 @@ import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
 import panda.models.Account;
 import panda.views.elements.DataManageView;
-import panda.views.elements.components.OwnersListView;
 
 import java.util.*;
 
@@ -22,8 +21,8 @@ public class DataManageService {
         this.dataManager = dataManager;
     }
 
-    public void init(OwnersListView ownersListView) {
-        dataManageView = new DataManageView(this, ownersListView);
+    public void init() {
+        dataManageView = new DataManageView(this);
     }
 
     public BorderPane getDataManageView() {

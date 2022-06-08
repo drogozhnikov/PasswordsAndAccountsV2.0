@@ -5,7 +5,6 @@ import javafx.scene.control.Alert;
 
 import panda.controllers.views.*;
 import panda.controllers.views.components.InfoService;
-import panda.controllers.views.components.OwnersListService;
 import panda.controllers.views.options.OptionsService;
 import panda.models.Account;
 import panda.models.PandaAccount;
@@ -29,7 +28,6 @@ public class ViewServicesManager {
     private OptionsService optionsService;
     private TableService tableService;
     private InfoService infoService;
-    private OwnersListService ownersListService;
 
     private DataManager dataManager;
     private StageManager stageManager;
@@ -60,21 +58,19 @@ public class ViewServicesManager {
         optionsService = new OptionsService(this, dataManager);
         tableService = new TableService(this, dataManager);
         infoService = new InfoService(this, dataManager);
-        ownersListService = new OwnersListService(this, dataManager);
     }
 
     private void initViews() {
         contextMenuService.init();
+        controlMenuService.init();
         menuService.init();
         optionsService.init();
         tableService.init();
         infoService.init();
-        ownersListService.init();
     }
 
     public void refresh() {
         tableService.refresh();
-        ownersListService.refresh();
     }
 
     public void refresh(ArrayList<PandaAccount> input){
@@ -94,18 +90,15 @@ public class ViewServicesManager {
 
     public void showUpdateDataManage(Account account){
         refresh();
-        dataManageService.init(ownersListService.getOwnersListClearView());
         dataManageService.fillFieldsByAccount(account);
         pandaRootView.setRootTop(dataManageService.getDataManageView());
     }
 
     public void showDataManage() {
-        dataManageService.init(ownersListService.getOwnersListClearView());
         pandaRootView.setRootTop(dataManageService.getDataManageView());
     }
 
     public void hideDataManage() {
-        controlMenuService.init(ownersListService.getOwnersListView());
         pandaRootView.setRootTop(controlMenuService.getControlMenuView());
     }
 
