@@ -61,16 +61,18 @@ public class ViewServicesManager {
     }
 
     private void initViews() {
+        tableService.init(); // must init before controlMenuService
         contextMenuService.init();
         controlMenuService.init();
+        dataManageService.init();
         menuService.init();
         optionsService.init();
-        tableService.init();
         infoService.init();
     }
 
     public void refresh() {
         tableService.refresh();
+        controlMenuService.refreshOwners();
     }
 
     public void refresh(ArrayList<PandaAccount> input){

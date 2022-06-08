@@ -183,7 +183,6 @@ public class DataManager {
             ownersList = new HashSet<Owner>(databaseController.selectOwnerList());
         } catch (SQLException ownerList) {
             logger.error("DB owners get error");
-            ownerList.printStackTrace();
         }
         return new ArrayList<Owner>(ownersList);
     }
@@ -312,7 +311,7 @@ public class DataManager {
         appDataController.setLastSelectedOwner(owner);
     }
 
-    public Owner getSelectedOwnerName() {
+    public Owner getSelectedOwner() {
         return appDataController.getAppData().getSelectedOwner();
     }
 

@@ -1,10 +1,13 @@
 package panda.views.elements;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import panda.controllers.views.ControlMenuService;
+import panda.models.Owner;
 
 public class ControlMenuView extends HBox {
 
@@ -12,6 +15,8 @@ public class ControlMenuView extends HBox {
     private TextField searchField = new TextField();
 
     private ControlMenuService controlMenuService;
+
+    private ChoiceBox<Owner> ownerList = new ChoiceBox<>();
 
     private int minFieldSize = 300;
 
@@ -21,20 +26,20 @@ public class ControlMenuView extends HBox {
         initAddButton();
         initSearchField();
         initOwnersList();
-        super.getChildren().addAll(addButton, searchField);//TODO ownersList
+        super.getChildren().addAll(addButton, searchField, ownerList);
     }
 
     private void initSizes() {
         addButton.setMaxWidth(Double.MAX_VALUE);
         searchField.setMaxWidth(Double.MAX_VALUE);
-        //TODO ownersList
+        ownerList.setMaxWidth(Double.MAX_VALUE);
 
         addButton.setMinWidth(minFieldSize);
         searchField.setMinWidth(minFieldSize);
-        //TODO ownersList
+        ownerList.setMinWidth(minFieldSize);
 
         super.setHgrow(addButton, Priority.ALWAYS);
-        //TODO ownersList
+        super.setHgrow(ownerList, Priority.ALWAYS);
         super.setHgrow(searchField, Priority.ALWAYS);
     }
 
@@ -51,11 +56,23 @@ public class ControlMenuView extends HBox {
     }
 
     private void initOwnersList(){
+        ownerList.setItems(controlMenuService.getOwnersList());
+        Owner lastSelectedOwner = controlMenuService.getLastSelectedOwner();
+        ownerList.setValue(lastSelectedOwner);
+        controlMenuService.ownerAction(lastSelectedOwner);
 
+            ownerList.setOnAction(event -> {
+                controlMenuService.ownerAction(getOwner());
+            });
     }
 
-//    public Owner getOwner(){
-//        //TODO ownersList
-//    }
+    public void refresh(ObservableList<Owner> input, Owner lastSelectedOwner){
+        ownerList.setItems(input);
+        ownerList.setValue(lastSelectedOwner);
+    }
+
+    public Owner getOwner(){
+       return ownerList.getValue();
+    }
 
 }

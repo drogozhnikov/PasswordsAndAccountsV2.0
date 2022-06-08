@@ -34,7 +34,7 @@ public class TableService {
     }
 
     public void refresh() {
-        ArrayList<PandaAccount> pandaList = dataManager.selectPandaAccounts();
+        ArrayList<PandaAccount> pandaList = dataManager.search("",dataManager.getSelectedOwner());
         if (pandaList.size() == 0) {
             logger.info("Selected pandas list is empty");
         }
