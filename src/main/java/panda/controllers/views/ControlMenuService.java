@@ -34,7 +34,7 @@ public class ControlMenuService {
     }
 
     public void actionAdd() {
-        viewServicesManager.showDataManage();
+        viewServicesManager.showAddDataManage();
     }
 
     public void search(KeyCode code, String value){

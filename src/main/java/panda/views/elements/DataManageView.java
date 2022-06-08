@@ -53,6 +53,9 @@ public class DataManageView extends BorderPane {
         this.dataManageService = dataManageService;
         //TODO ownersList
 
+    }
+
+    public void init(){
         initActionButton();
         initCancelButton();
         initGenerateButton();
@@ -61,7 +64,19 @@ public class DataManageView extends BorderPane {
         initCancelButton();
         initClearButton();
         initOwnersList();
+    }
 
+    public void init(Account account){
+        initActionButton(account);
+        initCancelButton();
+        initGenerateButton();
+        initSizes();
+        initPositions();
+        initCancelButton();
+        initClearButton();
+        initOwnersList();
+
+        fillFields(account);
     }
 
     private void initPositions() {

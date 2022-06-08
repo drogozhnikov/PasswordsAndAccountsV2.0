@@ -65,6 +65,15 @@ public class DataManageService {
         viewServicesManager.hideDataManage();
     }
 
+    public BorderPane getAddDataManage(){
+        dataManageView.init();
+        return dataManageView;
+    }
+    public BorderPane getUpdateDataManage(Account account){
+        dataManageView.init(account);
+        return dataManageView;
+    }
+
     public void refresh() {
         viewServicesManager.refresh();
     }

@@ -91,13 +91,12 @@ public class ViewServicesManager {
 
 
     public void showUpdateDataManage(Account account){
-        refresh();
-        dataManageService.fillFieldsByAccount(account);
-        pandaRootView.setRootTop(dataManageService.getDataManageView());
+        dataManageService.init();
+        pandaRootView.setRootTop(dataManageService.getUpdateDataManage(account));
     }
 
-    public void showDataManage() {
-        pandaRootView.setRootTop(dataManageService.getDataManageView());
+    public void showAddDataManage() {
+        pandaRootView.setRootTop(dataManageService.getAddDataManage());
     }
 
     public void hideDataManage() {
