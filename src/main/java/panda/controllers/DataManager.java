@@ -328,4 +328,8 @@ public class DataManager {
         return foundedList;
     }
 
+    public void onExitActions(){
+        appDataController.updateAppData();
+    }
+
 }

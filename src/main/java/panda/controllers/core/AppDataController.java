@@ -62,14 +62,13 @@ public class AppDataController {
 
     public void setLastSelectedOwner(Owner owner){
         appData.setSelectedOwner(owner);
-        updateAppData();
     }
 
     public Owner getLastSelectedOwner(){
         return appData.getSelectedOwner();
     }
 
-    private void updateAppData(){
+    public void updateAppData(){
         try{
             databaseController.updateAppData(appData);
         }catch (SQLException update){

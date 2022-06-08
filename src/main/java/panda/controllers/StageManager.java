@@ -44,7 +44,10 @@ public class StageManager {
 //        setCSS(rootPandaScene);
 
         showHelloScene();
-        rootStage.setOnCloseRequest(event -> logger.info("Panda closed"));
+        rootStage.setOnCloseRequest(event -> {
+            onExitActions();
+            logger.info("Panda closed");
+        });
         logger.info("initialization completed successfully");
     }
 
@@ -115,6 +118,10 @@ public class StageManager {
         dimension.put("height", rootStage.getHeight());
         dimension.put("width", rootStage.getWidth());
         return dimension;
+    }
+
+    private void onExitActions(){
+        dm.onExitActions();
     }
 
 }
