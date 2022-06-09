@@ -79,7 +79,7 @@ public class DataManager {
     public void updateAccount(Account account) {
         try {
             databaseController.updateFullAccount(account);
-        } catch (SQLException updating) {
+        } catch (SQLException | ParseException updating) {
             logger.error("Error while updating account");
             updating.printStackTrace();
         }
@@ -101,8 +101,8 @@ public class DataManager {
         Account account = null;
         try {
             account = databaseController.selectAccountById(id);
-            StringBuilder uncriptedPass = cryptionController.deCryptIt(account.getPassword());
-            account.setPassword(uncriptedPass);
+//            StringBuilder uncriptedPass = cryptionController.deCryptIt(account.getPassword());
+//            account.setPassword(uncriptedPass);
         } catch (SQLException | ParseException e) {
             logger.error("Find Account by id Error");
             e.printStackTrace();
@@ -127,6 +127,16 @@ public class DataManager {
     public boolean checkAccess(StringBuilder cryptedInput) {
         try {
             return databaseController.checkPass(cryptedInput);
+        } catch (SQLException acess) {
+            logger.error("DataBase check pass exception");
+        }
+        return false;
+    }
+
+    public boolean validateAccess(StringBuilder input) {
+        try {
+            StringBuilder temp = new CryptionController().getEncryptedInput(input);
+            return databaseController.checkPass(temp);
         } catch (SQLException acess) {
             logger.error("DataBase check pass exception");
         }

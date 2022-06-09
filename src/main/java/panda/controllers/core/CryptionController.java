@@ -20,6 +20,8 @@ public class CryptionController {
         logger.info("initialization completed successfully");
     }
 
+    public CryptionController(){}
+
     public void init(Сipher cipher, StringBuilder input){
         this.cipher = cipher;
         cipher.init(input);

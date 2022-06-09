@@ -39,5 +39,6 @@ public interface Database {
     void updateAppDataResolution(int width, int height) throws SQLException;
 
     void clearDataBase() throws SQLException;
+    void cleanOwnersList() throws SQLException;
 
 }

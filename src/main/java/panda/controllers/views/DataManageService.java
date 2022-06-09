@@ -1,11 +1,15 @@
 package panda.controllers.views;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
 import panda.models.Account;
-import panda.views.elements.DataManageView;
+import panda.models.Owner;
+import panda.views.elements.components.AddManage;
+import panda.views.elements.components.UpdateManage;
 
 import java.util.*;
 
@@ -14,7 +18,8 @@ public class DataManageService {
     private final DataManager dataManager;
     private final ViewServicesManager viewServicesManager;
 
-    private DataManageView dataManageView;
+    private AddManage addManage;
+    private UpdateManage updateManage;
 
     public DataManageService(ViewServicesManager viewServicesManager, DataManager dataManager) {
         this.viewServicesManager = viewServicesManager;
@@ -22,11 +27,16 @@ public class DataManageService {
     }
 
     public void init() {
-        dataManageView = new DataManageView(this);
+        addManage = new AddManage(this);
+        updateManage = new UpdateManage(this);
     }
 
-    public BorderPane getDataManageView() {
-        return dataManageView;
+    public BorderPane getAddManage() {
+        return addManage;
+    }
+
+    public BorderPane getUpdateManage() {
+        return updateManage;
     }
 
     public void addAction(Account account) {
@@ -66,12 +76,12 @@ public class DataManageService {
     }
 
     public BorderPane getAddDataManage(){
-        dataManageView.init();
-        return dataManageView;
+        addManage.init();
+        return addManage;
     }
     public BorderPane getUpdateDataManage(Account account){
-        dataManageView.init(account);
-        return dataManageView;
+        updateManage.init(account);
+        return updateManage;
     }
 
     public void refresh() {
@@ -82,8 +92,10 @@ public class DataManageService {
         return dataManager.generatePassword();
     }
 
-    public void fillFieldsByAccount(Account account){
-        dataManageView.fillFields(account);
+    public ObservableList<Owner> getOwnersList(){
+        ObservableList<Owner> result = FXCollections.observableArrayList(dataManager.getOwnerList());
+        Collections.reverse(result);
+        return result;
     }
 
     //Are you sure you want to update account with a data that already exists or have some problems&

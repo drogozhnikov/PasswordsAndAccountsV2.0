@@ -1,5 +1,6 @@
-package panda.views.elements;
+package panda.views.elements.components;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -9,11 +10,12 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import panda.controllers.views.DataManageService;
 import panda.models.Account;
+import panda.models.Owner;
 import panda.views.elements.components.LimitedTextField;
 
 import java.util.HashMap;
 
-public class DataManageView extends BorderPane {
+public class AddManage extends BorderPane {
 
     private int labelsSize = 80;
     private int borderPrefSize = 94;
@@ -44,15 +46,15 @@ public class DataManageView extends BorderPane {
     private CheckBox stayOnAction = new CheckBox("Stay On Action");
     private CheckBox clearWhenAction = new CheckBox("Clear When Action");
 
+    private ChoiceBox<Owner> ownerList= new ChoiceBox<>();
+
     private int spacing = 1;
     private int fieldSize = 300;
 
     private DataManageService dataManageService;
 
-    public DataManageView(DataManageService dataManageService) {
+    public AddManage(DataManageService dataManageService) {
         this.dataManageService = dataManageService;
-        //TODO ownersList
-
     }
 
     public void init(){
@@ -66,22 +68,9 @@ public class DataManageView extends BorderPane {
         initOwnersList();
     }
 
-    public void init(Account account){
-        initActionButton(account);
-        initCancelButton();
-        initGenerateButton();
-        initSizes();
-        initPositions();
-        initCancelButton();
-        initClearButton();
-        initOwnersList();
-
-        fillFields(account);
-    }
-
     private void initPositions() {
         HBox name = new HBox(spacing, nameLabel, inputName);
-        HBox owner = new HBox(spacing, ownerLabel, inputOwner);//TODO ownersList
+        HBox owner = new HBox(spacing, ownerLabel, inputOwner, ownerList);
         HBox link = new HBox(spacing, linkLabel, inputLink);
         HBox mail = new HBox(spacing, mailLabel, inputMail);
         HBox acc = new HBox(spacing, accountLabel, inputAccount);
@@ -136,10 +125,10 @@ public class DataManageView extends BorderPane {
         HBox.setHgrow(inputPassword, Priority.ALWAYS);
 
         generatePasswordButton.setPrefWidth(labelsSize);
-        //TODO ownersList
+        ownerList.setPrefWidth(labelsSize);
 
         HBox.setHgrow(generatePasswordButton, Priority.ALWAYS);
-        //TODO ownersList
+        HBox.setHgrow(ownerList, Priority.ALWAYS);
 
         actionButton.setMaxWidth(Double.MAX_VALUE);
         cancelButton.setMaxWidth(Double.MAX_VALUE);
@@ -163,24 +152,26 @@ public class DataManageView extends BorderPane {
         actionButton.setOnAction(event -> {
             if(validate()){
                 dataManageService.addAction(collectFieldsData());
-                endAction();
+                refresh();
             }
         });
     }
 
     private void initOwnersList(){
-        //TODO ownersList
+        ownerList.setItems(dataManageService.getOwnersList());
+        ownerList.setOnAction(event -> {
+            inputOwner.setText(ownerList.getSelectionModel().getSelectedItem().getName());
+        });
     }
 
-    private void initActionButton(Account account) {
-        actionButton.setText("Save");
-        fillFields(account);
-        actionButton.setOnAction(event -> {
-            if(validate()){
-                dataManageService.updateAction(collectFieldsData());
-                endAction();
-            }
-        });
+    private void refresh(){
+        if(!stayOnAction.isSelected()){
+           dataManageService.hideDataManage();
+        }
+        if(clearWhenAction.isSelected()){
+            clear();
+        }
+        ownerList.setItems(dataManageService.getOwnersList());
     }
 
     private void initCancelButton() {
@@ -217,20 +208,10 @@ public class DataManageView extends BorderPane {
         if(inputOwner.getText()!=null && !inputOwner.getText().equals("")){
             account.setOwner(inputOwner.getText());
         }else{
-//            account.setOwner(ownersListView.getValue().getName());//TODO ownersList
+            account.setOwner(ownerList.getValue().getName());
         }
 
         return account;
-    }
-
-    public void fillFields(Account input) {
-        inputName.setText(input.getName());
-        inputOwner.setText(input.getOwner());
-        inputLink.setText(input.getLink());
-        inputMail.setText(input.getMail());
-        inputAccount.setText(input.getAccount());
-        inputPassword.setText(input.getPassword().toString());
-        inputDescription.setText(input.getInfo());
     }
 
     private boolean validate() {
@@ -239,16 +220,6 @@ public class DataManageView extends BorderPane {
             validatedFieldsMap.put("password", inputPassword.getText());
             validatedFieldsMap.put("owner", inputOwner.getText());
         return dataManageService.validate(validatedFieldsMap);
-    }
-
-    private void endAction() {
-        if (clearWhenAction.isSelected()) {
-            clear();
-        }
-        if (!stayOnAction.isSelected()) {
-            dataManageService.hideDataManage();
-        }
-        dataManageService.refresh();
     }
 
 }

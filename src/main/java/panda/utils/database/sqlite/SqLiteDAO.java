@@ -229,7 +229,12 @@ public class SqLiteDAO implements Database {
 
     @Override
     public void deleteAccount(int id) throws SQLException, ParseException {
-        deleteOwnerIfLast(id); //TODO Не работает!
+        Account account = selectAccountById(id);
+        final int ownerIndex = getOwnerIndex(account.getOwner());
+        int ownerCount = countOwnerUsage(ownerIndex);
+        if(ownerCount == 1){
+            deleteOwner(getOwnerIndex(account.getOwner()));
+        }
         try (PreparedStatement statement = this.connection.prepareStatement(
                 "DELETE FROM accounts WHERE id = ?")) {
             statement.setObject(1, id);
@@ -237,13 +242,20 @@ public class SqLiteDAO implements Database {
         }
     }
 
-    private void deleteOwnerIfLast(int id) throws SQLException, ParseException {
-        String accountOwner = selectAccountById(id).getOwner();
-        int ownerId = getOwnerIndex(accountOwner);
+    private int countOwnerUsage(int ownerId) throws SQLException{
         try (Statement statement = this.connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("select count(*) from accounts where owner = '" + ownerId + "'");
-            if (resultSet.getInt("count(*)") == 1) {
-                deleteOwner(ownerId);
+            ResultSet resultSet = statement.executeQuery("select count(*) from accounts where owner = " + ownerId + ";");
+            final int count = resultSet.getInt("count(*)");
+            return count;
+        }
+    }
+    //TODO replace logic code to DBController
+    public void cleanOwnersList() throws SQLException{
+        ArrayList<Owner> ownerList = selectOwnerList();
+        for(Owner owner : ownerList){
+            int countOwnerUsage = countOwnerUsage(owner.getId());
+            if(countOwnerUsage == 0){
+                deleteOwner(owner.getId());
             }
         }
     }

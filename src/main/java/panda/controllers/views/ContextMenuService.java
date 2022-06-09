@@ -46,14 +46,18 @@ public class ContextMenuService {
 
     public void update(){
         if(isSelectedExist()){
-            int selected = checkAndGetIfOneSelected();
-            if(selected!=0){
-                Account account = dataManager.getAccountById(selected);
-                viewServicesManager.showUpdateDataManage(account);
+            StringBuilder enteredPass = viewServicesManager.askPass("Updating", "Please confirm update action");
+            if(dataManager.validateAccess(enteredPass)){
+                int selected = checkAndGetIfOneSelected();
+                if(selected!=0){
+                    Account account = dataManager.getAccountById(selected);
+                    viewServicesManager.showUpdateDataManage(account);
+                }
+            }else{
+                viewServicesManager.alert(Alert.AlertType.WARNING, "Wrong password", "");
             }
         }
     }
-
 
     private int checkAndGetIfOneSelected(){
         ArrayList<Integer> list = viewServicesManager.getIdLastSelectedAccounts();

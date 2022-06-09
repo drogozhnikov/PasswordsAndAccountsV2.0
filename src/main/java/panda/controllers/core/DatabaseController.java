@@ -69,12 +69,14 @@ public class DatabaseController {
         database.insertAccount(account);
     }
 
-    public void updateFullAccount(Account account) throws SQLException {
+    public void updateFullAccount(Account account) throws SQLException, ParseException {
         database.updateFullAccount(account);
+        database.cleanOwnersList();
     }
 
     public void deleteAccount(int id) throws SQLException, ParseException {
         database.deleteAccount(id);
+        database.cleanOwnersList();
     }
 
     //AppData
