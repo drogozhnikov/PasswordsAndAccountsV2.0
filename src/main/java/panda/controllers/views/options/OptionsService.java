@@ -35,11 +35,6 @@ public class OptionsService {
         viewServicesManager.showPandaScene();
     }
 
-    public void cancelButton() {
-        viewServicesManager.refresh();
-        viewServicesManager.showPandaScene();
-    }
-
     public void saveAccessAction(StringBuilder inputOld, StringBuilder inputTemp, StringBuilder inputNew) {
         if (!inputOld.toString().equals("") && !inputNew.toString().equals("") && !inputTemp.toString().equals("")) {
             if (inputNew.toString().equals(inputTemp.toString())) {

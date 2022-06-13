@@ -117,6 +117,9 @@ public class DataManager {
     public AppData getAppData() {
         return appDataController.getAppData();
     }
+    public void updateAppData() {
+       appDataController.updateAppData();
+    }
 
     public ArrayList<PandaAccount> selectPandaAccounts() {
         ArrayList<PandaAccount> output = new ArrayList<>();

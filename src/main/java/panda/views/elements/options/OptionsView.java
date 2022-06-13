@@ -24,7 +24,6 @@ public class OptionsView extends BorderPane {
     private Button separator = new Button();
 
     private Button saveButton = new Button("Save");
-    private Button cancelButton = new Button("Cancel");
 
     private GeneralPaneView generalPaneView;
     private AсcessPaneView aсcessPaneView;
@@ -36,7 +35,6 @@ public class OptionsView extends BorderPane {
 
         initSizes();
         initPositions();
-        initCancelButton();
         initSaveButton();
         initOptionsList();
         initSeparator();
@@ -47,13 +45,10 @@ public class OptionsView extends BorderPane {
 
     private void initSizes() {
         saveButton.setMaxWidth(Double.MAX_VALUE);
-        cancelButton.setMaxWidth(Double.MAX_VALUE);
 
         HBox.setHgrow(saveButton, Priority.ALWAYS);
-        HBox.setHgrow(cancelButton, Priority.ALWAYS);
 
         setMaxSize(saveButton);
-        setMaxSize(cancelButton);
         setMaxSize(buttonGeneral);
         setMaxSize(buttonAccess);
         setMaxSize(separator);
@@ -71,12 +66,6 @@ public class OptionsView extends BorderPane {
         });
     }
 
-    private void initCancelButton() {
-        cancelButton.setOnAction(event -> {
-            optionsService.cancelButton();
-        });
-    }
-
     private void initOptionsList() {
         ArrayList<Button> buttons = new ArrayList<>();
         buttons.add(buttonGeneral);
@@ -85,7 +74,6 @@ public class OptionsView extends BorderPane {
         buttons.add(separator);
 
         buttons.add(saveButton);
-        buttons.add(cancelButton);
 
         ObservableList<Button> list = FXCollections.observableArrayList(buttons);
         buttonListView.setItems(list);

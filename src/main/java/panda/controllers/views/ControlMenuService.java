@@ -68,6 +68,7 @@ public class ControlMenuService {
 
     public void ownerAction(Owner owner){
         dataManager.setLastSelectedOwner(owner);
+        dataManager.updateAppData();
         viewServicesManager.refresh(dataManager.search("",owner));
     }
 
