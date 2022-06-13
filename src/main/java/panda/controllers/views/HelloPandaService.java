@@ -27,8 +27,8 @@ public class HelloPandaService {
 
     public void confirm(String input) {
         if (dataManager.initCheckAccess(new StringBuilder(input))) {
-            viewServicesManager.initPandaScene();
             viewServicesManager.showPandaScene();
+            viewServicesManager.refresh();
         }else{
             logger.warn("Access Denied");
         }

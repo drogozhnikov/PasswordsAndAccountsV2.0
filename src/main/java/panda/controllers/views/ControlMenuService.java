@@ -55,9 +55,6 @@ public class ControlMenuService {
 
     public ObservableList<Owner> getOwnersList(){
         ObservableList<Owner> result = FXCollections.observableArrayList(dataManager.getOwnerList());
-        if(!result.contains(new Owner())){
-            result.add(new Owner());
-        }
         Collections.reverse(result);
         return result;
     }

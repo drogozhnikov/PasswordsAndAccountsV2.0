@@ -29,9 +29,6 @@ public class OptionsService {
     }
 
     public void saveButton() {
-        viewServicesManager.initPandaScene();
-        viewServicesManager.initOptionsScene();
-        viewServicesManager.refresh();
         viewServicesManager.showPandaScene();
     }
 

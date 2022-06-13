@@ -12,7 +12,6 @@ import panda.views.elements.HelloPandaView;
 import panda.views.elements.options.OptionsView;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class StageManager {
 
@@ -43,7 +42,6 @@ public class StageManager {
 
 //        setCSS(rootPandaScene);
 
-        showHelloScene();
         rootStage.setOnCloseRequest(event -> {
             onExitActions();
             logger.info("Panda closed");
@@ -68,6 +66,7 @@ public class StageManager {
                 rootStage.setY(event.getScreenY() + yOffset);
             }
         });
+        showHelloScene();
     }
 
     public void initPandaScene() {
@@ -76,11 +75,11 @@ public class StageManager {
     }
 
     public void initOptionsScene() {
-            OptionsView optionsView = vm.getOptionsView();
-            rootOptionsScene = new Scene(optionsView, dm.getAppData().getScreenWidth(), dm.getAppData().getScreenHeight());
+        OptionsView optionsView = vm.getOptionsView();
+        rootOptionsScene = new Scene(optionsView, dm.getAppData().getScreenWidth(), dm.getAppData().getScreenHeight());
     }
 
-    public void showPandaScene(){
+    public void showPandaScene() {
         rootStage.close();
         rootStage = new Stage();
         rootStage.initStyle(StageStyle.DECORATED);
@@ -88,7 +87,7 @@ public class StageManager {
         rootStage.show();
     }
 
-    public void showHelloScene(){
+    public void showHelloScene() {
         rootStage.close();
         rootStage = new Stage();
         rootStage.initStyle(StageStyle.UNDECORATED);
@@ -96,7 +95,7 @@ public class StageManager {
         rootStage.show();
     }
 
-    public void showOptionsScene(){
+    public void showOptionsScene() {
         rootStage.close();
         rootStage = new Stage();
         rootStage.initStyle(StageStyle.DECORATED);
@@ -111,14 +110,14 @@ public class StageManager {
         // create menu. add controlsButtons. undecorate stage
     }
 
-    public HashMap<String, Double> getStageDimension(){
-       HashMap<String, Double> dimension = new HashMap<>();
+    public HashMap<String, Double> getStageDimension() {
+        HashMap<String, Double> dimension = new HashMap<>();
         dimension.put("height", rootStage.getHeight());
         dimension.put("width", rootStage.getWidth());
         return dimension;
     }
 
-    private void onExitActions(){
+    private void onExitActions() {
         dm.onExitActions();
     }
 

@@ -58,9 +58,8 @@ public class ControlMenuView extends HBox {
     private void initOwnersList(){
         ownerList.setItems(controlMenuService.getOwnersList());
         Owner lastSelectedOwner = controlMenuService.getLastSelectedOwner();
-        ownerList.setValue(lastSelectedOwner);
+        ownerList.getSelectionModel().selectFirst();
         controlMenuService.ownerAction(lastSelectedOwner);
-
             ownerList.setOnAction(event -> {
                 controlMenuService.ownerAction(getOwner());
             });

@@ -48,7 +48,6 @@ public class ViewServicesManager {
     public PandaRootView init() {
         initViews();
         initRootPositions();
-        refresh();
         return pandaRootView;
     }
 
@@ -112,14 +111,6 @@ public class ViewServicesManager {
 
     public OptionsView getOptionsView() {
         return optionsService.getOptionsView();
-    }
-
-    public void initPandaScene(){
-        stageManager.initPandaScene();
-    }
-
-    public void initOptionsScene(){
-        stageManager.initOptionsScene();
     }
 
     public void showPandaScene() {

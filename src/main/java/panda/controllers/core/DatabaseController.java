@@ -60,6 +60,7 @@ public class DatabaseController {
 
     public ArrayList<PandaAccount> search(String searchValue, String ownerValue) {
         try {
+            if(ownerValue==null) ownerValue = new Owner().getName();
             ArrayList<PandaAccount> foundedPandas = database.search(searchValue, ownerValue);
             Collections.reverse(foundedPandas);
             return foundedPandas;
@@ -136,6 +137,9 @@ public class DatabaseController {
 
     public void updateAppData(AppData input) {
         try {
+            if(input.getSelectedOwner()==null){
+                input.setSelectedOwner(new Owner());
+            }
             database.updateAppData(input);
         } catch (SQLException e) {
             logger.error("Update account error");

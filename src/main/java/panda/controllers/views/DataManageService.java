@@ -105,7 +105,13 @@ public class DataManageService {
     }
 
     public ObservableList<Owner> getOwnersList(){
-        ObservableList<Owner> result = FXCollections.observableArrayList(dataManager.getOwnerList());
+        ArrayList<Owner> temp = new ArrayList<>();
+            for(Owner owner:dataManager.getOwnerList()){
+                if(!owner.getName().equals("all")){
+                    temp.add(owner);
+                }
+            }
+        ObservableList<Owner> result = FXCollections.observableArrayList(temp);
         Collections.reverse(result);
         return result;
     }
