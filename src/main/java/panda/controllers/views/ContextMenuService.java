@@ -6,6 +6,9 @@ import javafx.scene.control.ContextMenu;
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
 import panda.models.Account;
+import panda.models.PandaAccount;
+import panda.utils.io.xml.XMLio;
+import panda.utils.io.xml.XmlWriter;
 import panda.views.elements.ContextMenuView;
 
 import java.awt.font.OpenType;
@@ -89,6 +92,19 @@ public class ContextMenuService {
                      viewServicesManager.alert(Alert.AlertType.WARNING, "Looks like this row is missing a link.","");
                     }
                 }
+        }
+    }
+
+    public void saveXML(){
+        if(isSelectedExist()){
+            String filePath = viewServicesManager.askSavePath("XML file save","xml_backUp_file");
+            dataManager.save(new XMLio(), filePath);
+        }
+    }
+
+    public void saveJSON(){
+        if(isSelectedExist()){
+
         }
     }
 

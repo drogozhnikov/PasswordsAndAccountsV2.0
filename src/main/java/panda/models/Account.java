@@ -70,7 +70,7 @@ public class Account implements Comparable<Account> {
     @XmlElement(name = "Account")
     protected String account;
     @XmlElement(name = "Password")
-    protected StringBuilder password;
+    protected String password;
     @XmlElement(name = "Info")
     protected String info  = "Default Info";
     @XmlElement(name = "Date")
@@ -83,7 +83,7 @@ public class Account implements Comparable<Account> {
         this.link = link;
         this.mail = mail;
         this.account = account;
-        this.password = password;
+        this.password = password.toString();
         this.info = info;
         this.date = date;
     }
@@ -244,7 +244,7 @@ public class Account implements Comparable<Account> {
      *     
      */
     public StringBuilder getPassword() {
-        return password;
+        return new StringBuilder(password);
     }
 
     /**
@@ -256,7 +256,7 @@ public class Account implements Comparable<Account> {
      *     
      */
     public void setPassword(StringBuilder value) {
-        this.password = value;
+        this.password = value.toString();
     }
 
     /**

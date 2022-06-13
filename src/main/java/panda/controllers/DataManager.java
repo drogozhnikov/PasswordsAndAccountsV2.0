@@ -12,6 +12,7 @@ import panda.utils.PasswordGenerator;
 import panda.utils.PathFinder;
 import panda.utils.Utils;
 import panda.utils.cryption.AesCrypt;
+import panda.utils.io.FileIO;
 import panda.utils.io.xml.XMLio;
 
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class DataManager {
         try {
             databaseController = new DatabaseController(pathFinder.findPath("panda.db"));
             propertiesController = new PropertiesController(pathFinder.findPath("Properties.properties"));
-            backupController = new BackupController("backups", new XMLio());
+            backupController = new BackupController("backups");
             cryptionController = new CryptionController(new AesCrypt());
             appDataController = new AppDataController(databaseController);
             passwordGenerator = new PasswordGenerator();
@@ -260,5 +261,39 @@ public class DataManager {
     public void onExitActions() {
         appDataController.updateAppData();
     }
+
+    public void save(XMLio fileio, String filePath) {
+        ArrayList<Integer> temp = viewServicesManager.getIdLastSelectedAccounts();
+        if(temp != null && temp.size()>0){
+            ArrayList<Account> accountsList = new ArrayList<>();
+                for(Integer id : temp){
+                    Account account = databaseController.selectAccountById(id);
+                    account.setPassword(cryptionController.deCryptIt(account.getPassword()));
+                    accountsList.add(account);
+                }
+            backupController.init(fileio);
+            backupController.saveToDirectory(filePath, accountsList);
+        }
+    }
+
+    public void load(XMLio fileio, String filePath) {
+        backupController.init(fileio);
+        ArrayList<Account> loadedAccounts = backupController.load(filePath);
+        ArrayList<Account> existedPasswords = new ArrayList<>();
+        int insertedCount = 0;
+        for(Account account: loadedAccounts){
+            if(databaseController.isPasswordExist(cryptionController.cryptIt(account.getPassword()))){
+                existedPasswords.add(account);
+            }else{
+                insertAccount(account);
+                insertedCount++;
+            }
+        }
+        String resultText = "Input:" + loadedAccounts.size() +
+                " Existed:" + existedPasswords.size() +
+                " Inserted: " + insertedCount;
+        logger.info("Backup readed successfull. "  + resultText);
+    }
+
 
 }

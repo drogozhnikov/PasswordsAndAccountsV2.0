@@ -10,6 +10,7 @@ import panda.models.Account;
 import panda.models.PandaAccount;
 import panda.views.PandaRootView;
 import panda.views.elements.HelloPandaView;
+import panda.views.elements.additional.FilePathWindow;
 import panda.views.elements.additional.PandaAlert;
 import panda.views.elements.options.OptionsView;
 
@@ -33,6 +34,8 @@ public class ViewServicesManager {
     private StageManager stageManager;
 
     private PandaAlert alert = new PandaAlert();
+
+    private FilePathWindow filePathWindow = new FilePathWindow();
 
     private ArrayList<Integer> lastSelectedAccount;
 
@@ -149,6 +152,14 @@ public class ViewServicesManager {
 
     public void setInfoText(StringBuilder input){
         infoService.setInfoText(input);
+    }
+
+    public String askSavePath(String title, String initFileName){
+        return  filePathWindow.askSaveFilePath(title, initFileName);
+    }
+
+    public String askLoadPath(String title){
+        return  filePathWindow.askLoadFilePath(title);
     }
 
 }
