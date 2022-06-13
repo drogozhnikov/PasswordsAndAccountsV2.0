@@ -3,7 +3,10 @@ package panda.controllers.views.options;
 import javafx.scene.control.Alert;
 import panda.controllers.DataManager;
 import panda.controllers.ViewServicesManager;
+import panda.utils.io.xml.XMLio;
 import panda.views.elements.options.OptionsView;
+
+import java.util.HashMap;
 
 public class OptionsService {
 
@@ -26,6 +29,8 @@ public class OptionsService {
     }
 
     public void saveButton() {
+        viewServicesManager.initPandaScene();
+        viewServicesManager.initOptionsScene();
         viewServicesManager.refresh();
         viewServicesManager.showPandaScene();
     }
@@ -38,14 +43,14 @@ public class OptionsService {
     public void saveAccessAction(StringBuilder inputOld, StringBuilder inputTemp, StringBuilder inputNew) {
         if (!inputOld.toString().equals("") && !inputNew.toString().equals("") && !inputTemp.toString().equals("")) {
             if (inputNew.toString().equals(inputTemp.toString())) {
-                dataManager.reinitAccessPass(new StringBuilder(inputNew),new StringBuilder(inputOld));
+                dataManager.reinitAccessPass(new StringBuilder(inputNew), new StringBuilder(inputOld));
             } else {
                 viewServicesManager.alert(
                         Alert.AlertType.WARNING,
                         "Access denied",
                         "Passwords missmatch");
             }
-        }else {
+        } else {
             viewServicesManager.alert(
                     Alert.AlertType.WARNING,
                     "Access denied",
@@ -54,11 +59,11 @@ public class OptionsService {
     }
 
     public void saveCurrentResolution() {
-        dataManager.saveCurrentResolution();
+        dataManager.setCurrentResolution();
     }
 
-    public void resResolution() {
-        dataManager.restoreResolution();
+    public void restoreResolution() {
+        dataManager.setStandartResolution();
     }
 
     public void clearBase() {
@@ -69,4 +74,17 @@ public class OptionsService {
         }
     }
 
+    public void saveXml() {
+        dataManager.save(new XMLio(), "");
+    }
+
+    public void saveJson() {
+//        dataManager.save(); TODO JSON save
+    }
+
+    public void load() {
+        String filePath = viewServicesManager.askLoadPath("BackUp file loading");
+        String resultText = dataManager.load(new XMLio(), filePath);
+        viewServicesManager.alert(Alert.AlertType.INFORMATION, "Load successfull", resultText);
+    }
 }

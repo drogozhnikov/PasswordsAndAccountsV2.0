@@ -102,11 +102,4 @@ public class ContextMenuService {
         }
     }
 
-    public void saveJSON(){
-        if(isSelectedExist()){
-
-        }
-    }
-
-
 }

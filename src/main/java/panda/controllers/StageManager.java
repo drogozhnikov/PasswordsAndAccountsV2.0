@@ -76,10 +76,8 @@ public class StageManager {
     }
 
     public void initOptionsScene() {
-        if(rootOptionsScene == null){
             OptionsView optionsView = vm.getOptionsView();
             rootOptionsScene = new Scene(optionsView, dm.getAppData().getScreenWidth(), dm.getAppData().getScreenHeight());
-        }
     }
 
     public void showPandaScene(){

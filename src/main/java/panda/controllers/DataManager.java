@@ -161,19 +161,15 @@ public class DataManager {
         }
     }
 
-    public void saveCurrentResolution() {
-        HashMap<String, Double> resolution = viewServicesManager.getCurrentResolution();
-        appDataController.setResolution(resolution);
-        databaseController.updateAppDataResolution(
-                appDataController.getAppData().getScreenWidth(),
-                appDataController.getAppData().getScreenHeight());
+    public void setStandartResolution(){
+        int width = 900;
+        int height = 700;
+        appDataController.setResolution(height, width);//TODO fill from properties
         logger.info("Resolution update succesfully");
     }
-
-    public void restoreResolution() {
-        final int width = 900;
-        final int height = 600;
-        databaseController.updateAppDataResolution(width, height);
+    public void setCurrentResolution(){
+        HashMap<String, Double> resolution = viewServicesManager.getCurrentResolution();
+        appDataController.setResolution(resolution.get("height").intValue(), resolution.get("width").intValue());
         logger.info("Resolution update succesfully");
     }
 
@@ -272,11 +268,15 @@ public class DataManager {
                     accountsList.add(account);
                 }
             backupController.init(fileio);
-            backupController.saveToDirectory(filePath, accountsList);
+                if(!filePath.equals("")){
+                    backupController.saveToDirectory(filePath, accountsList);
+                }else{
+                    backupController.save(accountsList);
+                }
         }
     }
 
-    public void load(XMLio fileio, String filePath) {
+    public String load(XMLio fileio, String filePath) {
         backupController.init(fileio);
         ArrayList<Account> loadedAccounts = backupController.load(filePath);
         ArrayList<Account> existedPasswords = new ArrayList<>();
@@ -293,6 +293,7 @@ public class DataManager {
                 " Existed:" + existedPasswords.size() +
                 " Inserted: " + insertedCount;
         logger.info("Backup readed successfull. "  + resultText);
+        return resultText;
     }
 
 

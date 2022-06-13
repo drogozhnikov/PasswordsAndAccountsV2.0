@@ -118,7 +118,12 @@ public class ViewServicesManager {
         stageManager.initPandaScene();
     }
 
+    public void initOptionsScene(){
+        stageManager.initOptionsScene();
+    }
+
     public void showPandaScene() {
+        stageManager.initPandaScene();
         stageManager.showPandaScene();
     }
 

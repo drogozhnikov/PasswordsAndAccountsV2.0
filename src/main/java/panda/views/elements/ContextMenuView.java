@@ -7,7 +7,6 @@ import panda.controllers.views.ContextMenuService;
 public class ContextMenuView extends ContextMenu {
 
     private MenuItem contextMenuitemSaveXML = new MenuItem(" Save selected as XML ");
-    private MenuItem contextMenuitemSaveJSON = new MenuItem(" Save selected as JSON ");
     private MenuItem contextMenuItemDelete = new MenuItem(" Delete ");
     private MenuItem contextMenuItemUpdate = new MenuItem(" Update ");
     private MenuItem startLinkMenuItem = new MenuItem(" StartLink ");
@@ -23,10 +22,6 @@ public class ContextMenuView extends ContextMenu {
     private void initContext() {
         contextMenuitemSaveXML.setOnAction(event -> {
             contextMenuService.saveXML();
-        });
-
-        contextMenuitemSaveJSON.setOnAction(event -> {
-            contextMenuService.saveJSON();
         });
 
         contextMenuItemDelete.setOnAction(event -> {
@@ -47,7 +42,6 @@ public class ContextMenuView extends ContextMenu {
 
         super.getItems().addAll(contextMenuItemUpdate,
                 contextMenuitemSaveXML,
-                contextMenuitemSaveJSON,
                 startLinkMenuItem,
                 descriptionMenuItem,
                 contextMenuItemDelete);

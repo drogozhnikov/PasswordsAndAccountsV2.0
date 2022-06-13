@@ -24,9 +24,9 @@ public class XmlReader {
         Unmarshaller unmarshaller = jc.createUnmarshaller();
         Panda panda = (Panda) unmarshaller.unmarshal(new File(filePath));
 
-        Marshaller marshaller = jc.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshaller.marshal(panda, System.out);
+//        Marshaller marshaller = jc.createMarshaller();
+//        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+//        marshaller.marshal(panda, System.out);
 
         return new ArrayList<Account>(panda.getAccount());
     }

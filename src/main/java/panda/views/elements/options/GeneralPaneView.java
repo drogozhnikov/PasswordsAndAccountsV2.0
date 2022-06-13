@@ -27,7 +27,13 @@ public class GeneralPaneView extends BorderPane {
     private Label labelStyles = new Label("Styles");
     private Separator separatorStyles = new Separator();
 
-    private Label labelBaseCommand = new Label(" Data Base");
+    private Label labelBackUp = new Label("BackUps");
+    private Button saveXml = new Button("Xml");
+    private Button saveJson = new Button("Json");
+    private Button load = new Button("Load");
+    private Separator separatorBackUps = new Separator();
+
+    private Label labelDBCommand = new Label(" Data Base");
     private Button buttonClearBase = new Button(" Clear Base");
     private Separator separatorBaseCommand = new Separator();
 
@@ -39,41 +45,68 @@ public class GeneralPaneView extends BorderPane {
         initPositions();
         initSaveResolution();
         initRestoreResolution();
+        initBackupButtons();
         initDataBase();
     }
 
     private void initSizes() {
         saveCurrentResolution.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(saveCurrentResolution, Priority.ALWAYS);
+
+        restoreResolution.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(restoreResolution, Priority.ALWAYS);
+
+        buttonClearBase.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(buttonClearBase, Priority.ALWAYS);
+
+        saveXml.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(saveXml, Priority.ALWAYS);
+
+        saveJson.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(saveJson, Priority.ALWAYS);
+
+        load.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(load, Priority.ALWAYS);
     }
 
     private void initPositions() {
         VBox centerGeneralbox = new VBox();
 
-            VBox resolution = new VBox();
-            resolution.getChildren().addAll(labelResolution,saveCurrentResolution,restoreResolution,separatorResolution);
-            resolution.setAlignment(Pos.CENTER);
-        centerGeneralbox.getChildren().add(resolution);
+        VBox resolutionBox = new VBox();
+        resolutionBox.setAlignment(Pos.CENTER);
+        HBox resolution = new HBox();
+        resolution.setAlignment(Pos.CENTER);
+        resolution.getChildren().addAll(saveCurrentResolution, restoreResolution);
+        resolutionBox.getChildren().addAll(labelResolution, resolution, separatorResolution);
+        centerGeneralbox.getChildren().add(resolutionBox);
 
-            VBox passGen = new VBox();
-            passGen.getChildren().addAll(labelPasswordGeneration, separatorPassGen);
-            passGen.setAlignment(Pos.CENTER);
+        VBox passGen = new VBox();
+        passGen.getChildren().addAll(labelPasswordGeneration, separatorPassGen);
+        passGen.setAlignment(Pos.CENTER);
         centerGeneralbox.getChildren().add(passGen);
 
-            VBox styles = new VBox();
-            styles.getChildren().addAll(labelStyles, separatorStyles);
-            styles.setAlignment(Pos.CENTER);
+        VBox styles = new VBox();
+        styles.getChildren().addAll(labelStyles, separatorStyles);
+        styles.setAlignment(Pos.CENTER);
         centerGeneralbox.getChildren().add(styles);
 
-            VBox dataBase = new VBox();
-            styles.getChildren().addAll(labelBaseCommand, buttonClearBase, separatorBaseCommand);
-            styles.setAlignment(Pos.CENTER);
+        VBox backupBox = new VBox();
+        backupBox.setAlignment(Pos.CENTER);
+        HBox backup = new HBox();
+        backup.setAlignment(Pos.CENTER);
+        backup.getChildren().addAll(saveXml, saveJson, load);
+        backupBox.getChildren().addAll(labelBackUp, backup, separatorBackUps);
+        centerGeneralbox.getChildren().add(backupBox);
+
+        VBox dataBase = new VBox();
+        dataBase.getChildren().addAll(labelDBCommand, buttonClearBase, separatorBaseCommand);
+        dataBase.setAlignment(Pos.CENTER);
         centerGeneralbox.getChildren().add(dataBase);
 
         super.setCenter(centerGeneralbox);
     }
 
-    private void initStyles(){
+    private void initStyles() {
         int headersSize = 15;
         String family = "Verdana";
         FontPosture fontPosture = FontPosture.ITALIC;
@@ -81,7 +114,8 @@ public class GeneralPaneView extends BorderPane {
         labelResolution.setFont(Font.font(family, fontPosture, headersSize));
         labelPasswordGeneration.setFont(Font.font(family, fontPosture, headersSize));
         labelStyles.setFont(Font.font(family, fontPosture, headersSize));
-        labelBaseCommand.setFont(Font.font(family, fontPosture, headersSize));
+        labelDBCommand.setFont(Font.font(family, fontPosture, headersSize));
+        labelBackUp.setFont(Font.font(family, fontPosture, headersSize));
     }
 
     private void initSaveResolution() {
@@ -92,14 +126,27 @@ public class GeneralPaneView extends BorderPane {
 
     private void initRestoreResolution() {
         restoreResolution.setOnAction(event -> {
-            optionsService.resResolution();
+            optionsService.restoreResolution();
         });
     }
 
-    private void initDataBase(){
+    private void initDataBase() {
         buttonClearBase.setOnAction(event -> {
             optionsService.clearBase();
         });
+    }
+
+    private void initBackupButtons() {
+        saveXml.setOnAction(event -> {
+            optionsService.saveXml();
+        });
+        saveJson.setOnAction(event -> {
+            //TODO JSON load
+        });
+        load.setOnAction(event -> {
+            optionsService.load();
+        });
+
     }
 
 }

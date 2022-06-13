@@ -44,13 +44,15 @@ public class AppDataController {
         return appData;
     }
 
-    public void setResolution(HashMap<String, Double> input) {
+    public void setResolution(int height, int width) {
 
         int infelicityH = 39;
         int infelicityW = 16;
 
-        appData.setScreenHeight(input.get("height").intValue() - infelicityH);
-        appData.setScreenWidth(input.get("width").intValue() - infelicityW);
+        appData.setScreenHeight(height - infelicityH);
+        appData.setScreenWidth(width - infelicityW);
+
+        updateAppData();
 
         logger.info("Updating Resolution to: " + appData.getScreenWidth() + "x" + appData.getScreenHeight());
     }
