@@ -107,7 +107,6 @@ public class SqLiteDAO implements Database {
                 "(a.name like ('%" + searchValue + "%') and " +
                 "account like ('%" + searchValue + "%') or " +
                 "mail like ('%" + searchValue + "%') or " +
-                "password like ('%" + searchValue + "%') or " +
                 "update_date like ('%" + searchValue + "%'))";
         try (Statement statement = this.connection.createStatement()) {
             ArrayList<PandaAccount> output = new ArrayList<>();

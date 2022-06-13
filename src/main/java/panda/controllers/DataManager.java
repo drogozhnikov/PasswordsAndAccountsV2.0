@@ -17,7 +17,6 @@ import panda.utils.io.xml.XMLio;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,64 +58,40 @@ public class DataManager {
     }
 
     public void insertAccount(Account account) {
-        try {
-            if (!databaseController.isPasswordExist(cryptionController.cryptIt(account.getPassword()))) {
-                account.setPassword(cryptionController.cryptIt(new StringBuilder(account.getPassword()))); // CRYPTION!
-                databaseController.insertAccount(account);
-            } else {
-                viewServicesManager.alert(Alert.AlertType.WARNING,
-                        "Same account already exist",
-                        "");
-            }
-        } catch (SQLException inserting) {
-            logger.error("Error while inserting new account");
-            viewServicesManager.alert(Alert.AlertType.WARNING,
-                    "Same account already exist",
-                    "");
+        account.setPassword(cryptionController.cryptIt(new StringBuilder(account.getPassword()))); // CRYPTION!
+        databaseController.insertAccount(account);
+    }
+
+    public boolean isAccountExist(Account account) {
+        if (databaseController.isPasswordExist(cryptionController.cryptIt(account.getPassword()))) {
+            return true;
         }
+        return false;
     }
 
     public void updateAccount(Account account) {
-        try {
-            databaseController.updateFullAccount(account);
-        } catch (SQLException | ParseException updating) {
-            logger.error("Error while updating account");
-            updating.printStackTrace();
-        }
+        databaseController.updateFullAccount(account);
     }
 
     public void deleteAccount(ArrayList<Integer> deleteListId) {
-        try {
-            if (deleteListId != null && deleteListId.size() > 0) {
-                for (Integer id : deleteListId) {
-                    databaseController.deleteAccount(id);
-                }
+        if (deleteListId != null && deleteListId.size() > 0) {
+            for (Integer id : deleteListId) {
+                databaseController.deleteAccount(id);
             }
-        } catch (SQLException | ParseException delete) {
-            logger.error("Can't delete account");
         }
     }
 
     public Account getAccountById(int id) {
         Account account = null;
-        try {
-            account = databaseController.selectAccountById(id);
-//            StringBuilder uncriptedPass = cryptionController.deCryptIt(account.getPassword());
-//            account.setPassword(uncriptedPass);
-        } catch (SQLException | ParseException e) {
-            logger.error("Find Account by id Error");
-            e.printStackTrace();
-        }
+        account = databaseController.selectAccountById(id);
+        StringBuilder uncriptedPass = cryptionController.deCryptIt(account.getPassword());
+        account.setPassword(uncriptedPass);
         return account;
     }
 
     public ArrayList<Account> selectAccounts() {
         ArrayList<Account> accounts = new ArrayList<>();
-        try {
-            accounts = databaseController.selectAll();
-        } catch (SQLException | ParseException selectAll) {
-            logger.error("Error while selecting accounts");
-        }
+        accounts = databaseController.selectAll();
         return accounts;
     }
 
@@ -125,32 +100,17 @@ public class DataManager {
     }
 
     public boolean checkAccess(StringBuilder cryptedInput) {
-        try {
-            return databaseController.checkPass(cryptedInput);
-        } catch (SQLException acess) {
-            logger.error("DataBase check pass exception");
-        }
-        return false;
+        return databaseController.checkPass(cryptedInput);
     }
 
     public boolean validateAccess(StringBuilder input) {
-        try {
-            StringBuilder temp = new CryptionController().getEncryptedInput(input);
-            return databaseController.checkPass(temp);
-        } catch (SQLException acess) {
-            logger.error("DataBase check pass exception");
-        }
-        return false;
+        StringBuilder temp = new CryptionController().getEncryptedInput(input);
+        return databaseController.checkPass(temp);
     }
 
     public boolean initCheckAccess(StringBuilder input) {
-        try {
-            cryptionController.init(new AesCrypt(), input);
-            return databaseController.checkPass(cryptionController.getEncryptedInput(input));
-        } catch (SQLException acess) {
-            logger.error("DataBase check pass exception");
-        }
-        return false;
+        cryptionController.init(new AesCrypt(), input);
+        return databaseController.checkPass(cryptionController.getEncryptedInput(input));
     }
 
     public AppData getAppData() {
@@ -159,41 +119,28 @@ public class DataManager {
 
     public ArrayList<PandaAccount> selectPandaAccounts() {
         ArrayList<PandaAccount> output = new ArrayList<>();
-        try {
-            ArrayList<PandaAccount> pandaAccountsList = databaseController.selectPandas(
-                    appDataController.getLastSelectedOwner().getName()
-            );
-            for (PandaAccount panda : pandaAccountsList) {
-                panda.setTableFieldPassword(cryptionController.deCryptIt(
-                        new StringBuilder(panda.getTableFieldPassword())).toString());
-                output.add(panda);
-            }
-        } catch (SQLException selectAll) {
-            logger.error("Select All Error");
+        ArrayList<PandaAccount> pandaAccountsList = databaseController.selectPandas(
+                appDataController.getLastSelectedOwner().getName()
+        );
+        for (PandaAccount panda : pandaAccountsList) {
+            panda.setTableFieldPassword(cryptionController.deCryptIt(
+                    new StringBuilder(panda.getTableFieldPassword())).toString());
+            output.add(panda);
         }
         return output;
     }
 
     public String generatePassword() {
-        try {
-            String pass = passwordGenerator.generatePassword(appDataController.getPassTeamplate());
-            while (databaseController.isPasswordExist(new StringBuilder(pass))) {
-                pass = passwordGenerator.generatePassword(appDataController.getPassTeamplate());
-            }
-            return pass;
-        } catch (SQLException check) {
-            logger.error("Can't Check new password");
+        String pass = passwordGenerator.generatePassword(appDataController.getPassTeamplate());
+        while (databaseController.isPasswordExist(new StringBuilder(pass))) {
+            pass = passwordGenerator.generatePassword(appDataController.getPassTeamplate());
         }
-        return "";
+        return pass;
     }
 
     public ArrayList<Owner> getOwnerList() {
         Set<Owner> ownersList = new HashSet<>();
-        try {
-            ownersList = new HashSet<Owner>(databaseController.selectOwnerList());
-        } catch (SQLException ownerList) {
-            logger.error("DB owners get error");
-        }
+        ownersList = new HashSet<Owner>(databaseController.selectOwnerList());
         return new ArrayList<Owner>(ownersList);
     }
 
@@ -216,28 +163,17 @@ public class DataManager {
     public void saveCurrentResolution() {
         HashMap<String, Double> resolution = viewServicesManager.getCurrentResolution();
         appDataController.setResolution(resolution);
-
-        try {
-            databaseController.updateAppDataResolution(
-                    appDataController.getAppData().getScreenWidth(),
-                    appDataController.getAppData().getScreenHeight());
-            logger.info("Resolution update succesfully");
-        } catch (SQLException e) {
-            logger.error("Error while updating resolution");
-            e.printStackTrace();
-        }
+        databaseController.updateAppDataResolution(
+                appDataController.getAppData().getScreenWidth(),
+                appDataController.getAppData().getScreenHeight());
+        logger.info("Resolution update succesfully");
     }
 
     public void restoreResolution() {
         final int width = 900;
         final int height = 600;
-        try {
-            databaseController.updateAppDataResolution(width, height);
-            logger.info("Resolution update succesfully");
-        } catch (SQLException e) {
-            logger.error("Error while updating resolution");
-            e.printStackTrace();
-        }
+        databaseController.updateAppDataResolution(width, height);
+        logger.info("Resolution update succesfully");
     }
 
     public void reinitAccessPass(StringBuilder inputNewPass, StringBuilder inputOldPass) {
@@ -248,21 +184,16 @@ public class DataManager {
         final StringBuilder cryptedOldPass = cryptionController.getEncryptedInput(inputOldPass);
 
         if (checkAccess(cryptedOldPass)) {
-            try {
-                if (updatePass(cryptedNewPass, cryptedOldPass)) {
-                    clearBase(inputNewPass);
-                    initCheckAccess(inputNewPass);
-                    if (checkAccess(cryptedNewPass) && backupDbAccounts.size() > 0) {
-                        for (Account account : databaseAccounts) {
-                            account.setPassword(cryptionController.cryptIt(account.getPassword()));
-                            databaseController.insertAccount(account);
-                        }
-                        viewServicesManager.refresh();
+            if (updatePass(cryptedNewPass, cryptedOldPass)) {
+                clearBase(inputNewPass);
+                initCheckAccess(inputNewPass);
+                if (checkAccess(cryptedNewPass) && backupDbAccounts.size() > 0) {
+                    for (Account account : databaseAccounts) {
+                        account.setPassword(cryptionController.cryptIt(account.getPassword()));
+                        databaseController.insertAccount(account);
                     }
+                    viewServicesManager.refresh();
                 }
-            } catch (SQLException insert) {
-                restore(cryptedOldPass, backupDbAccounts);
-                logger.error("Database insert expeption while reencrypting");
             }
         } else {
             logger.warn("Access to change password denied");
@@ -282,36 +213,28 @@ public class DataManager {
     }
 
     private void restore(StringBuilder cryptedPass, ArrayList<Account> cryptedAccountsList) {
-        try {
-            for (Account account : cryptedAccountsList) {
-                databaseController.insertAccount(account);
-            }
-            //TODO resrote pass
-        } catch (SQLException insert) {
-            logger.error("Restore db buffer exception");
+        for (Account account : cryptedAccountsList) {
+            databaseController.insertAccount(account);
         }
+        //TODO resrote pass
     }
 
     private boolean updatePass(StringBuilder cryptedNewPass, StringBuilder cryptedOldPass) {
-        try {
+        boolean isSuccess = databaseController.updatePass(cryptedNewPass, cryptedOldPass);
+        if (isSuccess) {
             logger.info("updatePass Sucessfull");
-            return databaseController.updatePass(cryptedNewPass, cryptedOldPass);
-        } catch (SQLException passUpdate) {
-            logger.error("Password update Error");
+            return isSuccess;
+        } else {
+            return false;
         }
-        return false;
     }
 
     public void clearBase(StringBuilder unCryptedInput) {
         final StringBuilder cryptedPass = cryptionController.getEncryptedInput(unCryptedInput);
         if (checkAccess(cryptedPass)) {
-            try {
-                //TODO backupDatabaseBeforeClear
-                databaseController.clear();
-                logger.error("Clear base successfull");
-            } catch (SQLException clear) {
-                logger.error("Clear base exception");
-            }
+            //TODO backupDatabaseBeforeClear
+            databaseController.clear();
+            logger.error("Clear base successfull");
         } else {
             logger.warn("incorrect access. Base cannot be cleared");
         }
@@ -325,20 +248,16 @@ public class DataManager {
         return appDataController.getAppData().getSelectedOwner();
     }
 
-    public ArrayList<PandaAccount> search(String value, Owner owner){
+    public ArrayList<PandaAccount> search(String value, Owner owner) {
         ArrayList<PandaAccount> foundedList = new ArrayList<>();
-        if(owner==null){
+        if (owner == null) {
             owner = new Owner();
         }
-        try{
-            foundedList = databaseController.search(value, owner.getName());
-        }catch (SQLException search){
-            logger.error("Search Exception");
-        }
+        foundedList = databaseController.search(value, owner.getName());
         return foundedList;
     }
 
-    public void onExitActions(){
+    public void onExitActions() {
         appDataController.updateAppData();
     }
 

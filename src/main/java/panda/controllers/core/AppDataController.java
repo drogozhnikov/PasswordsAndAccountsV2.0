@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import panda.models.AppData;
 import panda.models.Owner;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 
 public class AppDataController {
@@ -31,52 +30,42 @@ public class AppDataController {
 //    }
 
     public void refreshAppData() {
-        try {
-            appData = databaseController.selectAppData();
-        } catch (SQLException db) {
-            logger.error("App Data getting error");
-        }
+        appData = databaseController.selectAppData();
         if (appData == null) {
             this.appData = new AppData();
         }
     }
 
-    public String getPassTeamplate(){
+    public String getPassTeamplate() {
         return appData.getPassGenPattern();
     }
 
-    public AppData getAppData(){
+    public AppData getAppData() {
         return appData;
     }
 
-    public void setResolution(HashMap<String, Double> input){
+    public void setResolution(HashMap<String, Double> input) {
 
         int infelicityH = 39;
         int infelicityW = 16;
 
-        appData.setScreenHeight(input.get("height").intValue()-infelicityH);
-        appData.setScreenWidth(input.get("width").intValue()-infelicityW);
+        appData.setScreenHeight(input.get("height").intValue() - infelicityH);
+        appData.setScreenWidth(input.get("width").intValue() - infelicityW);
 
         logger.info("Updating Resolution to: " + appData.getScreenWidth() + "x" + appData.getScreenHeight());
     }
 
-    public void setLastSelectedOwner(Owner owner){
+    public void setLastSelectedOwner(Owner owner) {
         appData.setSelectedOwner(owner);
     }
 
-    public Owner getLastSelectedOwner(){
+    public Owner getLastSelectedOwner() {
         return appData.getSelectedOwner();
     }
 
-    public void updateAppData(){
-        try{
-            databaseController.updateAppData(appData);
-        }catch (SQLException update){
-            update.printStackTrace();
-            logger.error("Error updating App Data");
-        }
+    public void updateAppData() {
+        databaseController.updateAppData(appData);
     }
-
 
 
 }

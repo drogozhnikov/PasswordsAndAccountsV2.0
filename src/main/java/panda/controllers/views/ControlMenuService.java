@@ -39,7 +39,6 @@ public class ControlMenuService {
 
     public void search(KeyCode code, String value){
         ArrayList<PandaAccount> foundedFields = new ArrayList<>();
-        foundedFields = dataManager.search(value, controlMenuView.getOwner());
         switch (code.toString()) {
             case ("BACK_SPACE"):
                 foundedFields = dataManager.search(value, controlMenuView.getOwner());
@@ -48,6 +47,8 @@ public class ControlMenuService {
         }
         if (value.equals("")) {
             foundedFields = dataManager.selectPandaAccounts();
+        }else{
+            foundedFields = dataManager.search(value, controlMenuView.getOwner());
         }
         viewServicesManager.refresh(foundedFields);
     }

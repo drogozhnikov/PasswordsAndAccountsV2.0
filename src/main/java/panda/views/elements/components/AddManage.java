@@ -1,6 +1,5 @@
 package panda.views.elements.components;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -11,7 +10,6 @@ import javafx.scene.layout.VBox;
 import panda.controllers.views.DataManageService;
 import panda.models.Account;
 import panda.models.Owner;
-import panda.views.elements.components.LimitedTextField;
 
 import java.util.HashMap;
 
@@ -46,7 +44,7 @@ public class AddManage extends BorderPane {
     private CheckBox stayOnAction = new CheckBox("Stay On Action");
     private CheckBox clearWhenAction = new CheckBox("Clear When Action");
 
-    private ChoiceBox<Owner> ownerList= new ChoiceBox<>();
+    private ChoiceBox<Owner> ownerList = new ChoiceBox<>();
 
     private int spacing = 1;
     private int fieldSize = 300;
@@ -57,7 +55,7 @@ public class AddManage extends BorderPane {
         this.dataManageService = dataManageService;
     }
 
-    public void init(){
+    public void init() {
         initActionButton();
         initCancelButton();
         initGenerateButton();
@@ -150,25 +148,32 @@ public class AddManage extends BorderPane {
     private void initActionButton() {
         actionButton.setText("Add");
         actionButton.setOnAction(event -> {
-            if(validate()){
-                dataManageService.addAction(collectFieldsData());
-                refresh();
+            if (isValid()) {
+                Account newAccount = fillAccount(new Account());
+                if(!dataManageService.isAccountExist(newAccount)){
+                    dataManageService.addAction(fillAccount(new Account()));
+                    refresh();
+                }
             }
         });
     }
 
-    private void initOwnersList(){
+    private void initOwnersList() {
         ownerList.setItems(dataManageService.getOwnersList());
         ownerList.setOnAction(event -> {
+            String selectedOwner = ownerList.getSelectionModel().getSelectedItem().getName();
+            if (selectedOwner == null || selectedOwner.equals("")) {
+
+            }
             inputOwner.setText(ownerList.getSelectionModel().getSelectedItem().getName());
         });
     }
 
-    private void refresh(){
-        if(!stayOnAction.isSelected()){
-           dataManageService.hideDataManage();
+    private void refresh() {
+        if (!stayOnAction.isSelected()) {
+            dataManageService.hideDataManage();
         }
-        if(clearWhenAction.isSelected()){
+        if (clearWhenAction.isSelected()) {
             clear();
         }
         ownerList.setItems(dataManageService.getOwnersList());
@@ -196,8 +201,7 @@ public class AddManage extends BorderPane {
         inputDescription.clear();
     }
 
-    private Account collectFieldsData() {
-        Account account = new Account();
+    private Account fillAccount(Account account) {
         account.setName(inputName.getText());
         account.setLink(inputLink.getText());
         account.setMail(inputMail.getText());
@@ -205,20 +209,20 @@ public class AddManage extends BorderPane {
         account.setPassword(new StringBuilder(inputPassword.getText()));
         account.setInfo(inputDescription.getText());
 
-        if(inputOwner.getText()!=null && !inputOwner.getText().equals("")){
+        if (inputOwner.getText() != null && !inputOwner.getText().equals("")) {
             account.setOwner(inputOwner.getText());
-        }else{
+        } else {
             account.setOwner(ownerList.getValue().getName());
         }
 
         return account;
     }
 
-    private boolean validate() {
-        HashMap<String,String> validatedFieldsMap = new HashMap<>();
-            validatedFieldsMap.put("name", inputName.getText());
-            validatedFieldsMap.put("password", inputPassword.getText());
-            validatedFieldsMap.put("owner", inputOwner.getText());
+    private boolean isValid() {
+        HashMap<String, String> validatedFieldsMap = new HashMap<>();
+        validatedFieldsMap.put("name", inputName.getText());
+        validatedFieldsMap.put("password", inputPassword.getText());
+        validatedFieldsMap.put("owner", inputOwner.getText());
         return dataManageService.validate(validatedFieldsMap);
     }
 

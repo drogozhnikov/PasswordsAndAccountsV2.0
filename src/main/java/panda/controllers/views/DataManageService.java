@@ -70,6 +70,18 @@ public class DataManageService {
         return true;
     }
 
+    public boolean isAccountExist(Account account){
+        boolean isExist = dataManager.isAccountExist(account);
+        if(isExist){
+            viewServicesManager.alert(Alert.AlertType.WARNING,
+                    "Same account already exist",
+                    "");
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public void hideDataManage() {
         refresh();
         viewServicesManager.hideDataManage();
