@@ -19,16 +19,6 @@ public class AppDataController {
         refreshAppData();
     }
 
-//    public int checkAccess(StringBuilder inputPassword) {
-//        int value = -1;
-//        try {
-//            value = databaseController.checkPass(inputPassword);
-//        } catch (SQLException pass) {
-//            logger.error("DataBase check pass exception", pass);
-//        }
-//        return value;
-//    }
-
     public void refreshAppData() {
         appData = databaseController.selectAppData();
         if (appData == null) {
@@ -42,6 +32,10 @@ public class AppDataController {
 
     public AppData getAppData() {
         return appData;
+    }
+
+    public Owner getSelectedOwner(){
+        return appData.getSelectedOwner();
     }
 
     public void setResolution(int height, int width) {

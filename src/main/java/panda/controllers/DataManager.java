@@ -245,7 +245,7 @@ public class DataManager {
     }
 
     public Owner getSelectedOwner() {
-        return appDataController.getAppData().getSelectedOwner();
+        return appDataController.getSelectedOwner();
     }
 
     public ArrayList<PandaAccount> search(String value, Owner owner) {

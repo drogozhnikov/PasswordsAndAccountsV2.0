@@ -308,11 +308,7 @@ public class SqLiteDAO implements Database {
                         resultSet.getString("selected_theme"),
                         resultSet.getInt("screen_width"),
                         resultSet.getInt("screen_height"),
-                        new Owner(
-                                resultSet.getInt("selected_owner"),
-                                resultSet.getString("name")
-                        )
-
+                        new Owner()
                 );
             }
             return output;

@@ -137,9 +137,6 @@ public class DatabaseController {
 
     public void updateAppData(AppData input) {
         try {
-            if(input.getSelectedOwner()==null){
-                input.setSelectedOwner(new Owner());
-            }
             database.updateAppData(input);
         } catch (SQLException e) {
             logger.error("Update account error");

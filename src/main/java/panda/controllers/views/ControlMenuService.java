@@ -55,7 +55,7 @@ public class ControlMenuService {
 
     public ObservableList<Owner> getOwnersList(){
         ObservableList<Owner> result = FXCollections.observableArrayList(dataManager.getOwnerList());
-        Collections.reverse(result);
+        Collections.sort(result);
         return result;
     }
 
@@ -65,7 +65,6 @@ public class ControlMenuService {
 
     public void ownerAction(Owner owner){
         dataManager.setLastSelectedOwner(owner);
-        dataManager.updateAppData();
         viewServicesManager.refresh(dataManager.search("",owner));
     }
 
