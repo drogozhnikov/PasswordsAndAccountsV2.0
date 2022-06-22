@@ -299,7 +299,8 @@ public class SqLiteDAO implements Database {
     @Override
     public AppData selectAppData() throws SQLException {
         try (Statement statement = this.connection.createStatement()) {
-            String query = "select a.id, pass_gen_pattern, cipher_word, selected_theme, o.id, o.name, screen_width, screen_height, selected_owner from  appdata a left join owners o on selected_owner = o.id where a.id = 1";
+//            String query = "select a.id, pass_gen_pattern, cipher_word, selected_theme, o.id, o.name, screen_width, screen_height from  appdata a left join owners o on selected_owner = o.id where a.id = 1";
+            String query = "select * from appdata where id = 1";
             ResultSet resultSet = statement.executeQuery(query);
             AppData output = null;
             while (resultSet.next()) {

@@ -131,6 +131,7 @@ public class DatabaseController {
             return database.selectAppData();
         } catch (SQLException e) {
             logger.error("select appData error");
+            e.printStackTrace();
         }
         return new AppData();
     }

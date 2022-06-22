@@ -138,6 +138,7 @@ public class ViewServicesManager {
     public void setLastSelectedAccounts(ArrayList<Integer> input){
         this.lastSelectedAccount = input;
     }
+
     public ArrayList<Integer> getIdLastSelectedAccounts(){
         return lastSelectedAccount;
     }
